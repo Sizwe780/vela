@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "parser": {
+    "name": "marker",
+    "version": "2.1.0",
+    "review": "source-compared",
+    "reviewNotes": [
+      "Restored the standalone limit expression omitted beside the second table, using the original PDF. Equations and table values were visually compared with PDF page 14 (printed page 8)."
+    ]
+  },
+  "source": {
+    "document": "guide",
+    "sha256": "d615e76d6b0bcf6dc708c96732b9b12cdd030733f06f27d5ab197bec9e220648",
+    "pageStart": 14,
+    "pageEnd": 14
+  },
+  "blocks": [
+    {
+      "id": "reading",
+      "type": "markdown",
+      "markdown": "### 3.3 Prescribed Reading\r\n\r\nThe prescribed reading in Stewart is Chapter 2, Sections 2.1, 2.2, 2.3, 2.4 and 2.5. Also see Appendix F: A39 (Limit laws) and A42 (The Squeeze Theorem).\r\n\r\n**Note: The way to master calculus is to solve a lot of calculus problems!**\r\n\r\n### 3.4 Limit\r\n\r\n#### 3.4.1 Introduction to the Limit Concept\r\n\r\nRead carefully through **Section 2.1** in Stewart. You will notice that we have two problems – one dealing with finding the slope of a curve at a specific point and the other dealing with finding the length of a curve. In the first problem, the closer the second point gets to a certain point, the closer the computed value gets to the actual value we are looking for. This calculus problem involves a process called the limit. You can estimate the slope of the curve using a sequence of approximations. The limit allows you to compute the slope exactly. Similarly, in the second problem – in trying to compute the distance along a curved path – you would have to go through better approximations successively until you reach the actual value. The actual arc length is obtained by using the limit. **The limit value is the height or the y-value of a function.**\r\n\r\nA left-hand limit is the  $y$ -value you obtain by approaching  $x$  from the left side.\r\n\r\nA right-hand limit is the  $y$ -value you obtain by approaching  $x$  from the right side.\r\n\r\nLet us use two functions to explore the limit concept. The first function,  $f(x) = \\frac{x^2 - 4}{x - 2}$ , is undefined at  $x = 2$ , but its behaviour can be examined in the area close to  $x = 2$ . From the value in the tables, you can see that the limit of  $f(x)$  as  $x$  approaches 2 from the left or right is 4.\r\n\r\n| $x$    | $f(x) = \\frac{x^2 - 4}{x - 2}$ |\r\n|--------|--------------------------------|\r\n| 1.9    | 3.9                            |\r\n| 1.99   | 3.99                           |\r\n| 1.999  | 3.999                          |\r\n| 1.9999 | 3.9999                         |\r\n\r\n| $x$    | $f(x) = \\frac{x^2 - 4}{x - 2}$ |\r\n|--------|--------------------------------|\r\n| 2.1    | 4.1                            |\r\n| 2.01   | 4.01                           |\r\n| 2.001  | 4.001                          |\r\n| 2.0001 | 4.0001                         |\n\n$$\n\\lim_{x\\to 2} f(x)=4\n$$\n"
+    }
+  ]
+}

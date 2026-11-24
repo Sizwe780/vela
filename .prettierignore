@@ -1,0 +1,7 @@
+node_modules
+generated
+.next
+.next-dev
+content
+package-lock.json
+*.json

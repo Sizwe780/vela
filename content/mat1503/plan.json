@@ -1,0 +1,258 @@
+{
+  "moduleCode": "MAT1503",
+  "institution": "UNISA",
+  "sourceNote": "Provisional learning coverage based on the supplied 2023 tutorial resource’s13studyunits, cross-checked against the supplied2018outcomes and11th-edition textbook sections. Historical administration is not current policy. Raw diagnostic text is not published as math-aware OCR.",
+  "sources": [
+    {
+      "id": "mat1503-resource",
+      "moduleCode": "MAT1503",
+      "title": "MAT_1503.pdf",
+      "filename": "MAT_1503.pdf",
+      "directory": "../work/mat1503/sources",
+      "sha256": "cb1cdd5a0b34d2d358b15d56991315e9052ecf57b59d689e7537a5ffb596fb3c"
+    },
+    {
+      "id": "mat1503-textbook",
+      "moduleCode": "MAT1503",
+      "title": "linear algebra.pdf",
+      "filename": "linear algebra.pdf",
+      "directory": "../work/mat1503/sources",
+      "sha256": "8d449f1b9afb555b5c1cd014759d0021be15eda4063466042db611e40dc75287"
+    },
+    {
+      "id": "mat1503-tutorial-2018",
+      "moduleCode": "MAT1503",
+      "title": "1503-tut-2018.pdf",
+      "filename": "1503-tut-2018.pdf",
+      "directory": "../work/mat1503/sources",
+      "sha256": "1bb4e5f1b93a57beb8e9801100ca725085267ed8909fcb49fcc231fdc079028c"
+    }
+  ],
+  "units": [
+    {
+      "code": "MAT1503-U1",
+      "title": "Introduction to Systems of Linear Equations",
+      "position": 1,
+      "references": [
+        {
+          "source": "mat1503-textbook",
+          "pageStart": 16,
+          "pageEnd": 24
+        },
+        {
+          "source": "mat1503-resource",
+          "pageStart": 16,
+          "pageEnd": 17
+        }
+      ]
+    },
+    {
+      "code": "MAT1503-U2",
+      "title": "Gaussian Elimination",
+      "position": 2,
+      "references": [
+        {
+          "source": "mat1503-textbook",
+          "pageStart": 25,
+          "pageEnd": 38
+        },
+        {
+          "source": "mat1503-resource",
+          "pageStart": 18,
+          "pageEnd": 20
+        }
+      ]
+    },
+    {
+      "code": "MAT1503-U3",
+      "title": "Matrices and Matrix Operations",
+      "position": 3,
+      "references": [
+        {
+          "source": "mat1503-textbook",
+          "pageStart": 39,
+          "pageEnd": 52
+        },
+        {
+          "source": "mat1503-resource",
+          "pageStart": 21,
+          "pageEnd": 22
+        }
+      ]
+    },
+    {
+      "code": "MAT1503-U4",
+      "title": "Inverses and Matrix Arithmetic",
+      "position": 4,
+      "references": [
+        {
+          "source": "mat1503-textbook",
+          "pageStart": 53,
+          "pageEnd": 65
+        },
+        {
+          "source": "mat1503-resource",
+          "pageStart": 23,
+          "pageEnd": 25
+        }
+      ]
+    },
+    {
+      "code": "MAT1503-U5",
+      "title": "Elementary Matrices and Matrix Inversion",
+      "position": 5,
+      "references": [
+        {
+          "source": "mat1503-textbook",
+          "pageStart": 66,
+          "pageEnd": 74
+        },
+        {
+          "source": "mat1503-resource",
+          "pageStart": 26,
+          "pageEnd": 28
+        }
+      ]
+    },
+    {
+      "code": "MAT1503-U6",
+      "title": "Linear Systems and Invertibility",
+      "position": 6,
+      "references": [
+        {
+          "source": "mat1503-textbook",
+          "pageStart": 75,
+          "pageEnd": 80
+        },
+        {
+          "source": "mat1503-resource",
+          "pageStart": 29,
+          "pageEnd": 31
+        }
+      ]
+    },
+    {
+      "code": "MAT1503-U7",
+      "title": "Diagonal, Triangular and Symmetric Matrices",
+      "position": 7,
+      "references": [
+        {
+          "source": "mat1503-textbook",
+          "pageStart": 81,
+          "pageEnd": 88
+        },
+        {
+          "source": "mat1503-resource",
+          "pageStart": 32,
+          "pageEnd": 33
+        }
+      ]
+    },
+    {
+      "code": "MAT1503-U8",
+      "title": "Determinants by Cofactor Expansion",
+      "position": 8,
+      "references": [
+        {
+          "source": "mat1503-textbook",
+          "pageStart": 119,
+          "pageEnd": 126
+        },
+        {
+          "source": "mat1503-resource",
+          "pageStart": 34,
+          "pageEnd": 35
+        }
+      ]
+    },
+    {
+      "code": "MAT1503-U9",
+      "title": "Determinants by Row Reduction",
+      "position": 9,
+      "references": [
+        {
+          "source": "mat1503-textbook",
+          "pageStart": 127,
+          "pageEnd": 131
+        },
+        {
+          "source": "mat1503-resource",
+          "pageStart": 36,
+          "pageEnd": 38
+        }
+      ]
+    },
+    {
+      "code": "MAT1503-U10",
+      "title": "Determinant Properties and Cramer’s Rule",
+      "position": 10,
+      "references": [
+        {
+          "source": "mat1503-textbook",
+          "pageStart": 132,
+          "pageEnd": 144
+        },
+        {
+          "source": "mat1503-resource",
+          "pageStart": 39,
+          "pageEnd": 40
+        }
+      ]
+    },
+    {
+      "code": "MAT1503-U11",
+      "title": "Vectors and Norms in Euclidean Space",
+      "position": 11,
+      "references": [
+        {
+          "source": "mat1503-textbook",
+          "pageStart": 145,
+          "pageEnd": 168
+        },
+        {
+          "source": "mat1503-resource",
+          "pageStart": 41,
+          "pageEnd": 42
+        }
+      ]
+    },
+    {
+      "code": "MAT1503-U12",
+      "title": "Dot Products, Projections, Cross Products, Lines and Planes",
+      "position": 12,
+      "references": [
+        {
+          "source": "mat1503-textbook",
+          "pageStart": 169,
+          "pageEnd": 196
+        },
+        {
+          "source": "mat1503-resource",
+          "pageStart": 43,
+          "pageEnd": 46
+        }
+      ]
+    },
+    {
+      "code": "MAT1503-U13",
+      "title": "Complex Numbers",
+      "position": 13,
+      "references": [
+        {
+          "source": "mat1503-textbook",
+          "pageStart": 733,
+          "pageEnd": 740
+        },
+        {
+          "source": "mat1503-resource",
+          "pageStart": 47,
+          "pageEnd": 48
+        }
+      ]
+    }
+  ],
+  "inspectionFiles": {
+    "mat1503-resource": "../work/mat1503/MAT_1503-inspection.json",
+    "mat1503-textbook": "../work/mat1503/linear-algebra-inspection.json"
+  }
+}

@@ -1,0 +1,29 @@
+.viewport {
+  overflow-x: auto;
+  margin-block: 0.75rem;
+}
+
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.925rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.grid th,
+.grid td {
+  padding: 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--graph-grid);
+  overflow-wrap: anywhere;
+}
+
+.grid tr[data-focus="true"] {
+  background: color-mix(in srgb, var(--graph-primary) 12%, transparent);
+}
+
+.meter {
+  width: 100%;
+  min-width: 3rem;
+  display: block;
+}

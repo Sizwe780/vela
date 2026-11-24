@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "parser": {
+    "name": "marker",
+    "version": "2.1.0",
+    "review": "source-compared",
+    "reviewNotes": [
+      "The original PDF contains a numerical inconsistency at x=2.1. Its printed table is preserved and an explanatory correction is provided below."
+    ]
+  },
+  "source": {
+    "document": "guide",
+    "sha256": "d615e76d6b0bcf6dc708c96732b9b12cdd030733f06f27d5ab197bec9e220648",
+    "pageStart": 15,
+    "pageEnd": 15
+  },
+  "blocks": [
+    {
+      "id": "graph",
+      "type": "figure",
+      "asset": "97feca701d7bdc0f370dc21e4c0d93ef795445f88ecd990b18a7524dacd522ba.png",
+      "caption": "Figure 3.1 from the UNISA guide, PDF page 15",
+      "sourcePage": 15
+    },
+    {
+      "id": "source-text",
+      "type": "markdown",
+      "markdown": "Figure 3.1: Graph of  $f(x) = \\frac{x^2 - 4}{x - 2}$ \n\n $\\lim_{x \\rightarrow 2^+} f(x) = 4$ \n\nThis can be written mathematically as follows:\n\n$$\\boxed{\\lim_{x \\rightarrow 2} f(x) = 4.}$$\n\nConsider another function  $g(x) = \\frac{x^2 - 5}{x - 2}$  or  $y = \\frac{x^2 - 5}{x - 2}$ .\n\n| $x$    | $g(x) = \\frac{x^2 - 5}{x - 2}$ |\n|--------|--------------------------------|\n| 1.9    | 13.9                           |\n| 1.99   | 103.99                         |\n| 1.999  | 1003.999                       |\n| 1.9999 | 10,003.9999                    |\n\n| $x$    | $y = \\frac{x^2 - 5}{x - 2}$ |\n|--------|-----------------------------|\n| 2.1    | -5.1                        |\n| 2.01   | -95.99                      |\n| 2.001  | -995.999                    |\n| 2.0001 | -9,995.9999                 |"
+    },
+    {
+      "id": "source-correction",
+      "type": "markdown",
+      "markdown": "**Source comparison note:** The original guide prints $-5.1$ in the row $x=2.1$. That printed entry is inconsistent with the stated function. Substitution gives\n\n$$\ng(2.1)=\\frac{2.1^2-5}{2.1-2}=\\frac{-0.59}{0.1}=-5.9.\n$$\n\nThe original table is preserved above; use $-5.9$ for the calculated value."
+    }
+  ]
+}

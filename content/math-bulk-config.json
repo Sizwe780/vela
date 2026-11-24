@@ -1,0 +1,15 @@
+{
+  "pipeline": "bulk-v1",
+  "backend": "adreno-opencl",
+  "dpi": 144,
+  "retryDpi": 192,
+  "workers": 1,
+  "scope": "Selected MAT1512 guide pages 10–137 and Stewart pages 41–459",
+  "benchmarks": {
+    "guide14Cpu192Seconds": 197.72,
+    "guide14Cpu144Seconds": 104.36,
+    "guide14Adreno144ColdSeconds": 136.156,
+    "guide15Adreno144WarmSeconds": 34.062,
+    "note": "The 192/144 guide-page-14 runs detected the same 13 formulas and preserved both tables. One omitted limit was restored only in the separately source-compared pilot. Page 15 is a different page, so its warm timing is not a same-page speed ratio."
+  }
+}

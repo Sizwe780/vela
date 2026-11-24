@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "institution": "UNISA",
+  "moduleCode": "CHE1501",
+  "scope": "provisional",
+  "scopeNote": "2018 guide checklist map. Vela U7 is historical U8, Vela U8 is historical U11. Current assigned scope awaits confirmation.",
+  "sources": [
+    {
+      "id": "che1501-guide",
+      "role": "syllabus_master",
+      "edition": "Tutorial Letter 101/3/2018",
+      "filename": "CHE1501.pdf",
+      "sha256": "33de20683a20cfa95fcaeb3e2d83eed2f18806d8756e79a5789bab80d03fd29b",
+      "remoteProcessing": false
+    },
+    {
+      "id": "che1501-central-science-14e",
+      "role": "reference_reading",
+      "edition": "The Central Science, 14th ed. (comparison copy)",
+      "filename": "Chemistry The Central Science 14th Edition.pdf.pdf",
+      "sha256": "b75c5c6c27770b646a7266b40565129dbdc788f1deb8e4656f17d3afb76501b5",
+      "remoteProcessing": false
+    },
+    {
+      "id": "che1501-central-science-12e",
+      "role": "reference_reading",
+      "edition": "The Central Science, 12th ed. (comparison copy)",
+      "filename": "scienceChemistryTheCentralScience12th.pdf",
+      "sha256": "08086e6041a46e41b79488edd7420ea5cf9a5480169a271a6f5b6236591daf09",
+      "remoteProcessing": false
+    },
+    {
+      "id": "che1501-assignments-2020",
+      "role": "assessment_reference",
+      "edition": "Tutorial Letter 102/3/2020 (third-party copy)",
+      "filename": "[studocu.com] - CHE1501 2020 TL 102 3 B - Assignment Corrections and Updates.pdf",
+      "sha256": "a569ee27c62e632695290957a54acfc2e911a237f3e854347b64aa575f21a00c",
+      "remoteProcessing": false
+    }
+  ],
+  "unitMapping": [
+    {
+      "unitCode": "CHE1501-U1",
+      "title": "Chemical foundations",
+      "status": "working",
+      "pages": [
+        {
+          "sourceId": "che1501-guide",
+          "first": 12,
+          "last": 12
+        }
+      ],
+      "referenceSections": [
+        "OpenStax Chemistry 2e working map, chapters 1–2"
+      ],
+      "sessions": [
+        "Chemical foundations"
+      ]
+    },
+    {
+      "unitCode": "CHE1501-U2",
+      "title": "Quantum mechanics and periodicity",
+      "status": "working",
+      "pages": [
+        {
+          "sourceId": "che1501-guide",
+          "first": 13,
+          "last": 13
+        }
+      ],
+      "referenceSections": [
+        "OpenStax Chemistry 2e working map, chapters 2 and 6"
+      ],
+      "sessions": [
+        "Quantum mechanics and periodicity"
+      ]
+    },
+    {
+      "unitCode": "CHE1501-U3",
+      "title": "Chemical bonding",
+      "status": "working",
+      "pages": [
+        {
+          "sourceId": "che1501-guide",
+          "first": 14,
+          "last": 14
+        }
+      ],
+      "referenceSections": [
+        "OpenStax Chemistry 2e working map, chapters 7–8 and 10"
+      ],
+      "sessions": [
+        "Chemical bonding"
+      ]
+    },
+    {
+      "unitCode": "CHE1501-U4",
+      "title": "Reaction classes",
+      "status": "working",
+      "pages": [
+        {
+          "sourceId": "che1501-guide",
+          "first": 15,
+          "last": 15
+        }
+      ],
+      "referenceSections": [
+        "OpenStax Chemistry 2e working map, chapters 4 and 17"
+      ],
+      "sessions": [
+        "Reaction classes"
+      ]
+    },
+    {
+      "unitCode": "CHE1501-U5",
+      "title": "Stoichiometry",
+      "status": "working",
+      "pages": [
+        {
+          "sourceId": "che1501-guide",
+          "first": 16,
+          "last": 16
+        }
+      ],
+      "referenceSections": [
+        "OpenStax Chemistry 2e working map, chapters 3–4"
+      ],
+      "sessions": [
+        "Chemical amounts and coefficient ratios",
+        "Limiting reactants and theoretical yield",
+        "Interpreting percentage yield"
+      ]
+    },
+    {
+      "unitCode": "CHE1501-U6",
+      "title": "Solutions and concentrations",
+      "status": "working",
+      "pages": [
+        {
+          "sourceId": "che1501-guide",
+          "first": 17,
+          "last": 17
+        }
+      ],
+      "referenceSections": [
+        "OpenStax Chemistry 2e working map, chapters 3"
+      ],
+      "sessions": [
+        "Solutions and concentrations"
+      ]
+    },
+    {
+      "unitCode": "CHE1501-U7",
+      "title": "Chemical equilibrium",
+      "status": "working",
+      "pages": [
+        {
+          "sourceId": "che1501-guide",
+          "first": 19,
+          "last": 19
+        }
+      ],
+      "referenceSections": [
+        "OpenStax Chemistry 2e working map, chapters 13"
+      ],
+      "sessions": [
+        "Chemical equilibrium"
+      ]
+    },
+    {
+      "unitCode": "CHE1501-U8",
+      "title": "Gases",
+      "status": "working",
+      "pages": [
+        {
+          "sourceId": "che1501-guide",
+          "first": 22,
+          "last": 22
+        }
+      ],
+      "referenceSections": [
+        "OpenStax Chemistry 2e working map, chapters 9"
+      ],
+      "sessions": [
+        "Gases"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "moduleCode": "BPT1501",
+  "status": "ingested",
+  "scope": "Vela teaching sequence based on a historical UNISA topic outline and professional references. Current official assessment details await verification.",
+  "units": [
+    {
+      "code": "BPT1501-U2",
+      "title": "The teacher as a professional",
+      "position": 2,
+      "sessions": 1
+    },
+    {
+      "code": "BPT1501-U3",
+      "title": "Teaching and learning philosophies",
+      "position": 3,
+      "sessions": 1
+    },
+    {
+      "code": "BPT1501-U4",
+      "title": "Multiple teaching and learning strategies",
+      "position": 4,
+      "sessions": 1
+    },
+    {
+      "code": "BPT1501-U5",
+      "title": "Integrated and innovative teaching",
+      "position": 5,
+      "sessions": 1
+    },
+    {
+      "code": "BPT1501-U6",
+      "title": "Consolidation and reflective practice",
+      "position": 6,
+      "sessions": 1
+    }
+  ],
+  "blockers": [
+    {
+      "code": "OFFICIAL_2026_SOURCE_MISSING",
+      "status": "open",
+      "severity": "release",
+      "message": "Attach the current UNISA BPT1501 Tutorial Letter or official course guide and verify it before public syllabus promotion."
+    },
+    {
+      "code": "OFFICIAL_PAGE_PROVENANCE_MISSING",
+      "status": "open",
+      "severity": "release",
+      "message": "Record source filename, SHA-256, physical pages and mapped learning-unit evidence for the accepted 2026 lesson scope."
+    },
+    {
+      "code": "ASSIGNMENT_PROMPTS_RUBRICS_MISSING",
+      "status": "open",
+      "severity": "release",
+      "message": "Attach the official prompts, rubrics and submission instructions for Assignments 01–07."
+    },
+    {
+      "code": "SUBJECT_REVIEW_PENDING",
+      "status": "open",
+      "severity": "release",
+      "message": "A qualified South African teacher education reviewer must approve the lessons and professional-policy interpretation."
+    }
+  ]
+}

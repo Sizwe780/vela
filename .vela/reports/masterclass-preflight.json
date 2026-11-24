@@ -1,0 +1,579 @@
+{
+  "checkedAt": "2026-11-17T04:45:27.170Z",
+  "purpose": "Offline structural preflight; not a publication approval or a mathematical, originality, legal or curriculum certification.",
+  "requiresPublishSourceAudit": true,
+  "passed": true,
+  "totalSessions": 30,
+  "units": [
+    {
+      "passed": true,
+      "specHash": "26b817b24b00cbff08f098489a8c3255a23812d7a2f77d6b21984366e4aee726",
+      "moduleCode": "MAT1512",
+      "unitCode": "MAT1512-U1",
+      "issues": [
+        {
+          "code": "SOURCE_AUDIT_UNAVAILABLE",
+          "message": "No substantive source prose corpus was supplied; originality screening was not run",
+          "severity": "warning"
+        }
+      ],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals"
+      ],
+      "sessions": [
+        {
+          "logicalSessionCode": "MAT1512-U1-S1",
+          "title": "Approaching a value",
+          "words": 591,
+          "mathematicalExpressions": 12,
+          "interactivePreset": "limit",
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U1-S2",
+          "title": "Continuity and precise control",
+          "words": 592,
+          "mathematicalExpressions": 28,
+          "interactivePreset": "continuity",
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U1-S3",
+          "title": "Infinity and asymptotes",
+          "words": 554,
+          "mathematicalExpressions": 18,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U1-S4",
+          "title": "Domains and reversible descriptions",
+          "words": 528,
+          "mathematicalExpressions": 26,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U1-S5",
+          "title": "One-sided reasoning and rationalisation",
+          "words": 550,
+          "mathematicalExpressions": 12,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U1-S6",
+          "title": "Continuity as an existence argument",
+          "words": 563,
+          "mathematicalExpressions": 13,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        }
+      ]
+    },
+    {
+      "passed": true,
+      "specHash": "26b817b24b00cbff08f098489a8c3255a23812d7a2f77d6b21984366e4aee726",
+      "moduleCode": "MAT1512",
+      "unitCode": "MAT1512-U2",
+      "issues": [
+        {
+          "code": "SOURCE_AUDIT_UNAVAILABLE",
+          "message": "No substantive source prose corpus was supplied; originality screening was not run",
+          "severity": "warning"
+        }
+      ],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals"
+      ],
+      "sessions": [
+        {
+          "logicalSessionCode": "MAT1512-U2-S1",
+          "title": "From average to instantaneous change",
+          "words": 534,
+          "mathematicalExpressions": 11,
+          "interactivePreset": "tangent",
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U2-S2",
+          "title": "Rules as compressed reasoning",
+          "words": 530,
+          "mathematicalExpressions": 17,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U2-S3",
+          "title": "When a tangent fails to exist",
+          "words": 558,
+          "mathematicalExpressions": 10,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U2-S4",
+          "title": "Use a tangent as a local model",
+          "words": 560,
+          "mathematicalExpressions": 15,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U2-S5",
+          "title": "Deriving rules from small changes",
+          "words": 523,
+          "mathematicalExpressions": 8,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 5
+        },
+        {
+          "logicalSessionCode": "MAT1512-U2-S6",
+          "title": "A differentiation diagnostic workshop",
+          "words": 535,
+          "mathematicalExpressions": 11,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        }
+      ]
+    },
+    {
+      "passed": true,
+      "specHash": "26b817b24b00cbff08f098489a8c3255a23812d7a2f77d6b21984366e4aee726",
+      "moduleCode": "MAT1512",
+      "unitCode": "MAT1512-U3",
+      "issues": [
+        {
+          "code": "SOURCE_AUDIT_UNAVAILABLE",
+          "message": "No substantive source prose corpus was supplied; originality screening was not run",
+          "severity": "warning"
+        }
+      ],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals"
+      ],
+      "sessions": [
+        {
+          "logicalSessionCode": "MAT1512-U3-S1",
+          "title": "Nested changes and elementary functions",
+          "words": 497,
+          "mathematicalExpressions": 14,
+          "interactivePreset": "composition",
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U3-S2",
+          "title": "Implicit curves and logarithmic reasoning",
+          "words": 540,
+          "mathematicalExpressions": 16,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U3-S3",
+          "title": "Related rates with a model boundary",
+          "words": 558,
+          "mathematicalExpressions": 9,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U3-S4",
+          "title": "A connected derivative reference",
+          "words": 544,
+          "mathematicalExpressions": 14,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U3-S5",
+          "title": "Tangent constraints and inverse reasoning",
+          "words": 538,
+          "mathematicalExpressions": 12,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U3-S6",
+          "title": "A multi-step derivative investigation",
+          "words": 545,
+          "mathematicalExpressions": 7,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        }
+      ]
+    },
+    {
+      "passed": true,
+      "specHash": "26b817b24b00cbff08f098489a8c3255a23812d7a2f77d6b21984366e4aee726",
+      "moduleCode": "MAT1512",
+      "unitCode": "MAT1512-U4",
+      "issues": [
+        {
+          "code": "SOURCE_AUDIT_UNAVAILABLE",
+          "message": "No substantive source prose corpus was supplied; originality screening was not run",
+          "severity": "warning"
+        }
+      ],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals"
+      ],
+      "sessions": [
+        {
+          "logicalSessionCode": "MAT1512-U4-S1",
+          "title": "Extrema as a decision process",
+          "words": 596,
+          "mathematicalExpressions": 7,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U4-S2",
+          "title": "Shape, concavity and indeterminate limits",
+          "words": 528,
+          "mathematicalExpressions": 8,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U4-S3",
+          "title": "Optimisation with an admissible domain",
+          "words": 587,
+          "mathematicalExpressions": 3,
+          "interactivePreset": "optimization",
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U4-S4",
+          "title": "Assemble a complete rational-curve story",
+          "words": 532,
+          "mathematicalExpressions": 8,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U4-S5",
+          "title": "Mean value reasoning and uniqueness",
+          "words": 583,
+          "mathematicalExpressions": 3,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U4-S6",
+          "title": "Optimisation and limit method selection",
+          "words": 589,
+          "mathematicalExpressions": 9,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        }
+      ]
+    },
+    {
+      "passed": true,
+      "specHash": "26b817b24b00cbff08f098489a8c3255a23812d7a2f77d6b21984366e4aee726",
+      "moduleCode": "MAT1512",
+      "unitCode": "MAT1512-U5",
+      "issues": [
+        {
+          "code": "SOURCE_AUDIT_UNAVAILABLE",
+          "message": "No substantive source prose corpus was supplied; originality screening was not run",
+          "severity": "warning"
+        }
+      ],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals"
+      ],
+      "sessions": [
+        {
+          "logicalSessionCode": "MAT1512-U5-S1",
+          "title": "Accumulation from small pieces",
+          "words": 545,
+          "mathematicalExpressions": 5,
+          "interactivePreset": "integral",
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U5-S2",
+          "title": "The two directions of the fundamental theorem",
+          "words": 511,
+          "mathematicalExpressions": 8,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U5-S3",
+          "title": "Substitution and a final transfer check",
+          "words": 538,
+          "mathematicalExpressions": 11,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U5-S4",
+          "title": "Net change is not total travel",
+          "words": 556,
+          "mathematicalExpressions": 4,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U5-S5",
+          "title": "Trigonometric and exponential accumulation",
+          "words": 508,
+          "mathematicalExpressions": 12,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        },
+        {
+          "logicalSessionCode": "MAT1512-U5-S6",
+          "title": "An accumulation transfer workshop",
+          "words": 551,
+          "mathematicalExpressions": 4,
+          "interactivePreset": null,
+          "cognitiveChecks": [
+            "Recognition",
+            "Procedure",
+            "Error correction",
+            "Transfer"
+          ],
+          "questionFirstExercises": 6
+        }
+      ]
+    }
+  ]
+}

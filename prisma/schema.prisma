@@ -1,0 +1,756 @@
+// Prisma schema DSL; the generated client and seed are TypeScript.
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+generator appClient {
+  provider = "prisma-client-js"
+  output = "../generated/app-client"
+  engineType = "client"
+}
+
+model Qualification {
+  id                 String                @id @default(cuid())
+  institution        String
+  code               String
+  stream             String
+  title              String
+  streamTitle        String
+  archivedAt DateTime?
+  saqaId             String
+  nqfExitLevel       Int
+  sourceUrl          String?
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+  modules            QualificationModule[]
+  assessmentCriteria AssessmentCriterion[]
+  staffMemberships StaffMembership[]
+  teachingSettings TeachingSettings?
+  teachingCohorts TeachingCohort[]
+  lessonDrafts LessonDraft[]
+  sourceReviews SourceReview[]
+  teachingInvites TeachingInvite[]
+  teachingAudit TeachingAudit[]
+  teachingAnnouncements TeachingAnnouncement[]
+
+  @@unique([institution, code, stream])
+  @@index([saqaId])
+}
+
+// Private, immutable practice copies. These records never confer assessment credit.
+model PracticeNotebook {
+  id String @id
+  studentId String
+  title String
+  reflection String @default("")
+  kind String @default("practice")
+  snapshot Json
+  createdAt DateTime @default(now())
+  @@index([studentId, createdAt, id])
+}
+
+// A module can be reused by multiple qualifications at different study years.
+model QualificationModule {
+  qualificationId String
+  moduleId        String
+  studyYear       Int
+  position        Int
+  qualification   Qualification @relation(fields: [qualificationId], references: [id], onDelete: Cascade)
+  module          Module        @relation(fields: [moduleId], references: [id], onDelete: Restrict)
+  enrollments     Enrollment[]
+  archivedAt DateTime?
+  acceptingEnrollments Boolean @default(true)
+  teachingAssignments TeachingAssignment[]
+
+  @@id([qualificationId, moduleId])
+  @@unique([qualificationId, studyYear, position])
+  @@index([moduleId])
+}
+
+model Module {
+ conceptChecks ConceptCheck[]
+  roomPresence StudyRoomPresence[]
+  id             String                @id @default(cuid())
+  institution    String
+  code           String
+  title          String
+  catalogNote    String?
+  metadata       Json?
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  qualifications QualificationModule[]
+  studyPositions StudyPosition[]
+  activityDays StudyActivityDay[]
+  studyUnits     StudyUnit[]
+
+  @@unique([institution, code])
+}
+
+model StudyUnit {
+ conceptChecks ConceptCheck[]
+  discussions DiscussionPost[]
+  id               String            @id @default(cuid())
+  moduleId         String
+  code             String
+  title            String
+  position         Int
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  module           Module            @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  learningOutcomes LearningOutcome[]
+  quizAttempts     QuizAttempt[]
+    notes            StudyNote[]
+    sessions         StudySession[]
+    bookmarks StudyBookmark[]
+    lessonDrafts LessonDraft[]
+    sourceReviews SourceReview[]
+
+  @@unique([moduleId, code])
+  @@unique([moduleId, position])
+}
+
+model StudyRoomPresence {
+  studentId String
+  moduleId String
+  trackingId String
+  expiresAt DateTime
+  module Module @relation(fields:[moduleId], references:[id], onDelete:Cascade)
+  @@id([studentId,moduleId])
+  @@index([moduleId,expiresAt])
+}
+model DiscussionPost {
+  id String @id
+  studentId String
+  studyUnitId String
+  sourceType String
+  sourceId String
+  sourceHash String
+  anchor String
+  parentId String?
+  body String
+  createdAt DateTime @default(now())
+  deletedAt DateTime?
+  studyUnit StudyUnit @relation(fields:[studyUnitId], references:[id], onDelete:Cascade)
+  parent DiscussionPost? @relation("DiscussionReplies", fields:[parentId], references:[id], onDelete:Cascade)
+  replies DiscussionPost[] @relation("DiscussionReplies")
+  reports DiscussionReport[]
+  @@index([studyUnitId,sourceHash,anchor,createdAt])
+  @@index([studentId,createdAt])
+  @@index([parentId])
+}
+model DiscussionReport {
+  postId String
+  studentId String
+  createdAt DateTime @default(now())
+  post DiscussionPost @relation(fields:[postId], references:[id], onDelete:Cascade)
+  @@id([postId,studentId])
+}
+
+model LearningOutcome {
+  conceptualAttempts ConceptAttempt[]
+  id                 String                @id @default(cuid())
+  studyUnitId        String
+  code               String
+  description        String
+  position           Int
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+  studyUnit          StudyUnit             @relation(fields: [studyUnitId], references: [id], onDelete: Cascade)
+  contentChunks      ContentChunk[]
+  quizQuestions      QuizQuestion[]
+  mastery            StudentMastery[]
+  assessmentCriteria AssessmentCriterion[] @relation("OutcomeCriteria")
+  ingestions         Ingestion[]
+
+  @@unique([studyUnitId, code])
+  @@unique([studyUnitId, position])
+}
+
+enum ContentKind {
+  TEXT
+  VIDEO
+  AUDIO
+  DOCUMENT
+  INTERACTIVE
+}
+
+model ContentChunk {
+  id                    String                       @id @default(cuid())
+  learningOutcomeId     String
+  title                 String
+  kind                  ContentKind                  @default(TEXT)
+  body                  String?
+  resourceUrl           String?
+  position              Int
+  createdAt             DateTime                     @default(now())
+  updatedAt             DateTime                     @updatedAt
+  learningOutcome       LearningOutcome              @relation(fields: [learningOutcomeId], references: [id], onDelete: Cascade)
+  ingestionId           String?
+  assessmentCriterionId String?
+  chunkIndex            Int?
+  tokenStart            Int?
+  tokenEnd              Int?
+  tokenCount            Int?
+  sourceByteStart       Int?
+  sourceByteEnd         Int?
+  // Unsupported vectors are read/written with parameterized SQL.
+  embedding             Unsupported("vector(1536)")?
+  embedding768          Unsupported("vector(768)")?
+  ingestion             Ingestion?                   @relation(fields: [ingestionId, learningOutcomeId, assessmentCriterionId], references: [id, learningOutcomeId, assessmentCriterionId], onDelete: Cascade)
+  assessmentCriterion   AssessmentCriterion?         @relation(fields: [assessmentCriterionId], references: [id], onDelete: Restrict)
+  quizQuestions         QuizQuestion[]
+
+  @@unique([learningOutcomeId, position])
+  @@unique([ingestionId, chunkIndex])
+  @@index([assessmentCriterionId])
+}
+
+// Local curriculum criteria stay distinct from independently verified SAQA criteria.
+// Multiple outcomes may map to the same criterion; authority records provenance.
+model AssessmentCriterion {
+  id               String            @id @default(cuid())
+  qualificationId  String
+  code             String
+  description      String
+  sourceUrl        String
+  authority        String            @default("CURRICULUM")
+  qualification    Qualification     @relation(fields: [qualificationId], references: [id], onDelete: Restrict)
+  learningOutcomes LearningOutcome[] @relation("OutcomeCriteria")
+  chunks           ContentChunk[]
+  ingestions       Ingestion[]
+
+  @@unique([qualificationId, code])
+}
+
+model Ingestion {
+  id                    String              @id @default(cuid())
+  fingerprint           String              @unique
+  learningOutcomeId     String
+  assessmentCriterionId String
+  sourceName            String?
+  sourceKind            String
+  sourceText            String
+  structuredContent     Json?
+  embeddingModel        String
+  embeddingProvider     String              @default("openai")
+  embeddingDimensions   Int                 @default(1536)
+  embeddingBaseUrl      String              @default("https://api.openai.com/v1")
+  tokenizer             String
+  chunkSize             Int
+  overlap               Int
+  createdAt             DateTime            @default(now())
+  learningOutcome       LearningOutcome     @relation(fields: [learningOutcomeId], references: [id], onDelete: Cascade)
+  assessmentCriterion   AssessmentCriterion @relation(fields: [assessmentCriterionId], references: [id], onDelete: Restrict)
+  chunks                ContentChunk[]
+
+  @@unique([id, learningOutcomeId, assessmentCriterionId])
+  @@index([embeddingProvider, embeddingModel, embeddingDimensions])
+  @@index([learningOutcomeId])
+  @@index([assessmentCriterionId])
+}
+
+enum QuestionKind {
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  SHORT_ANSWER
+}
+
+model QuizQuestion {
+  id                String          @id @default(cuid())
+  learningOutcomeId String
+  kind              QuestionKind    @default(MULTIPLE_CHOICE)
+  prompt            String
+  // MCQ: [{ id: "a", text: "..." }]; answer: { optionId: "a" }.
+  // Other kinds: answer: { value: true } or { accepted: ["..."] }.
+  options           Json?
+  answer            Json
+  explanation       String?
+  points            Int             @default(1)
+  position          Int
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  learningOutcome   LearningOutcome @relation(fields: [learningOutcomeId], references: [id], onDelete: Cascade)
+  quizAttemptId     String?
+  sourceChunkId     String?
+  quizAttempt       QuizAttempt?    @relation(fields: [quizAttemptId], references: [id], onDelete: Cascade)
+  sourceChunk       ContentChunk?   @relation(fields: [sourceChunkId], references: [id], onDelete: SetNull)
+
+  @@unique([learningOutcomeId, position])
+  @@index([quizAttemptId])
+  @@index([sourceChunkId])
+}
+
+// Server-owned assessment session. Answer keys stay in QuizQuestion; completed
+// results are persisted so network retries cannot count as additional attempts.
+model QuizAttempt {
+  id          String         @id @default(cuid())
+  studentId   String
+  studyUnitId String
+  provider    String
+  createdAt   DateTime       @default(now())
+  expiresAt   DateTime
+  submittedAt DateTime?
+  result      Json?
+  studyUnit   StudyUnit      @relation(fields: [studyUnitId], references: [id], onDelete: Cascade)
+  questions   QuizQuestion[]
+
+  @@index([studentId, createdAt])
+  @@index([studyUnitId])
+}
+
+model StudySession {
+  conceptualAttempts ConceptAttempt[]
+  id String @id
+  studyUnitId String
+  position Int
+  title String
+  markdown String
+  visual String?
+  concepts Json
+  version Int @default(1)
+  studyUnit StudyUnit @relation(fields:[studyUnitId],references:[id],onDelete:Cascade)
+  progress SessionProgress[]
+  studyPositions StudyPosition[]
+  @@unique([studyUnitId,position])
+}
+model SessionProgress {
+  studentId String
+  sessionId String
+  completedAt DateTime @default(now())
+  session StudySession @relation(fields:[sessionId],references:[id],onDelete:Cascade)
+  @@id([studentId,sessionId])
+}
+model StudyNote {
+  id String @id @default(cuid())
+  // Neon Auth subject, matching StudentMastery's learner identity convention.
+  studentId String
+  studyUnitId String
+  body String @default("")
+  revision Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  studyUnit StudyUnit @relation(fields: [studyUnitId], references: [id], onDelete: Cascade)
+  @@unique([studentId, studyUnitId])
+  @@index([studyUnitId])
+}
+
+model StudentMastery {
+  id                String          @id @default(cuid())
+  // Stable subject ID supplied by your student/authentication service.
+  studentId         String
+  learningOutcomeId String
+  // Normalized score in [0, 1]; enforced by the SQL migration.
+  score             Float           @default(0)
+  attempts          Int             @default(0)
+  lastAssessedAt    DateTime?
+  nextReviewAt      DateTime?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  learningOutcome   LearningOutcome @relation(fields: [learningOutcomeId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, learningOutcomeId])
+  @@index([learningOutcomeId])
+  @@index([studentId, nextReviewAt])
+}
+
+// AI-assisted conceptual practice is audited separately from quiz marks and reading completion.
+model ConceptAttempt {
+  id String @id
+  studentId String
+  sessionId String
+  learningOutcomeId String
+  sessionVersion Int
+  contentHash String
+  challenge Json
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  processingAt DateTime?
+  processingToken String?
+  submissionHash String?
+  explanation String?
+  submittedAt DateTime?
+  verified Boolean @default(false)
+  score Float?
+  pointsAwarded Int @default(0)
+  result Json?
+  session StudySession @relation(fields:[sessionId],references:[id],onDelete:Cascade)
+  learningOutcome LearningOutcome @relation(fields:[learningOutcomeId],references:[id],onDelete:Cascade)
+  @@index([studentId,createdAt])
+  @@index([studentId,learningOutcomeId])
+}
+
+// Neon Auth subject IDs are stored without coupling migrations to auth tables.
+enum EnrollmentStatus {
+  active
+  completed
+  withdrawn
+}
+model Enrollment {
+  id String @id @default(cuid())
+  studentId String
+  qualificationId String
+  moduleId String
+  status EnrollmentStatus @default(active)
+  enrolledAt DateTime @default(now())
+  studyPlanYear Int?
+  studyPlanSemester Int?
+  updatedAt DateTime @updatedAt
+  qualificationModule QualificationModule @relation(fields:[qualificationId,moduleId],references:[qualificationId,moduleId],onDelete:Restrict)
+  @@unique([studentId,qualificationId,moduleId])
+  @@index([studentId,status])
+  @@index([qualificationId,moduleId])
+}
+
+// Application-owned preferences. Authorization always checks scoped memberships.
+enum ApplicationRole {
+  student
+  staff
+  admin
+}
+model StudentProfile {
+  studentId String @id
+  displayName String?
+  role ApplicationRole @default(student)
+  weeklyGoalMinutes Int @default(120)
+  emailReminders Boolean @default(false)
+  classroomAlerts Boolean @default(true)
+  emailConsentAt DateTime?
+  emailConsentVersion String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  staffMemberships StaffMembership[]
+}
+
+// Transactional outbox: no email address, note, transcript or quiz answer is stored here.
+model EmailDelivery {
+  id String @id @default(uuid())
+  dedupeKey String @unique
+  studentId String
+  kind String
+  status String @default("queued")
+  consentAt DateTime?
+  attempts Int @default(0)
+  availableAt DateTime @default(now())
+  claimedAt DateTime?
+  sentAt DateTime?
+  providerMessageId String?
+  errorCode String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([status,availableAt])
+  @@index([studentId,kind])
+}
+model EmailBudget {
+  day String @id
+  attempts Int @default(0)
+}
+
+// Personal activity estimates, separate from mastery and institutional attendance.
+model StudyActivityDay {
+  studentId String
+  day String
+  moduleId String
+  seconds Int @default(0)
+  updatedAt DateTime @updatedAt
+  module Module @relation(fields:[moduleId],references:[id],onDelete:Cascade)
+  @@id([studentId,day,moduleId])
+  @@index([studentId,day])
+}
+model StudyPresence {
+  studentId String @id
+  trackingId String
+  sessionId String
+  lastPulseAt DateTime
+}
+model StaffMembership {
+  studentId String
+  qualificationId String
+  role ApplicationRole
+  profile StudentProfile @relation(fields:[studentId],references:[studentId],onDelete:Cascade)
+  qualification Qualification @relation(fields:[qualificationId],references:[id],onDelete:Cascade)
+  @@id([studentId,qualificationId])
+  @@index([qualificationId])
+}
+
+enum LessonDraftStatus {
+  draft
+  submitted
+  approved
+  rejected
+  published
+}
+
+model LessonDraft {
+  id String @id @default(cuid())
+  qualificationId String
+  studyUnitId String
+  sessionId String?
+  baseVersion Int?
+  title String
+  markdown String
+  previous Json?
+  factoryProvenance Json?
+  factoryApproval Json?
+  publishVersion Int?
+  authorId String
+  reviewerId String?
+  reviewNote String?
+  status LessonDraftStatus @default(draft)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  qualification Qualification @relation(fields: [qualificationId], references: [id], onDelete: Restrict)
+  studyUnit StudyUnit @relation(fields: [studyUnitId], references: [id], onDelete: Restrict)
+  @@index([qualificationId,status,updatedAt])
+  @@index([sessionId,publishVersion])
+}
+
+model SourceReview {
+  studyUnitId String
+  ingestionId String
+  qualificationId String
+  reviewerId String
+  status String
+  note String
+  updatedAt DateTime @updatedAt
+  studyUnit StudyUnit @relation(fields: [studyUnitId], references: [id], onDelete: Restrict)
+  qualification Qualification @relation(fields: [qualificationId], references: [id], onDelete: Restrict)
+  @@id([qualificationId,ingestionId])
+}
+
+model TeachingSettings {
+  qualificationId String @id
+  displayName String?
+  supportEmail String?
+  allowSelfEnrollment Boolean @default(true)
+  qualification Qualification @relation(fields: [qualificationId], references: [id], onDelete: Restrict)
+}
+
+model TeachingCohort {
+  id String @id @default(cuid())
+  qualificationId String
+  name String
+  qualification Qualification @relation(fields: [qualificationId], references: [id], onDelete: Restrict)
+  members TeachingCohortMember[]
+  assignments TeachingAssignment[]
+  announcements TeachingAnnouncement[]
+  @@unique([qualificationId,name])
+  @@unique([qualificationId,id])
+}
+
+model TeachingCohortMember {
+  cohortId String
+  studentId String
+  cohort TeachingCohort @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+  @@id([cohortId,studentId])
+  @@index([studentId])
+}
+
+model TeachingAssignment {
+  id String @id @default(cuid())
+  qualificationId String
+  moduleId String
+  cohortId String?
+  title String
+  instructions String
+  rubric Json
+  dueAt DateTime
+  authorId String
+  createdAt DateTime @default(now())
+  qualificationModule QualificationModule @relation(fields: [qualificationId,moduleId], references: [qualificationId,moduleId], onDelete: Restrict)
+  cohort TeachingCohort? @relation(fields: [qualificationId,cohortId], references: [qualificationId,id], onDelete: Restrict)
+  submissions TeachingSubmission[]
+  @@index([qualificationId,moduleId,dueAt])
+}
+
+model TeachingSubmission {
+  assignmentId String
+  studentId String
+  body String
+  scores Json?
+  feedback String?
+  graderId String?
+  submittedAt DateTime @default(now())
+  gradedAt DateTime?
+  assignment TeachingAssignment @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
+  @@id([assignmentId,studentId])
+  @@index([studentId])
+}
+
+model TeachingAnnouncement {
+  id String @id @default(cuid())
+  qualificationId String
+  cohortId String?
+  title String
+  body String
+  authorId String
+  createdAt DateTime @default(now())
+  qualification Qualification @relation(fields: [qualificationId], references: [id], onDelete: Restrict)
+  cohort TeachingCohort? @relation(fields: [qualificationId,cohortId], references: [qualificationId,id], onDelete: Restrict)
+  @@index([qualificationId,createdAt])
+}
+
+model TeachingInvite {
+  id String @id @default(cuid())
+  qualificationId String
+  email String
+  moduleId String?
+  tokenHash String @unique
+  role ApplicationRole
+  createdBy String
+  expiresAt DateTime
+  usedAt DateTime?
+  revokedAt DateTime?
+  qualification Qualification @relation(fields: [qualificationId], references: [id], onDelete: Restrict)
+  @@index([qualificationId,expiresAt])
+}
+
+model TeachingAudit {
+  id String @id @default(cuid())
+  qualificationId String
+  actorId String
+  action String
+  targetId String
+  createdAt DateTime @default(now())
+  qualification Qualification @relation(fields: [qualificationId], references: [id], onDelete: Restrict)
+  @@index([qualificationId,createdAt])
+}
+model StudyPosition {
+  studentId String
+  moduleId String
+  sessionId String
+  updatedAt DateTime @updatedAt
+  module Module @relation(fields:[moduleId],references:[id],onDelete:Cascade)
+  session StudySession @relation(fields:[sessionId],references:[id],onDelete:Cascade)
+  @@id([studentId,moduleId])
+  @@index([sessionId])
+  @@index([studentId,updatedAt])
+}
+enum BookmarkSource {
+  session
+  chunk
+}
+model StudyBookmark {
+  id String @id @default(cuid())
+  studentId String
+  studyUnitId String
+  sourceType BookmarkSource
+  // Stable source reference snapshot; bookmarks must not block source revision.
+  sourceId String
+  quote String @default("")
+  quoteHash String
+  title String
+  createdAt DateTime @default(now())
+  studyUnit StudyUnit @relation(fields:[studyUnitId],references:[id],onDelete:Cascade)
+  @@unique([studentId,sourceType,sourceId,quoteHash])
+  @@index([studentId,createdAt])
+  @@index([studyUnitId])
+}
+
+model LearningPreference {
+ studentId String @id
+ tutorContext Boolean @default(false)
+ crossModule Boolean @default(false)
+ availability Json @default("[]")
+ updatedAt DateTime @default(now()) @updatedAt
+}
+model LearningConceptState {
+ studentId String
+ conceptId String
+ modelVersion String
+ probability Float
+ observations Int @default(0)
+ updatedAt DateTime @default(now()) @updatedAt
+ @@id([studentId,conceptId,modelVersion])
+}
+model ConceptCheck {
+ id String @id
+ studentId String
+ moduleId String
+ studyUnitId String
+ conceptId String
+ modelVersion String
+ itemKey String
+ payload Json
+ createdAt DateTime @default(now())
+ expiresAt DateTime
+ submittedAt DateTime?
+ result Json?
+ module Module @relation(fields:[moduleId],references:[id],onDelete:Cascade)
+ studyUnit StudyUnit @relation(fields:[studyUnitId],references:[id],onDelete:Cascade)
+ @@index([studentId,createdAt])
+ @@index([studentId,conceptId,modelVersion],map:"ConceptCheck_student_concept_idx")
+ @@index([moduleId])
+ @@index([studyUnitId])
+}
+
+enum SupportCategory {
+  account
+  learning
+  accessibility
+  technical
+  deletion
+}
+
+enum SupportStatus {
+  open
+  in_review
+  resolved
+  cancelled
+}
+
+model SupportRequest {
+  id        String          @id @default(cuid())
+  studentId String?
+  category  SupportCategory
+  subject   String
+  body      String
+  status    SupportStatus   @default(open)
+  response  String?
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([studentId, createdAt])
+  @@index([status, updatedAt])
+}
+
+enum InstitutionPermission {
+  curriculum
+  directory
+  reports
+  access
+  integrations
+}
+
+model InstitutionMembership {
+  institution String
+  studentId   String
+  owner       Boolean @default(false)
+  permissions InstitutionPermission[] @default([])
+  createdAt   DateTime @default(now())
+  @@id([institution, studentId])
+  @@index([studentId])
+}
+
+model InstitutionIntegration {
+  institution String @id
+  ssoProvider String?
+  ssoEnabled Boolean @default(false)
+  updatedAt DateTime @updatedAt
+}
+
+model InstitutionAudit {
+  id String @id @default(cuid())
+  institution String
+  actorId String
+  action String
+  targetId String
+  createdAt DateTime @default(now())
+  @@index([institution, createdAt])
+}

@@ -1,0 +1,80 @@
+.workspace {
+  display: grid;
+  gap: 1rem;
+}
+.panel {
+  min-width: 0;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--border-default);
+  border-radius: 1rem;
+  background: var(--surface-card);
+}
+.panel h2,
+.panel h3 {
+  margin-block: 0 0.6rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+.form {
+  display: grid;
+  gap: 0.65rem;
+  margin-block: 0.8rem;
+}
+.form label {
+  font-size: 0.91rem;
+  display: grid;
+  gap: 0.25rem;
+}
+.form input:not([type="checkbox"]),
+.form select,
+.form textarea,
+.selector {
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  color: var(--text-primary);
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: 0.55rem;
+  font: inherit;
+}
+.form textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+.form button,
+.actions button {
+  justify-self: start;
+  border: 1px solid var(--border-default);
+  border-radius: 0.55rem;
+  background: var(--surface-soft);
+  color: var(--text-primary);
+  padding: 0.52rem 0.75rem;
+}
+.form button:disabled,
+.actions button:disabled {
+  opacity: 0.6;
+}
+.entry {
+  border-top: 1px solid var(--border-default);
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+  overflow-wrap: anywhere;
+}
+.entry summary {
+  cursor: pointer;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+}
+.feedback {
+  white-space: pre-wrap;
+}

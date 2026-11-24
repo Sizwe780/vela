@@ -1,0 +1,10 @@
+# Module release checklist
+
+1. **Map the scope.** Record institution, qualification link, module code, current outcomes and evidence limits. Keep historical letters, past papers and portfolio templates in the editorial source ledger. Compare coverage without copying assessment prompts or using learner records.
+2. **Write the lesson.** Teach the model and its conditions before the procedure. Use original, independently checked examples with units, explain plausible mistakes, and provide recognition, procedure, error-correction and transfer questions. Gate worked solutions and prediction feedback behind the answer reveal.
+3. **Place and register visuals.** A file in public/ needs an approved figure registry entry and a reference in the intended lesson. Verify provenance, alt text, labels and responsive sizing. Place a figure used by a solution inside the reveal. Check both the file served by the running build and the enrolled lesson that renders it.
+4. **Stage with stable identities.** Keep unit, session and outcome IDs stable. Validate required sections, rendered maths, units, widgets and worked examples before staging. Use the verified staging endpoint, inspect the stored revision, and index the exact current Markdown. Verify that tutor citations open the active session.
+5. **Test as a learner.** Sign in as an enrolled test learner, open the lesson, reveal an answer and exercise relevant controls. Check a narrow viewport when assets or layout change. Record technical staging acceptance, subject approval and production promotion separately.
+6. **Extend by domain.** Mathematics and science use model-driven tools. Professional practice uses cases, rubrics, observation and reflection. School placement adds private evidence, formal submission and mentor verification boundaries.
+
+Reference implementations include the [physics staging and evidence map](../reports/physics-pilot-scope.md), [BPT1501 learner-content review](../reports/BPT1501-learner-content-review.md) and [TPS2601 crosswalk](../modules/UNISA/TPS2601.md).

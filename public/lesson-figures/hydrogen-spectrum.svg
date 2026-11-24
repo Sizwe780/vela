@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 80" role="img" aria-label="Visible hydrogen emission spectrum showing lines at 410, 434, 486 and 656 nanometres">
+  <title>Hydrogen visible emission spectrum</title>
+  <!-- Continuous UV-to-IR gradient background representing white light -->
+  <defs>
+    <linearGradient id="spectrum" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%"   stop-color="#6600cc"/>
+      <stop offset="12%"  stop-color="#4400ff"/>
+      <stop offset="28%"  stop-color="#0044ff"/>
+      <stop offset="45%"  stop-color="#00ccff"/>
+      <stop offset="60%"  stop-color="#00ff44"/>
+      <stop offset="72%"  stop-color="#aaff00"/>
+      <stop offset="82%"  stop-color="#ffee00"/>
+      <stop offset="90%"  stop-color="#ff8800"/>
+      <stop offset="100%" stop-color="#cc0000"/>
+    </linearGradient>
+  </defs>
+  <!-- Dark background -->
+  <rect width="560" height="80" fill="#111"/>
+  <!-- Spectrum bar -->
+  <rect x="20" y="12" width="520" height="36" fill="url(#spectrum)"/>
+  <!-- Emission lines — Hδ 410nm, Hγ 434nm, Hβ 486nm, Hα 656nm -->
+  <!-- Map 400–700nm to x=20–540: x = 20 + (nm-400)/300*520 -->
+  <!-- 410nm → x=37, 434nm → x=79, 486nm → x=170, 656nm → x=447 -->
+  <line x1="37"  y1="12" x2="37"  y2="48" stroke="#9955ff" stroke-width="3"/>
+  <line x1="79"  y1="12" x2="79"  y2="48" stroke="#4477ff" stroke-width="3"/>
+  <line x1="170" y1="12" x2="170" y2="48" stroke="#00aaff" stroke-width="4"/>
+  <line x1="447" y1="12" x2="447" y2="48" stroke="#ff2200" stroke-width="5"/>
+  <!-- Labels -->
+  <text x="20"  y="72" font-size="10" fill="#aaa" font-family="sans-serif">400 nm</text>
+  <text x="29"  y="62" font-size="9"  fill="#cc99ff" font-family="sans-serif">Hδ 410</text>
+  <text x="66"  y="62" font-size="9"  fill="#7799ff" font-family="sans-serif">Hγ 434</text>
+  <text x="155" y="62" font-size="9"  fill="#55ccff" font-family="sans-serif">Hβ 486</text>
+  <text x="432" y="62" font-size="9"  fill="#ff6644" font-family="sans-serif">Hα 656</text>
+  <text x="500" y="72" font-size="10" fill="#aaa" font-family="sans-serif">700 nm</text>
+  <!-- Source note -->
+  <text x="20" y="78" font-size="7" fill="#666" font-family="sans-serif">Diagram: CC0, adapted from Merikanto / Adrignola, Wikimedia Commons</text>
+</svg>

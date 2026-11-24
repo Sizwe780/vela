@@ -1,0 +1,79 @@
+.activity-overview {
+  margin: 24px 0;
+}
+.activity-overview progress {
+  width: 100%;
+  height: 10px;
+  accent-color: var(--brand-strong);
+}
+.activity-total strong {
+  font-size: clamp(24px, 4vw, 36px);
+  letter-spacing: -1px;
+}
+.activity-total span {
+  color: var(--text-muted);
+}
+.activity-week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
+  margin: 28px 0;
+}
+.activity-week > div {
+  display: grid;
+  grid-template-rows: 3.2em auto 1.6em;
+  align-items: end;
+  text-align: center;
+  font: 11px/1.6 system-ui;
+  color: var(--text-muted);
+}
+.activity-bar {
+  height: 110px;
+  background: var(--surface-soft);
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-end;
+  margin: 8px 0;
+  overflow: hidden;
+}
+.activity-bar i {
+  width: 100%;
+  background: var(--brand-strong);
+  border-radius: 8px;
+}
+.activity-today > span:last-child {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+.activity-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 24px 0;
+}
+.activity-table caption {
+  text-align: left;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.activity-table td,
+.activity-table th {
+  text-align: left;
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--border-default);
+}
+.activity-table th:last-child,
+.activity-table td:last-child {
+  text-align: right;
+  white-space: nowrap;
+}
+@media (max-width: 500px) {
+  .activity-week {
+    gap: 5px;
+  }
+  .activity-week > div {
+    font-size: 9px;
+  }
+  .activity-bar {
+    height: 80px;
+  }
+}

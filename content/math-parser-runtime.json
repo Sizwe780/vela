@@ -1,0 +1,26 @@
+{
+  "marker": "2.1.0",
+  "surya": "0.23.0",
+  "torch": "2.15.0+cpu",
+  "backend": {
+    "release": "b12128",
+    "platform": "win-cpu-arm64",
+    "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12128/llama-b12128-bin-win-cpu-arm64.zip",
+    "sha256": "2ec9aad01abc2a06f40fdd8c544b0c177d97b5d71899475b9326153240dfa614"
+  },
+  "models": [
+    {
+      "repository": "datalab-to/surya-ocr-2.5-gguf",
+      "filename": "surya-2.5-Q8_0.gguf",
+      "bytes": 628680096,
+      "sha256": "5ab34c76845f66d2882ec5c89735894b700e0a7decd08898ab962b2afb9aca57"
+    },
+    {
+      "repository": "datalab-to/surya-ocr-2.5-gguf",
+      "filename": "surya-2.5-mmproj.gguf",
+      "bytes": 207345920,
+      "sha256": "f245dbf784cf73683a273a37fefae0d0d7983b083a5d2fecf9309476f861f659"
+    }
+  ],
+  "note": "Verified local runtime files. The pinned adapter forces visual OCR on every selected page and needs no separate text-quality classifier. No paid LLM enhancement is enabled."
+}

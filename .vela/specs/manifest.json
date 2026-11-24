@@ -1,0 +1,226 @@
+{
+  "version": "1.4.0",
+  "core": [
+    "learning-design-spec.md",
+    "mastery-spec.md",
+    "assessment-spec.md",
+    "quality-audit-spec.md"
+  ],
+  "domains": {
+    "mathematics": {
+      "file": "mathematics-content-spec.md",
+      "minSessions": 6,
+      "sessionSections": [
+        "Visual exploration",
+        "Procedure",
+        "Interpretation",
+        "Common mistakes",
+        "Application"
+      ]
+    },
+    "education-pck": {
+      "file": "education-pck-spec.md",
+      "unitPatterns": [
+        "PCK",
+        "misconception",
+        "formative"
+      ]
+    },
+    "programming": {
+      "file": "programming-content-spec.md",
+      "unitPatterns": [
+        "input",
+        "output",
+        "trace",
+        "debug",
+        "boundary"
+      ]
+    },
+    "chemistry": {
+      "file": "science-content-spec.md"
+    },
+    "organic-chemistry": {
+      "file": "organic-chemistry-content-spec.md"
+    },
+    "physics": {
+      "file": "science-content-spec.md"
+    },
+    "laboratory-practical": {
+      "file": "laboratory-practical-spec.md"
+    },
+    "teaching-practice": {
+      "file": "teaching-practice-spec.md"
+    },
+    "communicative-language": {
+      "file": "communicative-language-spec.md"
+    }
+  },
+  "modules": [
+    {
+      "institution": "UNISA",
+      "moduleCode": "MAT1512",
+      "domains": [
+        "mathematics",
+        "education-pck"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "COS1511",
+      "domains": [
+        "programming"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "BPT1501",
+      "domains": [
+        "education-pck"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "MAT1503",
+      "domains": [
+        "mathematics",
+        "education-pck"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "CHE1501",
+      "domains": [
+        "chemistry"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "CHE1502",
+      "domains": [
+        "chemistry",
+        "organic-chemistry"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "PHY1501",
+      "domains": [
+        "physics"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "PHY1505",
+      "domains": [
+        "physics"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "CHE1503",
+      "domains": [
+        "chemistry",
+        "laboratory-practical"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "PHY1503",
+      "domains": [
+        "physics",
+        "laboratory-practical"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "PHY1506",
+      "domains": [
+        "physics"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "TPS2601",
+      "domains": [
+        "teaching-practice"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "AFK1505",
+      "domains": [
+        "communicative-language"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "NDE1507",
+      "domains": [
+        "communicative-language"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "NSO1507",
+      "domains": [
+        "communicative-language"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "SNL1507",
+      "domains": [
+        "communicative-language"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "SSO1507",
+      "domains": [
+        "communicative-language"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "SWA1507",
+      "domains": [
+        "communicative-language"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "TSO1507",
+      "domains": [
+        "communicative-language"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "TSW1507",
+      "domains": [
+        "communicative-language"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "VEN1507",
+      "domains": [
+        "communicative-language"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "XHO1507",
+      "domains": [
+        "communicative-language"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "ZUL1507",
+      "domains": [
+        "communicative-language"
+      ]
+    }
+  ]
+}

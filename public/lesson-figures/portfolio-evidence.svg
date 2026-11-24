@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 418" width="680" height="418">
+  <rect width="680" height="418" rx="18" fill="#e9efe8"/>
+  <rect x="24" y="24" width="632" height="370" rx="12" fill="#fff" stroke="#95aea2"/>
+  <g fill="#1f3d32" font-family="system-ui, sans-serif">
+    <text x="49" y="64" font-size="24" font-weight="700">Lesson evidence sheet</text>
+    <text x="49" y="91" font-size="15">Fictional example · area comparison</text>
+    <g fill="none" stroke="#b9cbbf"><path d="M48 112H632M48 175H632M48 238H632M48 301H632"/></g>
+    <g font-size="17" font-weight="600"><text x="52" y="143">Claim</text><text x="52" y="206">Evidence</text><text x="52" y="269">Limit</text><text x="52" y="332">Next trial</text></g>
+    <g font-size="16"><text x="185" y="143">Some learners can justify equal areas.</text><text x="185" y="206">8 of 12 independent responses cite the same unit area.</text><text x="185" y="269">There is no comparable response from an earlier lesson.</text><text x="185" y="332">Collect a fresh individual response before and after discussion.</text></g>
+  </g>
+</svg>

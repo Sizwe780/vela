@@ -1,0 +1,29 @@
+[
+  {
+    "id": "mat1503-resource",
+    "moduleCode": "MAT1503",
+    "title": "MAT_1503.pdf",
+    "filename": "MAT_1503.pdf",
+    "directory": "../work/mat1503/sources",
+    "sha256": "cb1cdd5a0b34d2d358b15d56991315e9052ecf57b59d689e7537a5ffb596fb3c",
+    "institution": "UNISA"
+  },
+  {
+    "id": "mat1503-textbook",
+    "moduleCode": "MAT1503",
+    "title": "linear algebra.pdf",
+    "filename": "linear algebra.pdf",
+    "directory": "../work/mat1503/sources",
+    "sha256": "8d449f1b9afb555b5c1cd014759d0021be15eda4063466042db611e40dc75287",
+    "institution": "UNISA"
+  },
+  {
+    "id": "mat1503-tutorial-2018",
+    "moduleCode": "MAT1503",
+    "title": "1503-tut-2018.pdf",
+    "filename": "1503-tut-2018.pdf",
+    "directory": "../work/mat1503/sources",
+    "sha256": "1bb4e5f1b93a57beb8e9801100ca725085267ed8909fcb49fcc231fdc079028c",
+    "institution": "UNISA"
+  }
+]

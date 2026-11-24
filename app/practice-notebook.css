@@ -1,0 +1,54 @@
+.practice-notebook {
+  margin: 20px 0;
+  padding: 16px;
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  background: var(--surface-soft);
+  min-width: 0;
+}
+.practice-notebook summary {
+  font-weight: 600;
+  cursor: pointer;
+}
+.practice-notebook label {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+}
+.practice-notebook input,
+.practice-notebook textarea,
+.practice-notebook select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid var(--border-default);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  border-radius: 8px;
+  font: inherit;
+}
+.practice-notebook textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+.notebook-entries {
+  padding: 0;
+  list-style: none;
+}
+.notebook-entries > li {
+  padding: 16px 0;
+  border-top: 1px solid var(--border-default);
+  overflow-wrap: anywhere;
+}
+.notebook-reflection {
+  white-space: pre-wrap;
+}
+.notebook-confirm {
+  border-left: 3px solid var(--brand-strong);
+  padding: 12px;
+  margin: 12px 0;
+}
+.practice-notebook button {
+  white-space: normal;
+  min-height: 44px;
+}

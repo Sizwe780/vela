@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-label="Riemann sum approximation showing rectangles under a curve. As the number of rectangles increases the total area of rectangles approaches the area under the curve">
+  <title>Riemann sum approximation of area under a curve</title>
+  <rect width="320" height="220" fill="#0f1117"/>
+  <defs>
+    <marker id="ra-arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#888"/>
+    </marker>
+  </defs>
+  <!-- Axes -->
+  <line x1="40" y1="190" x2="300" y2="190" stroke="#888" stroke-width="1.5" marker-end="url(#ra-arr)"/>
+  <line x1="40" y1="190" x2="40"  y2="20"  stroke="#888" stroke-width="1.5" marker-end="url(#ra-arr)"/>
+  <text x="302" y="194" font-size="11" fill="#888" font-family="serif" font-style="italic">x</text>
+  <text x="34"  y="17"  font-size="11" fill="#888" font-family="serif" font-style="italic">y</text>
+  <!-- Rectangles for n=5 left Riemann sum under y=0.004(x-40)^2+30 mapped to canvas -->
+  <!-- x in [40,280], y = 190 - (0.004*(xi-40)^2 + 30)*1.5 -->
+  <!-- 5 rects, width=48px each -->
+  <rect x="40"  y="145" width="48" height="45" fill="#4a9eff" fill-opacity="0.3" stroke="#4a9eff" stroke-width="1"/>
+  <rect x="88"  y="118" width="48" height="72" fill="#4a9eff" fill-opacity="0.3" stroke="#4a9eff" stroke-width="1"/>
+  <rect x="136" y="98"  width="48" height="92" fill="#4a9eff" fill-opacity="0.3" stroke="#4a9eff" stroke-width="1"/>
+  <rect x="184" y="84"  width="48" height="106" fill="#4a9eff" fill-opacity="0.3" stroke="#4a9eff" stroke-width="1"/>
+  <rect x="232" y="76"  width="48" height="114" fill="#4a9eff" fill-opacity="0.3" stroke="#4a9eff" stroke-width="1"/>
+  <!-- Smooth curve on top: y = 190 - (0.003*(x-40)*(x-40) + 20) -->
+  <polyline points="40,170 60,160 80,148 100,133 120,116 140,97 160,80 180,65 200,55 220,50 240,48 260,50 280,55"
+            fill="none" stroke="#ff9955" stroke-width="2.5"/>
+  <!-- Labels -->
+  <text x="42" y="207" font-size="10" fill="#888" font-family="serif" font-style="italic">a</text>
+  <text x="274" y="207" font-size="10" fill="#888" font-family="serif" font-style="italic">b</text>
+  <text x="145" y="38" font-size="11" fill="#ff9955" font-family="serif" font-style="italic">y = f(x)</text>
+  <text x="90" y="162" font-size="9" fill="#aaa" font-family="sans-serif">Σ f(xᵢ)·Δx → ∫ f(x) dx</text>
+  <!-- Source note -->
+  <text x="8" y="214" font-size="8" fill="#555" font-family="sans-serif">Vela original diagram · MAT1512 · Riemann sums and definite integral</text>
+</svg>

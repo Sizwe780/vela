@@ -1,0 +1,5 @@
+import "dotenv/config";
+import {configuredAI} from "../lib/ai/config";
+import {providerCredential} from "../lib/ai/credentials";
+async function main(){const config=configuredAI("cloudflare"),token=await providerCredential(config);const response=await fetch(config.baseUrl+"/chat/completions",{method:"POST",headers:{Authorization:`Bearer ${token}`,"Content-Type":"application/json"},body:JSON.stringify({model:config.chatModel,stream:true,max_tokens:200,messages:[{role:"user",content:"Solve x+y=9 and x-y=1. Explain the steps."}]}),signal:AbortSignal.timeout(60000)});console.log("HTTP",response.status);const raw=await response.text();let count=0;for(const line of raw.split("\n").filter(l=>l.startsWith("data: {")).slice(0,250)){const item=JSON.parse(line.slice(6));const choice=item.choices?.[0];if(!choice||typeof choice.delta?.content!=="string"&&choice.delta?.content!=null||choice.finish_reason!=null){console.log(JSON.stringify(item));count++;}}console.log("Nonstring/finish frames",count);}
+main().catch(e=>{console.error(e.name);process.exitCode=1;});

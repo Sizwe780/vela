@@ -1,0 +1,133 @@
+.desktop-learning-tools {
+  display: contents;
+}
+.mobile-tools-trigger {
+  display: none;
+}
+.mobile-tools-panel {
+  display: grid;
+  gap: 20px;
+}
+.mobile-tools-panel > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.mobile-tools-panel h2 {
+  margin: 0;
+  font-size: 22px;
+}
+.mobile-tools-panel button,
+.mobile-tools-panel select {
+  min-height: 44px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  padding: 10px 12px;
+}
+.mobile-tools-panel > header button {
+  font-size: 24px;
+  line-height: 1;
+}
+.mobile-tools-panel nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.mobile-tools-panel nav a {
+  padding: 10px;
+  border-radius: var(--radius-control);
+  background: var(--surface-soft);
+}
+.mobile-tool-buttons {
+  display: grid;
+  gap: 10px;
+}
+.mobile-tool-buttons button {
+  text-align: left;
+}
+.mobile-tools-panel label {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+}
+.mobile-tools-panel select {
+  width: 100%;
+  min-width: 0;
+}
+.mobile-tools-panel .account-menu {
+  justify-content: flex-start;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+@media (max-width: 380px) {
+  .mobile-tools-trigger {
+    display: inline-grid;
+    place-items: center;
+    margin-left: auto;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-control);
+    background: var(--surface-card);
+    color: var(--text-primary);
+    font-size: 25px;
+  }
+  .desktop-learning-tools {
+    display: none;
+  }
+  .app-header:has(.mobile-tools-trigger) {
+    min-height: 56px;
+    height: 56px;
+    padding: 8px 12px;
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+  .workspace .workspace-nav {
+    height: 56px;
+    min-height: 56px;
+    flex: 0 0 56px;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+  .workspace .workspace-nav .workspace-actions {
+    display: contents;
+  }
+  /* Keep the existing drawer components mounted; hide only their header triggers. */
+  .workspace .workspace-actions > :not(dialog):not(.unit-progress-ring) {
+    display: none;
+  }
+  .workspace .workspace-actions > .unit-progress-ring {
+    display: inline-flex;
+    font-size: 10px;
+    gap: 3px;
+  }
+  .workspace .workspace-actions > .unit-progress-ring small {
+    display: none;
+  }
+  .workspace .workspace-actions > .unit-progress-ring svg {
+    width: 22px;
+    height: 22px;
+  }
+  .workspace .workspace-nav .breadcrumb {
+    min-width: 0;
+    flex: 1;
+    gap: 4px;
+    font-size: 10px;
+  }
+  .workspace .workspace-nav .breadcrumb > a:first-child,
+  .workspace .workspace-nav .breadcrumb > span:nth-child(2) {
+    display: none;
+  }
+  .workspace .workspace-nav .breadcrumb > span:last-child {
+    display: inline;
+  }
+  .workspace .workspace-nav .sample-pill {
+    display: none;
+  }
+}

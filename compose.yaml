@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: lms
+      POSTGRES_PASSWORD: lms
+      POSTGRES_DB: lms
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - lms-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lms -d lms"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+volumes:
+  lms-postgres:

@@ -1,0 +1,52 @@
+.workshop {
+  display: grid;
+  gap: 0.75rem;
+  margin-block: 1.25rem;
+  padding: clamp(0.85rem, 3vw, 1.4rem);
+  border: 1px solid var(--border, currentColor);
+  border-radius: 0.9rem;
+  font: inherit;
+  min-width: 0;
+}
+
+.workshop h3,
+.workshop p {
+  margin: 0;
+}
+
+.workshop svg {
+  width: min(100%, 31rem);
+  margin-inline: auto;
+}
+
+.workshop label {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.workshop button {
+  justify-self: start;
+}
+
+.workshop textarea,
+.workshop select {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.4rem;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--border, currentColor);
+  border-radius: 0.35rem;
+}
+
+.slider span {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.slider input {
+  width: 100%;
+}

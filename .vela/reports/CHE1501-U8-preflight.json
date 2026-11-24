@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "specHash": "5a8d2c05538405ec831ea1d2080c82475e91fd444dfe74c1f2f15742d2a3e8cd",
+  "moduleCode": "CHE1501",
+  "unitCode": "CHE1501-U8",
+  "issues": [],
+  "checks": [
+    "explicit-domain-profile",
+    "universal-core",
+    "session-depth",
+    "layer-structure",
+    "answered-assessment",
+    "cognitive-levels",
+    "visible-teaching-goals",
+    "teach-before-attempt",
+    "exercise-reveal-protocol",
+    "answer-isolation",
+    "math-syntax",
+    "privacy-screen",
+    "registered-visuals",
+    "eight-word-source-prose-screen"
+  ],
+  "sourcePages": 87,
+  "sessions": 2,
+  "formulas": 38,
+  "exercises": 8,
+  "visuals": [
+    "ideal-gas-lab",
+    "ideal-gas-lab"
+  ],
+  "reviewStatus": "pending-subject-review"
+}

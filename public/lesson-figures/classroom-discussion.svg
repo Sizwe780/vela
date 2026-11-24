@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="300" viewBox="0 0 720 300">
+  <title>Classroom layouts for demonstration and discussion</title>
+  <rect width="720" height="300" fill="#edf2ea"/>
+  <g fill="#fffefb" stroke="#bbc9be" stroke-width="2">
+    <rect x="22" y="24" width="328" height="252" rx="16"/>
+    <rect x="370" y="24" width="328" height="252" rx="16"/>
+  </g>
+  <g font-family="system-ui, sans-serif" fill="#163e33" font-size="20" font-weight="700" text-anchor="middle">
+    <text x="186" y="56">Demonstration</text>
+    <text x="534" y="56">Structured discussion</text>
+  </g>
+  <g fill="#163e33">
+    <path d="M123 73h126v8H123zM471 73h126v8H471z"/>
+  </g>
+  <g fill="#d5ebe2" stroke="#316554" stroke-width="2">
+    <path d="M64 105h92v25H64zm152 0h92v25h-92zM64 147h92v25H64zm152 0h92v25h-92zM64 189h92v25H64zm152 0h92v25h-92z"/>
+    <rect x="414" y="111" width="70" height="36" rx="8"/>
+    <rect x="588" y="111" width="70" height="36" rx="8"/>
+    <rect x="414" y="177" width="70" height="36" rx="8"/>
+    <rect x="588" y="177" width="70" height="36" rx="8"/>
+  </g>
+  <g fill="none" stroke="#9a5037" stroke-width="4" stroke-dasharray="6 7">
+    <path d="M186 98v131m348-131v131"/>
+  </g>
+  <g fill="#7d3f2c" font-family="system-ui, sans-serif" font-size="17" text-anchor="middle">
+    <text x="186" y="255">Clear aisle</text>
+    <text x="534" y="255">Clear aisle</text>
+  </g>
+</svg>

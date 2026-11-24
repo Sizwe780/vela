@@ -1,0 +1,163 @@
+{
+  "verifiedAt": "2026-11-17T11:00:00.996Z",
+  "specHash": "26b817b24b00cbff08f098489a8c3255a23812d7a2f77d6b21984366e4aee726",
+  "specVersion": "1.1.0",
+  "contentVersion": 3,
+  "totalSessions": 30,
+  "units": [
+    {
+      "code": "MAT1512-U1",
+      "sessions": 6,
+      "visualHooks": [
+        "limit",
+        "continuity"
+      ]
+    },
+    {
+      "code": "MAT1512-U2",
+      "sessions": 6,
+      "visualHooks": [
+        "tangent"
+      ]
+    },
+    {
+      "code": "MAT1512-U3",
+      "sessions": 6,
+      "visualHooks": [
+        "composition"
+      ]
+    },
+    {
+      "code": "MAT1512-U4",
+      "sessions": 6,
+      "visualHooks": [
+        "optimization"
+      ]
+    },
+    {
+      "code": "MAT1512-U5",
+      "sessions": 6,
+      "visualHooks": [
+        "integral"
+      ]
+    }
+  ],
+  "audits": [
+    {
+      "passed": true,
+      "specHash": "26b817b24b00cbff08f098489a8c3255a23812d7a2f77d6b21984366e4aee726",
+      "moduleCode": "MAT1512",
+      "unitCode": "MAT1512-U1",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ]
+    },
+    {
+      "passed": true,
+      "specHash": "26b817b24b00cbff08f098489a8c3255a23812d7a2f77d6b21984366e4aee726",
+      "moduleCode": "MAT1512",
+      "unitCode": "MAT1512-U2",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ]
+    },
+    {
+      "passed": true,
+      "specHash": "26b817b24b00cbff08f098489a8c3255a23812d7a2f77d6b21984366e4aee726",
+      "moduleCode": "MAT1512",
+      "unitCode": "MAT1512-U3",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ]
+    },
+    {
+      "passed": true,
+      "specHash": "26b817b24b00cbff08f098489a8c3255a23812d7a2f77d6b21984366e4aee726",
+      "moduleCode": "MAT1512",
+      "unitCode": "MAT1512-U4",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ]
+    },
+    {
+      "passed": true,
+      "specHash": "26b817b24b00cbff08f098489a8c3255a23812d7a2f77d6b21984366e4aee726",
+      "moduleCode": "MAT1512",
+      "unitCode": "MAT1512-U5",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ]
+    }
+  ],
+  "limitations": "Source screening and syntax checks are heuristics; not a legal or mathematical certification."
+}

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-label="Vector addition parallelogram: vectors a and b added tip-to-tail and by parallelogram rule both give resultant r">
+  <title>Vector addition — parallelogram rule</title>
+  <rect width="320" height="220" fill="#0f1117"/>
+  <defs>
+    <marker id="arr-b" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4a9eff"/>
+    </marker>
+    <marker id="arr-g" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#44dd88"/>
+    </marker>
+    <marker id="arr-r" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#ff6644"/>
+    </marker>
+    <marker id="arr-g2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#44dd88" opacity="0.4"/>
+    </marker>
+    <marker id="arr-b2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4a9eff" opacity="0.4"/>
+    </marker>
+  </defs>
+  <!-- Origin -->
+  <circle cx="60" cy="150" r="3" fill="#888"/>
+  <!-- Vector a (blue) -->
+  <line x1="60" y1="150" x2="188" y2="118" stroke="#4a9eff" stroke-width="2.5" marker-end="url(#arr-b)"/>
+  <text x="115" y="126" font-size="13" fill="#4a9eff" font-family="serif" font-style="italic">a</text>
+  <!-- Vector b (green) -->
+  <line x1="60" y1="150" x2="96" y2="62" stroke="#44dd88" stroke-width="2.5" marker-end="url(#arr-g)"/>
+  <text x="62" y="104" font-size="13" fill="#44dd88" font-family="serif" font-style="italic">b</text>
+  <!-- Tip-to-tail: b starting from tip of a -->
+  <line x1="188" y1="118" x2="224" y2="30" stroke="#44dd88" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-g2)" opacity="0.5"/>
+  <!-- Tip-to-tail: a starting from tip of b -->
+  <line x1="96" y1="62" x2="224" y2="30" stroke="#4a9eff" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-b2)" opacity="0.5"/>
+  <!-- Resultant r -->
+  <line x1="60" y1="150" x2="218" y2="34" stroke="#ff6644" stroke-width="2.5" marker-end="url(#arr-r)"/>
+  <text x="148" y="82" font-size="13" fill="#ff6644" font-family="serif" font-style="italic">r = a + b</text>
+  <!-- Labels -->
+  <text x="48" y="166" font-size="11" fill="#888" font-family="sans-serif">O</text>
+  <text x="8" y="16" font-size="11" fill="#aaa" font-family="sans-serif">Vector addition — parallelogram rule</text>
+  <text x="8" y="214" font-size="8" fill="#555" font-family="sans-serif">Vela original diagram · MAT1503</text>
+</svg>

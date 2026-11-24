@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "specHash": "bee8a03e02901211bbf785525c3f8e9f1cb447442047647c6b0a04f9d6d66c3a",
+  "moduleCode": "CHE1501",
+  "unitCode": "CHE1501-U5",
+  "issues": [],
+  "checks": [
+    "explicit-domain-profile",
+    "universal-core",
+    "session-depth",
+    "layer-structure",
+    "answered-assessment",
+    "cognitive-levels",
+    "visible-teaching-goals",
+    "teach-before-attempt",
+    "exercise-reveal-protocol",
+    "answer-isolation",
+    "math-syntax",
+    "privacy-screen",
+    "registered-visuals",
+    "eight-word-source-prose-screen"
+  ],
+  "sourcePages": 87,
+  "sessions": 5,
+  "formulas": 79,
+  "exercises": 17,
+  "visuals": [
+    "stoichiometry-lab",
+    "stoichiometry-lab"
+  ],
+  "reviewStatus": "pending-subject-review"
+}

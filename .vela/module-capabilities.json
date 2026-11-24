@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "profiles": [
+    {
+      "institution": "UNISA",
+      "moduleCode": "MAT1503",
+      "tools": [
+        "math",
+        "matrix",
+        "pck"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "MAT1512",
+      "tools": [
+        "math",
+        "calculus",
+        "pck"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "PHY1501",
+      "tools": [
+        "math",
+        "pck",
+        "units"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "PHY1505",
+      "tools": [
+        "math",
+        "pck",
+        "units",
+        "physics"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "CHE1501",
+      "tools": [
+        "math",
+        "pck",
+        "units",
+        "molecules",
+        "reactions"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "CHE1502",
+      "tools": [
+        "math",
+        "pck",
+        "molecules",
+        "reactions"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "BPT1501",
+      "tools": [
+        "pck",
+        "debate"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "COS1511",
+      "tools": []
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "CHE1503",
+      "tools": [
+        "units"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "PHY1503",
+      "tools": [
+        "math",
+        "units",
+        "physics"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "PHY1506",
+      "tools": [
+        "math",
+        "units"
+      ]
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "TPS2601",
+      "tools": []
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "AFK1505",
+      "tools": []
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "NDE1507",
+      "tools": []
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "NSO1507",
+      "tools": []
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "SNL1507",
+      "tools": []
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "SSO1507",
+      "tools": []
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "SWA1507",
+      "tools": []
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "TSO1507",
+      "tools": []
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "TSW1507",
+      "tools": []
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "VEN1507",
+      "tools": []
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "XHO1507",
+      "tools": []
+    },
+    {
+      "institution": "UNISA",
+      "moduleCode": "ZUL1507",
+      "tools": []
+    }
+  ]
+}

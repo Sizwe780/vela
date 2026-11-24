@@ -1,0 +1,403 @@
+{
+  "verifiedAt": "2026-11-17T10:32:00.715Z",
+  "moduleCode": "MAT1503",
+  "specHash": "95e062506c0c51a72d2023991a0954e8efe24115c699761c42ba1170586f0074",
+  "sessions": 78,
+  "formulas": 975,
+  "exercises": 468,
+  "units": [
+    {
+      "code": "MAT1503-U1",
+      "title": "Introduction to systems of linear equations",
+      "sessions": 6
+    },
+    {
+      "code": "MAT1503-U2",
+      "title": "Gaussian elimination and solution structure",
+      "sessions": 6
+    },
+    {
+      "code": "MAT1503-U3",
+      "title": "Matrix operations and algebra",
+      "sessions": 6
+    },
+    {
+      "code": "MAT1503-U4",
+      "title": "Matrix inverses and invertibility",
+      "sessions": 6
+    },
+    {
+      "code": "MAT1503-U5",
+      "title": "Elementary matrices and inversion",
+      "sessions": 6
+    },
+    {
+      "code": "MAT1503-U6",
+      "title": "Further systems and invertibility",
+      "sessions": 6
+    },
+    {
+      "code": "MAT1503-U7",
+      "title": "Diagonal, triangular and symmetric matrices",
+      "sessions": 6
+    },
+    {
+      "code": "MAT1503-U8",
+      "title": "Cofactors and Laplace determinants",
+      "sessions": 6
+    },
+    {
+      "code": "MAT1503-U9",
+      "title": "Determinants by row reduction",
+      "sessions": 6
+    },
+    {
+      "code": "MAT1503-U10",
+      "title": "Determinant properties, adjugates and Cramer's rule",
+      "sessions": 6
+    },
+    {
+      "code": "MAT1503-U11",
+      "title": "Vectors and Euclidean coordinates",
+      "sessions": 6
+    },
+    {
+      "code": "MAT1503-U12",
+      "title": "Euclidean geometry with dot and cross products",
+      "sessions": 6
+    },
+    {
+      "code": "MAT1503-U13",
+      "title": "Complex numbers, roots and trigonometric reasoning",
+      "sessions": 6
+    }
+  ],
+  "reports": [
+    {
+      "passed": true,
+      "specHash": "95e062506c0c51a72d2023991a0954e8efe24115c699761c42ba1170586f0074",
+      "moduleCode": "MAT1503",
+      "unitCode": "MAT1503-U1",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ],
+      "sourceComparison": "Full selected native-PDF prose used only for originality screening; not claimed math-aware OCR or independent semantic fact validation.",
+      "sourcePages": 11
+    },
+    {
+      "passed": true,
+      "specHash": "95e062506c0c51a72d2023991a0954e8efe24115c699761c42ba1170586f0074",
+      "moduleCode": "MAT1503",
+      "unitCode": "MAT1503-U2",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ],
+      "sourceComparison": "Full selected native-PDF prose used only for originality screening; not claimed math-aware OCR or independent semantic fact validation.",
+      "sourcePages": 17
+    },
+    {
+      "passed": true,
+      "specHash": "95e062506c0c51a72d2023991a0954e8efe24115c699761c42ba1170586f0074",
+      "moduleCode": "MAT1503",
+      "unitCode": "MAT1503-U3",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ],
+      "sourceComparison": "Full selected native-PDF prose used only for originality screening; not claimed math-aware OCR or independent semantic fact validation.",
+      "sourcePages": 16
+    },
+    {
+      "passed": true,
+      "specHash": "95e062506c0c51a72d2023991a0954e8efe24115c699761c42ba1170586f0074",
+      "moduleCode": "MAT1503",
+      "unitCode": "MAT1503-U4",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ],
+      "sourceComparison": "Full selected native-PDF prose used only for originality screening; not claimed math-aware OCR or independent semantic fact validation.",
+      "sourcePages": 16
+    },
+    {
+      "passed": true,
+      "specHash": "95e062506c0c51a72d2023991a0954e8efe24115c699761c42ba1170586f0074",
+      "moduleCode": "MAT1503",
+      "unitCode": "MAT1503-U5",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ],
+      "sourceComparison": "Full selected native-PDF prose used only for originality screening; not claimed math-aware OCR or independent semantic fact validation.",
+      "sourcePages": 12
+    },
+    {
+      "passed": true,
+      "specHash": "95e062506c0c51a72d2023991a0954e8efe24115c699761c42ba1170586f0074",
+      "moduleCode": "MAT1503",
+      "unitCode": "MAT1503-U6",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ],
+      "sourceComparison": "Full selected native-PDF prose used only for originality screening; not claimed math-aware OCR or independent semantic fact validation.",
+      "sourcePages": 9
+    },
+    {
+      "passed": true,
+      "specHash": "95e062506c0c51a72d2023991a0954e8efe24115c699761c42ba1170586f0074",
+      "moduleCode": "MAT1503",
+      "unitCode": "MAT1503-U7",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ],
+      "sourceComparison": "Full selected native-PDF prose used only for originality screening; not claimed math-aware OCR or independent semantic fact validation.",
+      "sourcePages": 10
+    },
+    {
+      "passed": true,
+      "specHash": "95e062506c0c51a72d2023991a0954e8efe24115c699761c42ba1170586f0074",
+      "moduleCode": "MAT1503",
+      "unitCode": "MAT1503-U8",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ],
+      "sourceComparison": "Full selected native-PDF prose used only for originality screening; not claimed math-aware OCR or independent semantic fact validation.",
+      "sourcePages": 10
+    },
+    {
+      "passed": true,
+      "specHash": "95e062506c0c51a72d2023991a0954e8efe24115c699761c42ba1170586f0074",
+      "moduleCode": "MAT1503",
+      "unitCode": "MAT1503-U9",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ],
+      "sourceComparison": "Full selected native-PDF prose used only for originality screening; not claimed math-aware OCR or independent semantic fact validation.",
+      "sourcePages": 8
+    },
+    {
+      "passed": true,
+      "specHash": "95e062506c0c51a72d2023991a0954e8efe24115c699761c42ba1170586f0074",
+      "moduleCode": "MAT1503",
+      "unitCode": "MAT1503-U10",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ],
+      "sourceComparison": "Full selected native-PDF prose used only for originality screening; not claimed math-aware OCR or independent semantic fact validation.",
+      "sourcePages": 15
+    },
+    {
+      "passed": true,
+      "specHash": "95e062506c0c51a72d2023991a0954e8efe24115c699761c42ba1170586f0074",
+      "moduleCode": "MAT1503",
+      "unitCode": "MAT1503-U11",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ],
+      "sourceComparison": "Full selected native-PDF prose used only for originality screening; not claimed math-aware OCR or independent semantic fact validation.",
+      "sourcePages": 26
+    },
+    {
+      "passed": true,
+      "specHash": "95e062506c0c51a72d2023991a0954e8efe24115c699761c42ba1170586f0074",
+      "moduleCode": "MAT1503",
+      "unitCode": "MAT1503-U12",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ],
+      "sourceComparison": "Full selected native-PDF prose used only for originality screening; not claimed math-aware OCR or independent semantic fact validation.",
+      "sourcePages": 32
+    },
+    {
+      "passed": true,
+      "specHash": "95e062506c0c51a72d2023991a0954e8efe24115c699761c42ba1170586f0074",
+      "moduleCode": "MAT1503",
+      "unitCode": "MAT1503-U13",
+      "issues": [],
+      "checks": [
+        "explicit-domain-profile",
+        "universal-core",
+        "session-depth",
+        "layer-structure",
+        "answered-assessment",
+        "cognitive-levels",
+        "visible-teaching-goals",
+        "teach-before-attempt",
+        "exercise-reveal-protocol",
+        "answer-isolation",
+        "math-syntax",
+        "privacy-screen",
+        "registered-visuals",
+        "eight-word-source-prose-screen"
+      ],
+      "sourceComparison": "Full selected native-PDF prose used only for originality screening; not claimed math-aware OCR or independent semantic fact validation.",
+      "sourcePages": 10
+    }
+  ],
+  "sourceConversion": "Separate checkpointed math-aware source OCR; its progress is not lesson publication or semantic certification."
+}

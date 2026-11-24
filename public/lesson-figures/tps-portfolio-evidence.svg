@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" role="img" aria-label="Portfolio evidence index linking evidence card, warranted claim, limitation and next check">
+  <title>TPS2601 portfolio evidence index</title>
+  <rect width="720" height="380" fill="#0f1117"/>
+  <g stroke="#69758a" stroke-width="2" fill="#202632">
+    <rect x="25" y="55" width="150" height="220" rx="10"/>
+    <rect x="195" y="55" width="150" height="220" rx="10"/>
+    <rect x="365" y="55" width="150" height="220" rx="10"/>
+    <rect x="535" y="55" width="150" height="220" rx="10"/>
+  </g>
+  <g fill="#cbd2dc" font-size="13" text-anchor="middle" font-family="sans-serif">
+    <text x="100" y="85">Evidence</text><text x="270" y="85">Warranted claim</text>
+    <text x="440" y="85">Limitation</text><text x="610" y="85">Next check</text>
+  </g>
+  <g fill="#aab3c2" font-size="11" text-anchor="middle" font-family="sans-serif">
+    <text x="100" y="125">Card C:</text><text x="100" y="145">correct choice</text><text x="100" y="165">blank reason</text>
+    <text x="270" y="125">Selection is</text><text x="270" y="145">correct</text>
+    <text x="440" y="125">Reason remains</text><text x="440" y="145">unknown</text>
+    <text x="610" y="125">Ask for an</text><text x="610" y="145">individual explanation</text><text x="610" y="165">on equal strips</text>
+  </g>
+  <g stroke="#44dd88" stroke-width="3"><line x1="175" y1="165" x2="195" y2="165"/><line x1="345" y1="165" x2="365" y2="165"/><line x1="515" y1="165" x2="535" y2="165"/></g>
+  <text x="360" y="310" fill="#69758a" font-size="12" text-anchor="middle" font-family="sans-serif">Do not claim understanding from a choice alone.</text>
+  <text x="360" y="348" fill="#69758a" font-size="11" text-anchor="middle" font-family="sans-serif">Synthetic card set · no learner or placement identifiers</text>
+</svg>

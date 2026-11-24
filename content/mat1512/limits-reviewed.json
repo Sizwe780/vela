@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "parser": {
+    "name": "reviewed-transcription",
+    "version": "pilot-1",
+    "review": "source-compared"
+  },
+  "source": {
+    "document": "guide",
+    "sha256": "d615e76d6b0bcf6dc708c96732b9b12cdd030733f06f27d5ab197bec9e220648",
+    "pageStart": 14,
+    "pageEnd": 14
+  },
+  "blocks": [
+    {
+      "id": "limits-reading",
+      "type": "markdown",
+      "markdown": "# Limits: approaching a value\n\nThis reviewed teaching adaptation covers the first limit example on PDF page 14 (printed page 8) of the UNISA guide. It is a small pilot, not a replacement for the full unit.\n\nA left-hand limit describes the value approached from smaller inputs. A right-hand limit describes the value approached from larger inputs. A two-sided limit exists when both approaches agree.\n\nConsider\n\n$$\nf(x)=\\frac{x^2-4}{x-2}.\n$$\n\nAt $x=2$, the denominator is zero, so $f(2)$ is undefined. For $x\\ne2$, factor and cancel:\n\n$$\n\\frac{x^2-4}{x-2}=\\frac{(x-2)(x+2)}{x-2}=x+2.\n$$\n\nFrom either side of 2, the function values approach 4:\n\n$$\n\\lim_{x\\to 2}\\frac{x^2-4}{x-2}=4.\n$$\n\nThe value of a limit can exist even when the function is undefined at the point. Move the slider towards 2 from each side and compare the approaching values. At exactly 2 the graph has a hole.\n"
+    },
+    {
+      "id": "limit-hole",
+      "type": "interactive",
+      "kind": "limit",
+      "title": "Approach a hole. Discover the limit.",
+      "caption": "For x different from 2, (x²−4)/(x−2) equals x+2. Both sides approach 4, although the value at 2 is undefined. This widget adapts the guide’s numerical tables.",
+      "initialX": 1.9,
+      "sourcePage": 14
+    }
+  ]
+}

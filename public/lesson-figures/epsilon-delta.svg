@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 240" role="img" aria-label="Epsilon-delta limit diagram showing that inputs within delta of a map to outputs within epsilon of L">
+  <title>Epsilon-delta neighbourhood diagram</title>
+  <rect width="340" height="240" fill="#0f1117"/>
+  <defs>
+    <marker id="ax" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#888"/>
+    </marker>
+  </defs>
+  <!-- Axes -->
+  <line x1="40" y1="210" x2="320" y2="210" stroke="#888" stroke-width="1.5" marker-end="url(#ax)"/>
+  <line x1="40" y1="210" x2="40"  y2="20"  stroke="#888" stroke-width="1.5" marker-end="url(#ax)"/>
+  <text x="324" y="214" font-size="11" fill="#888" font-family="serif" font-style="italic">x</text>
+  <text x="34"  y="16"  font-size="11" fill="#888" font-family="serif" font-style="italic">y</text>
+  <!-- Function curve: rough quadratic y = 0.008(x-40)^2 + 30, plotted as polyline -->
+  <polyline points="50,196 80,172 110,152 140,136 170,124 200,116 230,112 260,112 280,116" fill="none" stroke="#4a9eff" stroke-width="2"/>
+  <!-- Target point a=200 on x-axis, L=116 on y-axis -->
+  <!-- Vertical dashed lines at a-delta=160 and a+delta=240 -->
+  <line x1="160" y1="210" x2="160" y2="30" stroke="#44dd88" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="240" y1="210" x2="240" y2="30" stroke="#44dd88" stroke-width="1" stroke-dasharray="4,3"/>
+  <!-- Horizontal dashed lines at L-epsilon=100 and L+epsilon=132 -->
+  <line x1="40"  y1="100" x2="310" y2="100" stroke="#ff6644" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="40"  y1="132" x2="310" y2="132" stroke="#ff6644" stroke-width="1" stroke-dasharray="4,3"/>
+  <!-- The point (a, L) — open circle since limit, not value -->
+  <circle cx="200" cy="116" r="4" fill="#0f1117" stroke="#ff9955" stroke-width="2"/>
+  <!-- Delta band shading on x-axis -->
+  <rect x="160" y="205" width="80" height="8" fill="#44dd88" opacity="0.25"/>
+  <!-- Epsilon band shading on y-axis -->
+  <rect x="35" y="100" width="8" height="32" fill="#ff6644" opacity="0.25"/>
+  <!-- Labels -->
+  <text x="192" y="224" font-size="10" fill="#aaa" font-family="serif" font-style="italic">a</text>
+  <text x="155" y="224" font-size="9"  fill="#44dd88" font-family="serif">a−δ</text>
+  <text x="234" y="224" font-size="9"  fill="#44dd88" font-family="serif">a+δ</text>
+  <text x="8"   y="104" font-size="9"  fill="#ff6644" font-family="serif">L+ε</text>
+  <text x="8"   y="136" font-size="9"  fill="#ff6644" font-family="serif">L−ε</text>
+  <text x="20"  y="118" font-size="10" fill="#aaa"    font-family="serif" font-style="italic">L</text>
+  <!-- Annotation -->
+  <text x="48" y="45" font-size="10" fill="#aaa" font-family="sans-serif">0 &lt; |x − a| &lt; δ  ⟹  |f(x) − L| &lt; ε</text>
+  <text x="8" y="232" font-size="8" fill="#555" font-family="sans-serif">Vela original diagram · MAT1512 · epsilon-delta definition of limit</text>
+</svg>

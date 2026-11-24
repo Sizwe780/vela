@@ -1,0 +1,13 @@
+# Universal learning, subject-specific support
+
+Vela is a multi-subject platform. Current mathematics development reflects the first onboarded modules, not a requirement that every module show mathematical tools. Future pedagogy and related modules will have their own supporting developments and representations.
+
+Notes, recall, outcome evidence, recommendations, accessible navigation and opt-in collaboration are universal. Optional tools belong to explicit institution/module capability profiles in `.vela/module-capabilities.json`. Never infer capabilities from a code prefix or qualification membership. Unknown profiles retain universal learning and hide unregistered tools.
+
+Linear algebra may enable matrix transformations; calculus may enable Riemann and limit models. Education/PCK modules should expose relevant pedagogical tools without mathematical controls taking space in their workspace. Programming and future domains can register new tools without changing universal components. The conceptual-subject extension is Socratic debate: examine claims, assumptions, counterexamples and evidence one question at a time. Enable it explicitly for pedagogy, ethics or suitable theoretical modules; do not automatically place it in every maths workspace. Universal three-tier hints also support conceptual reasoning. See [tutor scaffolding](tutor-scaffolding-spec.md).
+
+Runtime visibility and generation domains are separate concerns. `.vela/specs/manifest.json` governs content requirements; capability profiles govern available UI tools. Register and test both when onboarding a module. Cross-module dashboards show a specialist tool only when an enrolled module supports it. Direct standalone practice routes remain authenticated optional exploration, not access to another module's sources or mastery.
+
+Capability enforcement must cover reader exercises, tutor controls, visual galleries and streamed widgets. Shared discussions are explicitly enabled by the learner, anchored to the current published source revision, and never reuse private notes/highlights automatically. Presence and social participation confer no assessed mastery.
+
+Trusted module records may override the registry with `Module.metadata.runtimeCapabilities: {"version":1,"tools":["pck","debate"]}`. This is operator-maintained metadata, never a student request field. Only registered tool names are valid; matrix/calculus require math. Invalid explicit overrides fail closed. Content-generation domain selection remains independent. Test both browser visibility and server rejection; hiding a control alone is insufficient.

@@ -1,0 +1,8 @@
+name = "vela-email-scheduler"
+main = "worker.ts"
+compatibility_date = "2026-11-17"
+[triggers]
+# Poll throughout the day; the app enforces 09:00–18:00 SAST for recall.
+crons = ["*/5 * * * *"]
+# Set VELA_ORIGIN to the real HTTPS origin and EMAIL_JOB_SECRET using wrangler secret put.
+# No database credentials or student information are needed by this trigger.

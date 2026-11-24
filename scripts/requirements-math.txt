@@ -1,0 +1,2 @@
+marker-pdf==2.1.0
+surya-ocr==0.23.0

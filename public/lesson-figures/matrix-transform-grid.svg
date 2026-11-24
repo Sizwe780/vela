@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 200" role="img" aria-label="Matrix transformation diagram showing a unit square on the left mapped by a 2x2 matrix to a parallelogram on the right, illustrating how matrices transform space">
+  <title>Matrix linear transformation — unit square to parallelogram</title>
+  <rect width="360" height="200" fill="#0f1117"/>
+  <defs>
+    <marker id="mt-arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#888"/>
+    </marker>
+    <marker id="mt-arrb" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4a9eff"/>
+    </marker>
+    <marker id="mt-arrg" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#44dd88"/>
+    </marker>
+  </defs>
+  <!-- LEFT: original space -->
+  <text x="10" y="16" font-size="10" fill="#888" font-family="sans-serif">Input space</text>
+  <!-- Grid lines light -->
+  <line x1="30" y1="40" x2="30" y2="160" stroke="#222" stroke-width="1"/>
+  <line x1="70" y1="40" x2="70" y2="160" stroke="#222" stroke-width="1"/>
+  <line x1="110" y1="40" x2="110" y2="160" stroke="#222" stroke-width="1"/>
+  <line x1="150" y1="40" x2="150" y2="160" stroke="#222" stroke-width="1"/>
+  <line x1="10" y1="60"  x2="160" y2="60"  stroke="#222" stroke-width="1"/>
+  <line x1="10" y1="100" x2="160" y2="100" stroke="#222" stroke-width="1"/>
+  <line x1="10" y1="140" x2="160" y2="140" stroke="#222" stroke-width="1"/>
+  <!-- Axes -->
+  <line x1="30" y1="140" x2="150" y2="140" stroke="#555" stroke-width="1.5" marker-end="url(#mt-arr)"/>
+  <line x1="30" y1="140" x2="30"  y2="40"  stroke="#555" stroke-width="1.5" marker-end="url(#mt-arr)"/>
+  <!-- Unit square: (0,0)(1,0)(1,1)(0,1) → at origin (30,140), scale 40px -->
+  <polygon points="30,140 70,140 70,100 30,100" fill="#4a9eff" fill-opacity="0.2" stroke="#4a9eff" stroke-width="1.5"/>
+  <!-- Basis vectors -->
+  <line x1="30" y1="140" x2="70"  y2="140" stroke="#4a9eff" stroke-width="2.5" marker-end="url(#mt-arrb)"/>
+  <line x1="30" y1="140" x2="30"  y2="100" stroke="#44dd88" stroke-width="2.5" marker-end="url(#mt-arrg)"/>
+  <text x="48"  y="156" font-size="10" fill="#4a9eff" font-family="serif" font-style="italic">e₁</text>
+  <text x="12"  y="122" font-size="10" fill="#44dd88" font-family="serif" font-style="italic">e₂</text>
+  <!-- ARROW in middle -->
+  <text x="162" y="105" font-size="22" fill="#aaa" font-family="sans-serif">→</text>
+  <text x="161" y="122" font-size="9"  fill="#888" font-family="sans-serif">T(x)=Ax</text>
+  <!-- RIGHT: transformed space -->
+  <text x="210" y="16" font-size="10" fill="#888" font-family="sans-serif">Output space</text>
+  <!-- Transformed grid (sheared: A = [[2,1],[0.5,1.5]]) -->
+  <!-- Transformed basis: Ae1=(2,0.5)*40=(80,20)px, Ae2=(1,1.5)*40=(40,60)px from origin (220,150) -->
+  <!-- Parallelogram corners: O=(220,150), Ae1=(300,130), Ae1+Ae2=(340,70), Ae2=(260,90) -->
+  <polygon points="220,150 300,130 340,70 260,90" fill="#4a9eff" fill-opacity="0.2" stroke="#4a9eff" stroke-width="1.5"/>
+  <!-- Transformed basis vectors -->
+  <line x1="220" y1="150" x2="300" y2="130" stroke="#4a9eff" stroke-width="2.5" marker-end="url(#mt-arrb)"/>
+  <line x1="220" y1="150" x2="260" y2="90"  stroke="#44dd88" stroke-width="2.5" marker-end="url(#mt-arrg)"/>
+  <text x="252" y="148" font-size="10" fill="#4a9eff" font-family="serif" font-style="italic">Ae₁</text>
+  <text x="234" y="102" font-size="10" fill="#44dd88" font-family="serif" font-style="italic">Ae₂</text>
+  <!-- Source note -->
+  <text x="8" y="192" font-size="8" fill="#555" font-family="sans-serif">Vela original diagram · MAT1503 · linear transformations</text>
+</svg>

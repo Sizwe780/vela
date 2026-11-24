@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 280" role="img" aria-label="Free-body diagram of a block on an inclined plane showing normal force, weight, and friction force as labelled arrows">
+  <title>Free-body diagram — block on inclined plane</title>
+  <rect width="300" height="280" fill="#0f1117"/>
+  <defs>
+    <marker id="fbd-arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="currentColor"/>
+    </marker>
+    <marker id="n-arr"  markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4a9eff"/></marker>
+    <marker id="w-arr"  markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#ff6644"/></marker>
+    <marker id="f-arr"  markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#44dd88"/></marker>
+  </defs>
+  <!-- Inclined surface -->
+  <line x1="30" y1="240" x2="260" y2="100" stroke="#666" stroke-width="2"/>
+  <line x1="30" y1="240" x2="260" y2="240" stroke="#666" stroke-width="1" stroke-dasharray="4,3"/>
+  <!-- Angle label -->
+  <path d="M 80 240 A 50 50 0 0 1 72 215" fill="none" stroke="#888" stroke-width="1"/>
+  <text x="84" y="232" font-size="11" fill="#aaa" font-family="serif" font-style="italic">θ</text>
+  <!-- Block on slope (rectangle rotated ~30deg) -->
+  <rect x="128" y="142" width="44" height="36" rx="3"
+        fill="#2a2a3a" stroke="#555" stroke-width="1.5"
+        transform="rotate(-30, 150, 160)"/>
+  <!-- Center of block approx (150, 162) -->
+  <!-- Normal force N perpendicular to slope (up-left from block) -->
+  <line x1="150" y1="160" x2="108" y2="91" stroke="#4a9eff" stroke-width="2.5" marker-end="url(#n-arr)"/>
+  <text x="98" y="90" font-size="12" fill="#4a9eff" font-family="serif" font-style="italic">N</text>
+  <!-- Weight W straight down -->
+  <line x1="150" y1="160" x2="150" y2="236" stroke="#ff6644" stroke-width="2.5" marker-end="url(#w-arr)"/>
+  <text x="154" y="238" font-size="12" fill="#ff6644" font-family="serif" font-style="italic">W = mg</text>
+  <!-- The block moves uphill, so friction points downhill. -->
+  <line x1="150" y1="160" x2="92.5" y2="195" stroke="#44dd88" stroke-width="2.5" marker-end="url(#f-arr)"/>
+  <text x="62" y="202" font-size="12" fill="#44dd88" font-family="serif" font-style="italic">f</text>
+  <!-- Title and note -->
+  <text x="10" y="20" font-size="11" fill="#aaa" font-family="sans-serif">Free-body diagram: block on inclined plane</text>
+  <text x="10" y="34" font-size="9" fill="#bbb" font-family="sans-serif">Block moving uphill · friction points downhill</text>
+  <text x="8"  y="272" font-size="8" fill="#555" font-family="sans-serif">Vela original diagram · PHY1505-U3 · Newton's Laws</text>
+</svg>

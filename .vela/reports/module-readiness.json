@@ -1,0 +1,196 @@
+{
+  "checkedAt": "2026-11-20T19:54:52.849Z",
+  "scope": "Configured module source pages, published lessons and provider-specific vectors; machine OCR is not an exhaustive mathematical fact audit.",
+  "modules": [
+    {
+      "code": "MAT1512",
+      "units": [
+        {
+          "code": "MAT1512-U1",
+          "sessions": 6,
+          "visualSessions": 2,
+          "expectedPages": 168
+        },
+        {
+          "code": "MAT1512-U2",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 70
+        },
+        {
+          "code": "MAT1512-U3",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 114
+        },
+        {
+          "code": "MAT1512-U4",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 86
+        },
+        {
+          "code": "MAT1512-U5",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 109
+        }
+      ],
+      "publishedSessions": 30,
+      "hiddenAnswerExercises": 179,
+      "validLessonMath": 335,
+      "interactiveSessions": 6,
+      "sourceMathExpressions": 35794,
+      "verifiedFigureAssets": 689,
+      "sourceCoverage": [
+        {
+          "provider": "cloudflare",
+          "pages": 547,
+          "expected": 547,
+          "missing": []
+        },
+        {
+          "provider": "ollama",
+          "pages": 547,
+          "expected": 547,
+          "missing": []
+        }
+      ],
+      "verifiedBlankPages": [],
+      "instructionalSourcePages": 547,
+      "vectors": [
+        {
+          "provider": "ollama",
+          "sourceMissing": 0,
+          "lessonMissing": 0,
+          "lessonChunks": 0
+        },
+        {
+          "provider": "cloudflare",
+          "sourceMissing": 0,
+          "lessonMissing": 0,
+          "lessonChunks": 0
+        }
+      ],
+      "issues": [],
+      "ready": true
+    },
+    {
+      "code": "MAT1503",
+      "units": [
+        {
+          "code": "MAT1503-U1",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 11
+        },
+        {
+          "code": "MAT1503-U2",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 17
+        },
+        {
+          "code": "MAT1503-U3",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 16
+        },
+        {
+          "code": "MAT1503-U4",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 16
+        },
+        {
+          "code": "MAT1503-U5",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 12
+        },
+        {
+          "code": "MAT1503-U6",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 9
+        },
+        {
+          "code": "MAT1503-U7",
+          "sessions": 6,
+          "visualSessions": 0,
+          "expectedPages": 10
+        },
+        {
+          "code": "MAT1503-U8",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 10
+        },
+        {
+          "code": "MAT1503-U9",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 8
+        },
+        {
+          "code": "MAT1503-U10",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 15
+        },
+        {
+          "code": "MAT1503-U11",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 26
+        },
+        {
+          "code": "MAT1503-U12",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 32
+        },
+        {
+          "code": "MAT1503-U13",
+          "sessions": 6,
+          "visualSessions": 1,
+          "expectedPages": 10
+        }
+      ],
+      "publishedSessions": 78,
+      "hiddenAnswerExercises": 468,
+      "validLessonMath": 975,
+      "interactiveSessions": 12,
+      "sourceMathExpressions": 5678,
+      "verifiedFigureAssets": 153,
+      "sourceCoverage": [
+        {
+          "provider": "cloudflare",
+          "pages": 192,
+          "expected": 192,
+          "missing": []
+        }
+      ],
+      "verifiedBlankPages": [
+        "mat1503-textbook:740"
+      ],
+      "instructionalSourcePages": 191,
+      "vectors": [
+        {
+          "provider": "ollama",
+          "sourceMissing": 0,
+          "lessonMissing": 0,
+          "lessonChunks": 182
+        },
+        {
+          "provider": "cloudflare",
+          "sourceMissing": 0,
+          "lessonMissing": 0,
+          "lessonChunks": 182
+        }
+      ],
+      "issues": [],
+      "ready": true
+    }
+  ]
+}

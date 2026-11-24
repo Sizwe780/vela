@@ -1,0 +1,11 @@
+[
+  {
+    "id": "limit-hole",
+    "type": "interactive",
+    "kind": "limit",
+    "title": "Approach a hole. Discover the limit.",
+    "caption": "For x different from 2, (x²−4)/(x−2) equals x+2. Both sides approach 4, although the value at 2 is undefined. This widget adapts the guide’s numerical tables.",
+    "initialX": 1.9,
+    "sourcePage": 14
+  }
+]

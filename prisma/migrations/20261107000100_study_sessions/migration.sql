@@ -1,0 +1,3 @@
+CREATE TABLE "StudySession"("id" TEXT PRIMARY KEY,"studyUnitId" TEXT NOT NULL REFERENCES "StudyUnit"("id") ON DELETE CASCADE ON UPDATE CASCADE,"position" INTEGER NOT NULL,"title" TEXT NOT NULL,"markdown" TEXT NOT NULL,"visual" TEXT,"concepts" JSONB NOT NULL,"version" INTEGER NOT NULL DEFAULT 1);
+CREATE UNIQUE INDEX "StudySession_studyUnitId_position_key" ON "StudySession"("studyUnitId","position");
+CREATE TABLE "SessionProgress"("studentId" TEXT NOT NULL,"sessionId" TEXT NOT NULL REFERENCES "StudySession"("id") ON DELETE CASCADE ON UPDATE CASCADE,"completedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY("studentId","sessionId"));

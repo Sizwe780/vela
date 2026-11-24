@@ -1,0 +1,86 @@
+.root {
+  margin-block: 1.5rem;
+  padding: clamp(1rem, 4vw, 1.5rem);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-card);
+  background: var(--surface-card);
+}
+.root h3,
+.detail h4 {
+  margin: 0;
+}
+.choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
+  gap: 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+.choices button {
+  min-height: 44px;
+  width: 100%;
+  height: 100%;
+  padding: 0.55rem 0.7rem;
+  text-align: start;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  font: inherit;
+}
+.choices button[aria-pressed="true"] {
+  border-color: var(--brand-strong);
+  background: var(--surface-soft);
+  font-weight: 700;
+}
+.detail {
+  padding: 1rem;
+  background: var(--surface-soft);
+  border-inline-start: 3px solid var(--brand-strong);
+}
+.detail p:last-child,
+.credit {
+  margin-bottom: 0;
+}
+.credit {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+.diagram {
+  display: block;
+  width: min(100%, 32rem);
+  margin: 1rem auto;
+  overflow: visible;
+}
+.diagram text {
+  fill: currentColor;
+  text-anchor: middle;
+  font: 14px system-ui;
+}
+.node {
+  fill: var(--brand-soft);
+  fill-opacity: 0.6;
+  stroke: var(--graph-primary);
+  stroke-width: 2;
+  transition:
+    fill-opacity 160ms ease,
+    stroke-width 160ms ease;
+}
+.node[data-active="true"] {
+  fill-opacity: 1;
+  stroke-width: 4;
+}
+.edges {
+  fill: none;
+  stroke: var(--graph-axis);
+  stroke-width: 2;
+}
+.edges[data-active="true"] {
+  stroke: var(--graph-primary);
+  stroke-width: 4;
+}
+@media (prefers-reduced-motion: reduce) {
+  .node {
+    transition: none;
+  }
+}

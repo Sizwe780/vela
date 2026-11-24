@@ -1,0 +1,6 @@
+{
+  "version": "0.15.6",
+  "executable": "compat-v0.15.6/bin/ollama.exe",
+  "archiveSha256": "35c52af3ff325266f9e5afd2f61e12942ef480b6ebab4ec8991c6ce44bed3c84",
+  "reason": "Verified Windows ARM64 compatibility build: model listing and Nomic embedding work under the current restricted Windows account; 0.40.14 returns Access is denied while resolving manifests."
+}

@@ -1,0 +1,65 @@
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  transform: translateY(-160%);
+  z-index: 1000;
+  padding: 12px 18px;
+  border-radius: var(--radius-control);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  border: 2px solid var(--focus-ring);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+input,
+textarea,
+select {
+  color: var(--text-primary);
+}
+textarea,
+input:not([type="checkbox"]):not([type="range"]) {
+  background: var(--surface-input);
+}
+::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+.chat-error,
+.quiz-error {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+.source-dialog {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .session-visual svg text,
+[data-theme="dark"] .chat-widget svg text,
+[data-theme="dark"] .tangent-explorer svg text {
+  fill: var(--text-secondary);
+}
+[data-theme="dark"] .session-visual svg,
+[data-theme="dark"] .chat-widget svg {
+  background: var(--surface-soft);
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.saved-highlight {
+  background: var(--highlight-background);
+  color: var(--text-primary);
+  border-radius: 3px;
+  padding: 1px 0;
+}
