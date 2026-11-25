@@ -52,8 +52,7 @@ jobs:
           NEXT_PUBLIC_APP_URL: https://velastudy.app
           # Needed at build time for Prisma / edge config
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          NEON_AUTH_SECRET_KEY: ${{ secrets.NEON_AUTH_SECRET_KEY }}
-          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          NEON_AUTH_COOKIE_SECRET: ${{ secrets.NEON_AUTH_COOKIE_SECRET }}
 
       # ── Stage standalone output ─────────────────────────────────────────────
       - name: Stage standalone deployment

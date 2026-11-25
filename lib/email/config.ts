@@ -1,7 +1,7 @@
 import { z } from "zod";
 export const EMAIL_CONSENT_VERSION = "recall-daily-v1";
 export type EmailConfig = {
-  provider: "brevo" | "resend";
+  provider: "brevo" | "resend" | "acs";
   mode: "test" | "live";
   apiKey: string;
   from: string;
@@ -19,8 +19,13 @@ export function emailConfig(
   const reply = z.string().email().safeParse(env.EMAIL_REPLY_TO);
   const test = z.string().email().safeParse(env.EMAIL_TEST_RECIPIENT);
   const provider = env.EMAIL_PROVIDER ?? "brevo";
-  if (provider !== "brevo" && provider !== "resend") return null;
-  const apiKey = provider === "resend" ? env.RESEND_API_KEY : env.BREVO_API_KEY;
+  if (provider !== "brevo" && provider !== "resend" && provider !== "acs") return null;
+  const apiKey =
+    provider === "resend"
+      ? env.RESEND_API_KEY
+      : provider === "acs"
+        ? env.ACS_CONNECTION_STRING
+        : env.BREVO_API_KEY;
   if (
     !from.success ||
     !reply.success ||
@@ -33,8 +38,7 @@ export function emailConfig(
     env.EMAIL_MODE === "live" &&
     from.data.toLowerCase().endsWith("@resend.dev")
   )
-    return null;
-  try {
+    return null;  try {
     const url = new URL(env.EMAIL_APP_URL!);
     if (url.username || url.password || url.pathname !== "/" || url.search || url.hash) return null;
     if (

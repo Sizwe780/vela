@@ -1,5 +1,6 @@
 import { mayEmail, type EmailConfig } from "./config";
 import { sendBrevo } from "./brevo";
+import { sendAcs } from "./acs";
 import { EmailSendError } from "./errors";
 export type EmailMessage = {
   id: string;
@@ -15,6 +16,7 @@ export async function sendEmail(
   fetcher: typeof fetch = fetch,
 ) {
   if (config.provider === "brevo") return sendBrevo(config, message, fetcher);
+  if (config.provider === "acs") return sendAcs(config, message, fetcher);
   if (!mayEmail(config, message.to)) throw new EmailSendError("TEST_RECIPIENT_BLOCKED");
   let response: Response;
   try {
