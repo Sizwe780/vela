@@ -1,0 +1,118 @@
+name: Deploy to Azure App Service
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://velastudy.app
+
+    steps:
+      # ── Checkout ────────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── Node / pnpm setup ───────────────────────────────────────────────────
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      # ── Install ─────────────────────────────────────────────────────────────
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # ── Prisma generate ─────────────────────────────────────────────────────
+      - name: Generate Prisma clients
+        run: pnpm run generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      # ── Build ───────────────────────────────────────────────────────────────
+      - name: Build Next.js (standalone)
+        run: pnpm run build
+        env:
+          # Public runtime config — safe to embed in the build
+          NEXT_PUBLIC_APP_URL: https://velastudy.app
+          # Needed at build time for Prisma / edge config
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEON_AUTH_SECRET_KEY: ${{ secrets.NEON_AUTH_SECRET_KEY }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+
+      # ── Stage standalone output ─────────────────────────────────────────────
+      - name: Stage standalone deployment
+        run: |
+          STAGE=deploy-stage
+          mkdir -p $STAGE
+
+          # Copy Next.js standalone server
+          cp -r .next/standalone/. $STAGE/
+
+          # Copy static assets (not included in standalone)
+          mkdir -p $STAGE/.next/static
+          cp -r .next/static/. $STAGE/.next/static/
+
+          # Copy public folder
+          cp -r public/. $STAGE/public/
+
+          # Copy Prisma generated clients (standalone omits these)
+          cp -r generated/. $STAGE/generated/
+
+          # Copy Prisma schema files (needed at runtime for migrations check)
+          mkdir -p $STAGE/prisma
+          cp -r prisma/. $STAGE/prisma/
+
+      # ── Package ──────────────────────────────────────────────────────────────
+      - name: Package deployment archive (POSIX paths)
+        run: |
+          cd deploy-stage
+          tar -czf ../vela-standalone.tar.gz .
+          cd ..
+          # Azure zip deploy accepts zip, convert tar.gz → zip via Python
+          python3 -c "
+          import tarfile, zipfile, io, os
+          with tarfile.open('vela-standalone.tar.gz') as tf:
+              with zipfile.ZipFile('vela-standalone.zip', 'w', zipfile.ZIP_DEFLATED) as zf:
+                  for member in tf.getmembers():
+                      if member.isfile():
+                          f = tf.extractfile(member)
+                          if f:
+                              zf.writestr(member.name.lstrip('./'), f.read())
+          print('Zip entries:', len(zipfile.ZipFile('vela-standalone.zip').namelist()))
+          "
+
+      # ── Deploy ───────────────────────────────────────────────────────────────
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: vela-web-app
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: vela-standalone.zip
+
+      # ── Smoke test ───────────────────────────────────────────────────────────
+      - name: Smoke test production
+        run: |
+          sleep 30
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://velastudy.app/)
+          echo "velastudy.app → HTTP $STATUS"
+          if [ "$STATUS" != "200" ]; then
+            echo "❌ Smoke test failed — site returned $STATUS"
+            exit 1
+          fi
+          echo "✅ Site is healthy"
