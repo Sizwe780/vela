@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { AccountMenu } from "./account-menu";
 import { LearningNav } from "./learning-nav";
@@ -7,11 +8,14 @@ import { NavigationDrawer } from "./navigation-drawer";
 export function VelaBrand() {
   return (
     <Link className="vela-brand" href="/" aria-label="Vela home">
-      <span className="vela-brand-mark" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-      </span>
+      <Image
+        src="/logo.png"
+        alt="Vela"
+        width={32}
+        height={32}
+        className="vela-brand-logo"
+        priority
+      />
       <span>
         vela<span className="vela-brand-accent">.</span>
       </span>

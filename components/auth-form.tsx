@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useState, type FormEvent } from "react";
 import { PasswordField } from "./password-field";
 import { authRecovery } from "../lib/auth/recovery";
@@ -75,6 +76,7 @@ export function AuthForm({
   return (
     <main id="main-content" tabIndex={-1} className="auth-shell">
       <Link className="brand" href="/">
+        <Image src="/logo.png" alt="Vela" width={48} height={48} className="auth-brand-logo" priority />
         vela.
       </Link>
       <section className="auth-card">
