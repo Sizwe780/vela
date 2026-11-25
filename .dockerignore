@@ -1,0 +1,14 @@
+node_modules
+.next
+.next-dev
+.git
+.github
+.env
+.env.*
+!.env.example
+.neon
+*.tsbuildinfo
+test-results
+playwright-report
+tests
+docs

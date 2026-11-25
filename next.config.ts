@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const config: NextConfig = {
+  output: "standalone",
   // Keep a running dev server from sharing generated files with production builds.
   distDir: process.env.NODE_ENV === "development" ? ".next-dev" : ".next",
   // Preserve precreated route directories in Windows workspace sandboxes.
