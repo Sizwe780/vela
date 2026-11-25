@@ -1,11 +1,24 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { streamText } from "ai";
-import { configuredAI } from "../lib/ai/config";
+import { configuredAI, embeddingProviderForChat } from "../lib/ai/config";
 import { createChatModel } from "../lib/ai/chat-model";
 import { embedTokens } from "../lib/ingest/embeddings";
 import { validateGeneratedQuiz, normalizeAnswer } from "../lib/quiz/generator";
 import { normalizeCloudflareStream } from "../lib/ai/cloudflare-stream";
+
+test("a chat-only production default keeps tutor retrieval in the Cloudflare embedding space", () => {
+  const primary = process.env.AI_PROVIDER;
+  try {
+    process.env.AI_PROVIDER = "groq";
+    for (const provider of [undefined, "groq", "gemini", "openrouter"] as const)
+      assert.equal(embeddingProviderForChat(provider), "cloudflare");
+    assert.equal(embeddingProviderForChat("ollama"), "ollama");
+  } finally {
+    if (primary === undefined) delete process.env.AI_PROVIDER;
+    else process.env.AI_PROVIDER = primary;
+  }
+});
 
 test("Cloudflare uses its own endpoint, credentials and text embeddings, never the saved OpenAI/Ollama settings", async () => {
   Object.assign(process.env, { AI_PROVIDER: "ollama", OPENAI_BASE_URL: "http://localhost:11434/v1", OPENAI_API_KEY: "must-not-leak", CHAT_MODEL: "llama3", EMBEDDING_MODEL: "nomic-embed-text", CLOUDFLARE_ACCOUNT_ID: "a".repeat(32), CLOUDFLARE_API_TOKEN: "cloudflare-test-token" });

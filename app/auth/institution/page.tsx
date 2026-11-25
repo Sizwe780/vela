@@ -1,3 +1,4 @@
+import { VelaLogo } from "../../../components/vela-logo";
 import Link from "next/link";
 import { prisma } from "../../../lib/db";
 import { ssoAvailable } from "../../../lib/institution/access";
@@ -27,7 +28,7 @@ export default async function InstitutionSignInPage({
   return (
     <main id="main-content" className="auth-shell" tabIndex={-1}>
       <Link className="brand" href="/">
-        vela.
+        <VelaLogo size={48} />
       </Link>
       <section className="auth-card">
         <h1>Institution sign-in</h1>

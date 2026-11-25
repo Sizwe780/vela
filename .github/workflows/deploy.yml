@@ -114,4 +114,6 @@ jobs:
             echo "❌ Smoke test failed — site returned $STATUS"
             exit 1
           fi
+          curl --fail --silent --show-error --output /dev/null https://velastudy.app/vela-tab-v2.svg
+          curl --fail --silent --show-error --output /dev/null https://velastudy.app/vela-logo-v2.png
           echo "✅ Site is healthy"

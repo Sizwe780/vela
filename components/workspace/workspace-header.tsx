@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { velaLogoSrc } from "../vela-logo";
 import { useRef } from "react";
 import type { StudyUnitView } from "../../lib/tutor/types";
 import { AccountMenu } from "../account-menu";
@@ -50,7 +51,7 @@ export function WorkspaceHeader({
   return (
     <header className="workspace-nav">
       <Link href="/" className="workspace-logo" aria-label="Vela learning home">
-        <Image src="/logo.png" alt="Vela" width={28} height={28} className="workspace-logo-img" priority />
+        <Image src={velaLogoSrc} alt="Vela" width={28} height={28} className="workspace-logo-img" priority />
         vela<span>.</span>
       </Link>
       <span className="workspace-focus-context">

@@ -72,11 +72,11 @@ export function getAIConfig(override?: AIProvider) {
   const chatModel = cloudflare
     ? process.env.CLOUDFLARE_CHAT_MODEL || "@cf/mistralai/mistral-small-3.1-24b-instruct"
     : groq
-      ? process.env.GROQ_CHAT_MODEL || "llama-3.3-70b-versatile"
+      ? process.env.GROQ_CHAT_MODEL || "openai/gpt-oss-120b"
       : gemini
-        ? process.env.GEMINI_CHAT_MODEL || "gemini-2.5-flash"
+        ? process.env.GEMINI_CHAT_MODEL || "gemini-3.1-flash-lite"
         : openrouter
-          ? process.env.OPENROUTER_CHAT_MODEL || "meta-llama/llama-3.1-8b-instruct:free"
+          ? process.env.OPENROUTER_CHAT_MODEL || "openrouter/free"
           : (primary ? process.env.CHAT_MODEL : undefined) ||
             (local ? process.env.OLLAMA_CHAT_MODEL || "llama3.2:3b" : "gpt-4o");
   const embeddingSpace: EmbeddingSpace = { provider, baseUrl, model, dimensions };
@@ -118,5 +118,10 @@ export function configuredAI(override?: AIProvider) {
 }
 
 export function embeddingProviderForChat(provider?: AIProvider): AIProvider | undefined {
+  const primaryProvider = process.env.AI_PROVIDER ?? "cloudflare";
+  if ((!provider || ["groq", "gemini", "openrouter"].includes(provider)) &&
+      ["groq", "gemini", "openrouter"].includes(primaryProvider)) {
+    return "cloudflare";
+  }
   return provider && ["groq", "gemini", "openrouter"].includes(provider) ? undefined : provider;
 }

@@ -34,6 +34,7 @@
   ],
   "exclude": [
     "node_modules",
-    "legacy-sqlite"
+    "legacy-sqlite",
+    "deploy-stage"
   ]
 }
