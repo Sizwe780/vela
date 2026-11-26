@@ -73,12 +73,16 @@ test("production serves the promoted lessons and their grounded tutor", async ({
         },
       });
       await page.goto(`/study/${unit}/sessions/${stored.id}`);
-      if (text) await expect(page.getByText(text, { exact: true }).first()).toBeVisible();
+      if (text) await expect(page.locator(".session-heading h2")).toHaveText(text);
       const example = page.locator(".try-example").first();
       await expect(example).toBeVisible();
       await expect(example.locator(".worked-answer")).toHaveCount(0);
-      await example.getByRole("button", { name: "Show answer" }).click();
-      await expect(example.locator(".worked-answer")).toBeVisible();
+      await expect(page.locator(".lesson-pacing")).toBeVisible();
+      await expect(async () => {
+        const reveal = example.getByRole("button", { name: "Show answer", exact: true });
+        if (await reveal.isVisible()) await reveal.click();
+        await expect(example.locator(".worked-answer")).toBeVisible({ timeout: 2000 });
+      }).toPass({ timeout: 30000 });
       await expect(page.locator(".katex-error")).toHaveCount(0);
       console.log("Production lesson verified", unit, session);
     }

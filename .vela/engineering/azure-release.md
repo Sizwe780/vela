@@ -26,3 +26,9 @@ Embedding endpoint metadata is part of the retrieval-space identity. If the prod
 Distinguish provider credential probes from end-to-end tutor verification: the latter also requires working authentication, enrollment, matching embedding spaces and current lesson evidence.
 
 For a provider-specific retry, set `VELA_PRODUCTION_TUTOR_ONLY=1` and `VELA_TEST_TUTOR_PROVIDERS=gemini` (or another comma-separated subset). Keep the default full test for final acceptance. A streaming HTTP 200 can still contain an error frame; the test checks both the stream and its cited lesson content.
+
+## Reading-first workspace release verification
+
+After Azure reports `RuntimeSuccessful` and the public build ID matches, run `tests/browser/reading-first.spec.ts` on both projects with the production database/auth configuration and `VELA_LIVE_RECALL=1`. This opts into real recall retrieval and rating for the disposable learner; without that flag the drawer response is mocked. Verify notes autosave, source and bookmark controls, hinted Companion opening/draft retention, guided pacing, pendulum fit, quantity/unit retries, encrypted download, wrong-passphrase rejection, and disconnected offline reload. Keep API/private HTML out of the service-worker cache.
+
+Then run the authorized production-release test for the real multi-module lesson and tutor checks. Wait for the lesson pacing UI before testing answer reveals; assert the session heading rather than hidden unit-summary copy. Never treat a transient rollout response or cached branding asset alone as release acceptance. Test-only updates do not change the already-built runtime.

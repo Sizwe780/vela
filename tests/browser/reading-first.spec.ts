@@ -112,24 +112,35 @@ test("reading first, live pendulum practice and encrypted offline lessons", asyn
       .fill("Private UX study note.");
     await expect(notes.getByRole("status")).toHaveText("Saved");
     await notes.getByRole("button", { name: "Close notes", exact: true }).click();
-    await page.route("**/api/recall", (route) =>
-      route.fulfill({
-        contentType: "application/json",
-        body: JSON.stringify({
-          cards: [
-            {
-              id: "synthetic",
-              prompt: "Recall a complete cycle",
-              answer: "Return to the same position and direction.",
-            },
-          ],
+    if (process.env.VELA_LIVE_RECALL !== "1")
+      await page.route("**/api/recall", (route) =>
+        route.fulfill({
+          contentType: "application/json",
+          body: JSON.stringify({
+            cards: [
+              {
+                id: "synthetic",
+                prompt: "Recall a complete cycle",
+                answer: "Return to the same position and direction.",
+              },
+            ],
+          }),
         }),
-      }),
-    );
+      );
     if (info.project.name === "mobile")
       await page.getByRole("button", { name: "Recall", exact: true }).click();
     else await page.getByRole("button", { name: "Practice active recall", exact: true }).click();
     await expect(page.getByRole("dialog", { name: "Active recall", exact: true })).toBeVisible();
+    if (process.env.VELA_LIVE_RECALL === "1") {
+      const recall = page.getByRole("dialog", { name: "Active recall", exact: true });
+      await expect(recall.locator(".recall-count")).toContainText("Card 1 of", { timeout: 60000 });
+      await recall.getByRole("button", { name: "Reveal / hide answer", exact: true }).click();
+      await expect(recall.locator(".recall-answer")).not.toBeEmpty();
+      const rating = recall.getByRole("button", { name: "Good", exact: true });
+      await rating.click();
+      await expect(recall.locator(".recall-count")).not.toContainText("Card 1 of");
+      console.log("Live recall retrieved, revealed and rated", info.project.name);
+    }
     await page.getByRole("button", { name: "Close recall", exact: true }).click();
     await page.locator(".workspace-more-menu>summary").click();
     await page.getByRole("button", { name: "Source library", exact: true }).click();
