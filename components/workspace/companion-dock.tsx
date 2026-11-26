@@ -43,15 +43,6 @@ export function CompanionDock({
         onClose();
       }}
     >
-      <button
-        type="button"
-        className="companion-close"
-        onClick={onClose}
-        title="Close companion; your conversation stays here"
-        aria-label="Close companion"
-      >
-        Close companion ×
-      </button>
       {children}
     </dialog>
   );

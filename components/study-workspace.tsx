@@ -355,6 +355,11 @@ export function StudyWorkspace({
         ];
 
   sessionNavRef.current = selectSession;
+  function closeCompanion() {
+    setCompanionOpen(false);
+    setMobilePanel("reader");
+    window.dispatchEvent(new Event("vela-stop-audio"));
+  }
   return (
     <ModuleCapabilitiesProvider capabilities={unit.capabilities ?? universalCapabilities}>
       <div
@@ -425,15 +430,9 @@ export function StudyWorkspace({
             onAskCompanion={focusCompanion}
           />
           <WorkspaceDivider width={display.width} onResize={display.update} />
-          <CompanionDock
-            open={companionOpen}
-            onClose={() => {
-              setCompanionOpen(false);
-              setMobilePanel("reader");
-              window.dispatchEvent(new Event("vela-stop-audio"));
-            }}
-          >
+          <CompanionDock open={companionOpen} onClose={closeCompanion}>
             <CompanionPanel
+              onClose={closeCompanion}
               studyUnitId={unit.id}
               sessionId={activeSessionId}
               mobilePanel={mobilePanel}

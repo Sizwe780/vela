@@ -160,17 +160,29 @@
   border-radius: 0;
   min-width: 0;
 }
-.companion-close {
-  align-self: flex-end;
-  margin: 8px 12px 0;
-  padding: 5px 9px;
+.companion-header .companion-close {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 40px;
+  width: 40px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
   border: 0;
+  border-radius: 10px;
   background: transparent;
   color: var(--text-muted);
   font: inherit;
-  font-size: 12px;
+  font-size: 24px;
   cursor: pointer;
-  min-height: 32px;
+}
+.companion-header .companion-close:hover {
+  background: var(--surface-hover, var(--surface-muted));
+  color: var(--text-primary);
+}
+.companion-header .companion-close:focus-visible {
+  outline: 2px solid var(--accent, #285849);
+  outline-offset: -2px;
 }
 .companion-launcher {
   position: fixed;

@@ -42,6 +42,7 @@ type CompanionPanelProps = {
   setInput: (value: string) => void;
   stop: () => void | Promise<void>;
   onReset: () => void;
+  onClose: () => void;
   onRetry: () => void;
 };
 export function CompanionPanel({
@@ -74,6 +75,7 @@ export function CompanionPanel({
   setInput,
   stop,
   onReset,
+  onClose,
   onRetry,
 }: CompanionPanelProps) {
   const capabilities = useModuleCapabilities();
@@ -138,6 +140,26 @@ export function CompanionPanel({
           }}
         >
           ↺
+        </button>
+        <button
+          type="button"
+          className="companion-close"
+          onClick={onClose}
+          title="Close companion; your conversation stays here"
+          aria-label="Close companion"
+        >
+          <svg
+            viewBox="0 0 20 20"
+            width="18"
+            height="18"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            aria-hidden="true"
+          >
+            <path d="m5 5 10 10M15 5 5 15" />
+          </svg>
         </button>
       </header>
       <div className="tutor-session-context">
