@@ -6,6 +6,7 @@ import { normalizeMath, mathSpans } from "../content/math";
 import { getAIConfig } from "../ai/config";
 import { IngestError } from "../ingest/errors";
 import type { TutorInput } from "./input";
+import { tutorPacingInstructions } from "./pacing";
 const text = (n: number) =>
   z
     .string()
@@ -158,6 +159,8 @@ export async function guidedReply(
       role: "system",
       content:
         trustedSystem +
+        "\n" +
+        tutorPacingInstructions(input.pace) +
         "\nOUTPUT CONTRACT: Return only valid JSON in the exact shape below; this replaces the usual Markdown heading/exercise format for this drafting step. Do not add keys. " +
         format,
     },

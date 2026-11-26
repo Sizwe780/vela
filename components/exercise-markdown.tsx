@@ -39,7 +39,12 @@ function Exercise({
         citations={citations}
         onCitation={onCitation}
       />
-      <InlinePractice practiceId={`${title}\n${question}`} question={question} revealed={shown} />
+      <InlinePractice
+        title={title}
+        practiceId={`${title}\n${question}`}
+        question={question}
+        revealed={shown}
+      />
       <div className="exercise-actions">
         <button
           type="button"

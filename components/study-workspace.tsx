@@ -310,9 +310,6 @@ export function StudyWorkspace({
   }
   async function ask(text: string, hintTier?: 1 | 2 | 3) {
     if (!text.trim() || busy) return;
-    if (!unit.preview && hintTier === undefined && text.trim() === "Check my understanding") {
-      changePace("transfer");
-    }
     hintRef.current = hintTier;
     lastQuestion.current = text.trim();
     clearError();
@@ -324,6 +321,8 @@ export function StudyWorkspace({
   }
   function changePace(next: TutorPace) {
     if (busy) return;
+    window.dispatchEvent(new Event("vela-stop-audio"));
+    clearError();
     paceRef.current = next;
     setPace(next);
     if (next === "transfer") {

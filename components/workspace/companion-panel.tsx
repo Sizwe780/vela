@@ -11,6 +11,7 @@ import { messageText } from "../../lib/tutor/chat-history";
 import { Icon } from "../icons";
 import { CitationList } from "./citation-list";
 import Link from "next/link";
+import { TutorPacing } from "./tutor-pacing";
 const modeLabels = { academic: "Academic Master", pck: "CAPS Didactics / PCK" };
 type CompanionPanelProps = {
   studyUnitId: string;
@@ -168,19 +169,7 @@ export function CompanionPanel({
         {liveTutor && strategy === "debate" && (
           <span className="preview-response-label">Socratic debate</span>
         )}
-        {liveTutor && (
-          <select
-            className="tutor-pace"
-            aria-label="Tutor pacing"
-            title="Deep transfer guides you through one question per turn"
-            disabled={busy}
-            value={pace}
-            onChange={(event) => onPaceChange(event.currentTarget.value as TutorPace)}
-          >
-            <option value="normal">Normal</option>
-            <option value="transfer">Deep transfer</option>
-          </select>
-        )}
+        {liveTutor && <TutorPacing value={pace} disabled={busy} onChange={onPaceChange} />}
       </div>
       <div
         className="chat-scroll"

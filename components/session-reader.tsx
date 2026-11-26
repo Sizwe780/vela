@@ -3,6 +3,7 @@ import { useStudentResource } from "../lib/student/client";
 import { PrerequisiteLinks } from "./learning/prerequisite-links";
 import { SessionTools } from "./session-tools";
 import { PacedLesson } from "./paced-lesson";
+import { PracticeSessionContext, type PracticeSession } from "./written-practice";
 import { OfflineLessonButton } from "./offline/offline-lesson-button";
 import { useEffect, useState } from "react";
 import { notifyProgress } from "../lib/progress-events";
@@ -17,18 +18,22 @@ function LessonBody({
   markdown,
   visual,
   onAsk,
+  practiceSession,
 }: {
   highlights?: string[];
   markdown: string;
   visual: string | null;
   onAsk?: (title: string, question: string) => void;
+  practiceSession: PracticeSession;
 }) {
   return (
-    <PacedLesson
-      highlights={highlights}
-      markdown={inlineSessionVisual(markdown, visual)}
-      onAsk={onAsk}
-    />
+    <PracticeSessionContext.Provider value={practiceSession}>
+      <PacedLesson
+        highlights={highlights}
+        markdown={inlineSessionVisual(markdown, visual)}
+        onAsk={onAsk}
+      />
+    </PracticeSessionContext.Provider>
   );
 }
 export function SessionReader({
@@ -174,6 +179,12 @@ export function SessionReader({
         sourceId={session.id}
       >
         <LessonBody
+          practiceSession={{
+            ownerId: saved.userId ?? "",
+            studyUnitId: unit.id,
+            sessionId: session.id,
+            version: session.version ?? 1,
+          }}
           key={`lesson:${session.id}:${session.version ?? 1}`}
           highlights={highlights}
           onAsk={onAsk}

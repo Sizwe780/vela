@@ -15,3 +15,15 @@ Offline reading supports math/chemistry rendering, gated exercises, declared loc
 ## Verification
 
 Run typecheck, validate, unit tests and build. tests/browser/reading-first.spec.ts exercises a real PHY1503 session at desktop and 360px: display, guided pacing, simulated fit, units/retry, companion draft retention, notes autosave, source and bookmark actions, encrypted download, incorrect passphrase rejection and offline reload. Recall opening is mocked in that test; it does not certify live grading. Legacy browser tests that assume an always-visible companion or old toolbar locations must be updated when touched.
+
+## Checking written practice across domains
+
+Every published session exercise offers an attempt field and Check my attempt. Reviewed exact quantity/choice bindings remain local deterministic checks. Other responses use POST /api/practice/check for explicitly labelled formative AI feedback, grounded in the exact server-loaded exercise and worked solution. The client supplies an attempt and exercise identity, never an authoritative answer key, score or verdict. Enrollment is checked before and after review; owner mismatch, ambiguity, edited questions and changed revisions are rejected. Source quotes are validated internally and not returned as an answer-key field.
+
+AI feedback uses correct/partial/incorrect/unverified estimates with one next step. It can be wrong; no StudentMastery, ConceptCheck, BKT or institutional grade is written. A practice reviewed by AI is counted separately from a deterministic local check. Low confidence or unsupported evidence yields needs review, never a correctness claim. Provider errors preserve the draft and allow retry. The existing coach request allowance applies. Answer reveals remain independent and gated. Requests are cancelled on exercise/account changes, with no storage of the submitted draft by this feature; configured model providers process the submitted answer when the learner presses Check my attempt.
+
+Offline downloads retain exact local checks. Broader written feedback needs connectivity and a current authenticated enrolled session; it does not silently guess correctness offline. Generated chat examples and arbitrary legacy text without a registered session exercise cannot impersonate published exercises.
+
+## Pacing controls
+
+Normal and Deep transfer use keyboard-accessible segmented radio pills, with explicit server-side pacing instructions on each request. The selected pace is carried by the current request, not inferred from conversation history. Switching preserves drafts/history, stops stale spoken audio and clears old request errors; controls are disabled while streaming. Check my understanding respects the selected pace. Deep transfer uses validated structured drafts with one focused question per turn; Normal uses the standard answer stream with direct, proportionate explanations. Explicit hint tiers and debate still take precedence for their turn. A synthetic live model probe is distinct from a full real-lesson RAG certification.

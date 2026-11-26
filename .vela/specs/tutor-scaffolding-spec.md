@@ -21,7 +21,7 @@ Normal pacing answers the immediate question. For a learner stuck on a step, sho
 
 Deep transfer uses at most one focused question per turn. Begin with a single check, respond briefly to the student's latest attempt, and only then choose the next step. A successful explanation can lead to a changed-context application. A repeated error can lead to a linked prerequisite refresher from the current session's curated concept map. Frame the link as a check to try. Conversation history alone cannot award mastery or establish the cause of a difficulty.
 
-The live `Check my understanding` shortcut selects Deep transfer. The student can switch to Normal at any time. Deep transfer, hint tiers and conceptual debate use bounded validated drafts, with the explicitly selected hint or debate taking precedence for that turn.
+The live `Check my understanding` shortcut respects the selected pacing instead of silently changing it. The student can switch between Normal and Deep transfer without losing their draft or conversation. The active server-side pacing instruction takes precedence over pacing shown in earlier conversation turns. Deep transfer, hint tiers and conceptual debate use bounded validated drafts, with the explicitly selected hint or debate taking precedence for that turn.
 
 ## Socratic debate / devil's advocate
 

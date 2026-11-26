@@ -20,6 +20,7 @@ import { guidedReply } from "../../../lib/tutor/guided";
 import { scaffoldInstructions } from "../../../lib/tutor/scaffolding";
 import { logServerError } from "../../../lib/log-error";
 import { conceptGraph } from "../../../lib/learning/graph";
+import { needsGuidedReply } from "../../../lib/tutor/pacing";
 export const runtime = "nodejs";
 export const maxDuration = 300;
 const repository = createTutorRepository({ query: (statement) => prisma.$queryRaw(statement) });
@@ -42,8 +43,7 @@ export async function POST(request: Request) {
         signal: request.signal,
       });
     }
-    const guided =
-      input.hintTier !== undefined || input.strategy === "debate" || input.pace === "transfer";
+    const guided = needsGuidedReply(input);
     const learner = await requireLearner();
     const unitId = await requireUnitAccess(learner.id, input.studyUnitId);
     const unit = await prisma.studyUnit.findUnique({

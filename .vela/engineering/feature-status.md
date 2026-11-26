@@ -37,3 +37,7 @@ Science ingestion update: CHE1501 U1-U8 are sequentially numbered in Neon stagin
 ## Reading-first workspace (26 November 2026)
 
 Centered reader, on-demand companion/bottom sheet, Display menu, guided outline, reviewed local practice, animated pendulum and encrypted explicit offline lessons are implemented. See [workspace contract](reading-workspace.md) for evidence boundaries and offline limitations. Public assets build with offline:build; no API/private HTML service-worker cache.
+
+Written-practice feedback: shared session checker added across domains, with exact local bindings retained and AI estimates explicitly separated from mastery. Enrollment, owner, source matching and revision checks are enforced by /api/practice/check. Live cross-module verification is recorded in the task evidence; do not infer psychometric accuracy from transport tests.
+
+Tutor pacing: Normal/Deep transfer segmented pills replace the dropdown; current-pace instructions apply server-side and Deep retains structured one-question validation. The understanding shortcut respects the chosen pace. Synthetic live behavior and isolated transport/UI checks are separate evidence.

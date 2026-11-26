@@ -1,52 +1,41 @@
 "use client";
 import { createContext, useContext, useId, useState } from "react";
 import { practiceCheck, checkPracticeQuantity } from "../lib/content/practice-checks";
-export type PracticeStatus = "tried" | "checked" | "revealed";
+import { PracticeSessionContext, WrittenPractice } from "./written-practice";
+export type PracticeStatus = "tried" | "checked" | "revealed" | "reviewed";
 export const PracticeContext = createContext<((id: string, status: PracticeStatus) => void) | null>(
   null,
 );
 export function InlinePractice({
   question,
+  title = "Practice",
   practiceId,
   revealed = false,
 }: {
   question: string;
+  title?: string;
   practiceId: string;
   revealed?: boolean;
 }) {
   const spec = practiceCheck(question),
+    session = useContext(PracticeSessionContext),
     report = useContext(PracticeContext),
     id = useId();
   const [values, setValues] = useState<Record<number, string>>({}),
     [units, setUnits] = useState<Record<number, string>>({}),
     [choice, setChoice] = useState<number | null>(null),
-    [reason, setReason] = useState(""),
     [feedback, setFeedback] = useState(""),
     [checked, setChecked] = useState(false);
   if (!spec)
     return (
-      <div className="inline-practice">
-        <label htmlFor={id}>
-          Your reasoning{" "}
-          <span className="practice-status">
-            {revealed ? "Answer explored" : reason.trim() ? "Tried" : "Unanswered"}
-          </span>
-        </label>
-        <textarea
-          id={id}
-          value={reason}
-          maxLength={3000}
-          placeholder="Try a few lines before opening the solution…"
-          onChange={(e) => {
-            setReason(e.target.value);
-            report?.(practiceId, "tried");
-          }}
-        />
-        <small>
-          Compare your reasoning with the worked answer, or ask the tutor. Writing alone does not
-          verify correctness.
-        </small>
-      </div>
+      <WrittenPractice
+        key={`${session?.ownerId}:${session?.sessionId}:${session?.version}:${practiceId}`}
+        session={session}
+        title={title}
+        question={question}
+        revealed={revealed}
+        onStatus={(status) => report?.(practiceId, status)}
+      />
     );
   function submit() {
     let ok = false,

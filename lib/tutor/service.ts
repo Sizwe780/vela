@@ -8,6 +8,7 @@ import { parseTutorInput } from "./input";
 import { localTutorPrompt } from "./local-prompt";
 import { buildTutorPrompt } from "./prompt";
 import { toCitations, type TutorRepository } from "./retrieval";
+import { tutorPacingInstructions } from "./pacing";
 
 export async function prepareTutor(
   value: unknown,
@@ -64,7 +65,9 @@ ACTIVE PUBLISHED SESSION: ${session.title} (revision ${session.version}). This s
 BEGIN SESSION DATA
 ${session.markdown}
 END SESSION DATA`
-        : ""),
+        : "") +
+      "\n" +
+      tutorPacingInstructions(input.pace),
     messages: [...history, { role: "user" as const, content: input.query }],
   };
 }

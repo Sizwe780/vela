@@ -31,7 +31,8 @@ export function PacedLesson({
     [],
   );
   const tried = Object.keys(attempts).filter((k) => keys.has(k)).length,
-    checked = Object.entries(attempts).filter(([k, s]) => keys.has(k) && s === "checked").length;
+    checked = Object.entries(attempts).filter(([k, s]) => keys.has(k) && s === "checked").length,
+    reviewed = Object.entries(attempts).filter(([k, s]) => keys.has(k) && s === "reviewed").length;
   useEffect(() => {
     if (guided) return;
     const nodes = sections
@@ -104,7 +105,8 @@ export function PacedLesson({
           <div className="lesson-practice-meter">
             <progress aria-label="Practice questions attempted" max={keys.size} value={tried} />
             <small>
-              {tried}/{keys.size} tried · {checked} locally checked. Separate from assessed mastery.
+              {tried}/{keys.size} tried · {checked} locally checked
+              {reviewed > 0 ? ` · ${reviewed} AI reviewed` : ""}. Separate from assessed mastery.
             </small>
           </div>
         )}

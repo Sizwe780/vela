@@ -54,8 +54,12 @@ test("staged chemistry units render formulas, reveal answers and run original si
         page.getByRole("heading", { name: "Reaction classes", exact: true }),
       ).toBeVisible({ timeout: 2_000 });
       await expect(page.getByRole("heading", { name: "Stoichiometry", exact: true })).toBeVisible();
-      await expect(page.getByRole("heading", { name: "Solutions and concentrations", exact: true })).toBeVisible();
-      await expect(page.getByRole("heading", { name: "Chemical equilibrium", exact: true })).toBeVisible();
+      await expect(
+        page.getByRole("heading", { name: "Solutions and concentrations", exact: true }),
+      ).toBeVisible();
+      await expect(
+        page.getByRole("heading", { name: "Chemical equilibrium", exact: true }),
+      ).toBeVisible();
       await expect(page.getByRole("heading", { name: "Gases", exact: true })).toBeVisible();
     }).toPass({ timeout: 20_000 });
     await expect(
@@ -124,11 +128,15 @@ test("staged chemistry units render formulas, reveal answers and run original si
     await balancing.getByLabel("First coefficient").fill("2");
     await balancing.getByLabel("Second coefficient").fill("1");
     await balancing.getByLabel("Product coefficient").fill("2");
-    await expect(balancing.getByText("Balanced: the coefficients are in the smallest whole-number ratio.")).toBeVisible();
+    await expect(
+      balancing.getByText("Balanced: the coefficients are in the smallest whole-number ratio."),
+    ).toBeVisible();
     await balancing.getByLabel("First coefficient").fill("4");
     await balancing.getByLabel("Second coefficient").fill("2");
     await balancing.getByLabel("Product coefficient").fill("4");
-    await expect(balancing.getByText(/Reduce the coefficients to the smallest whole-number ratio/)).toBeVisible();
+    await expect(
+      balancing.getByText(/Reduce the coefficients to the smallest whole-number ratio/),
+    ).toBeVisible();
     await page.goto("/study/CHE1501-U4/sessions/CHE1501-U4-S4");
     const redox = page.locator(".science-sandbox");
     await expect(redox.getByLabel("Redox example")).toHaveValue("zinc");
@@ -252,8 +260,9 @@ test("staged chemistry units render formulas, reveal answers and run original si
       await page.route("**/api/tutor", (route) => route.abort("internetdisconnected"), {
         times: 1,
       });
+      await page.getByRole("radio", { name: "Deep transfer", exact: true }).click();
       await page.getByRole("button", { name: "Check my understanding" }).click();
-      await expect(page.getByRole("combobox", { name: "Tutor pacing" })).toHaveValue("transfer");
+      await expect(page.getByRole("radio", { name: "Deep transfer", exact: true })).toBeChecked();
       await expect(page.getByText("Check my understanding", { exact: true })).toBeVisible();
       const tutor = page.getByRole("log", { name: "Tutor conversation" });
       await page.getByRole("button", { name: "Try again" }).click();
