@@ -41,6 +41,7 @@ test("mode switching, streaming chat, source citations and new conversation", as
   await expect(page.getByRole("dialog",{name:"Source preview"})).toHaveCount(0);
   if (testInfo.project.name === "mobile") await page.getByRole("button", { name: "Learning companion", exact: true }).click();
   await page.getByRole("button", { name: "Start a new conversation" }).click();
+  await page.getByRole("alertdialog", { name: "Start a new chat?" }).getByRole("button", { name: "Start new chat", exact: true }).click();
   await expect(page.locator(".chat-message")).toHaveCount(0);
   await page.getByRole("button", { name: "Academic Master", exact: true }).click();
   await expect(page.getByRole("button",{name:"Academic Master",exact:true})).toHaveAttribute("aria-pressed","true");

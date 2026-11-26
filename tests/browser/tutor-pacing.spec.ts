@@ -93,6 +93,47 @@ test("pacing pills preserve drafts and send the selected pace on every turn", as
     await expect.poll(() => submissions.length).toBe(3);
     await expect(normal).toBeEnabled();
     expect(submissions[2]).toMatchObject({ pace: "normal", mode: "academic" });
+    await expect(page.locator(".chat-message")).toHaveCount(6);
+    await input.fill("Keep this unsent draft");
+    const reset = page.getByRole("button", { name: "Start a new conversation", exact: true });
+    const close = page.getByRole("button", { name: "Close companion", exact: true });
+    await expect(reset).toHaveAttribute("title", "New chat");
+    await expect(reset).toHaveText("");
+    await expect(close).toHaveAttribute("title", "Close companion");
+    expect(await reset.evaluate((el) => getComputedStyle(el, "::after").content)).not.toContain(
+      "New chat",
+    );
+    const resetBox = (await reset.boundingBox())!,
+      closeBox = (await close.boundingBox())!;
+    expect(
+      Math.abs(resetBox.y + resetBox.height / 2 - closeBox.y - closeBox.height / 2),
+    ).toBeLessThan(2);
+    expect(
+      await page.locator(".companion-header").evaluate((el) => el.scrollWidth - el.clientWidth),
+    ).toBeLessThanOrEqual(1);
+    await reset.hover();
+    await reset.click();
+    const confirmation = page.getByRole("alertdialog", { name: "Start a new chat?", exact: true });
+    await expect(confirmation).toBeVisible();
+    await expect(confirmation.getByRole("button", { name: "Cancel", exact: true })).toBeFocused();
+    await confirmation.getByRole("button", { name: "Cancel", exact: true }).click();
+    await expect(input).toHaveValue("Keep this unsent draft");
+    await expect(page.locator(".chat-message")).toHaveCount(6);
+    await reset.click();
+    await page.keyboard.press("Escape");
+    await expect(confirmation).toBeHidden();
+    await expect(
+      page.getByRole("dialog", { name: "Academic Master companion", exact: true }),
+    ).toBeVisible();
+    await expect(input).toHaveValue("Keep this unsent draft");
+    await reset.click();
+    await page.screenshot({ path: info.outputPath("new-chat-confirmation.png") });
+    await confirmation.getByRole("button", { name: "Start new chat", exact: true }).click();
+    await expect(page.locator(".chat-message")).toHaveCount(0);
+    await expect(input).toHaveValue("");
+    await expect(input).toBeFocused();
+    await page.screenshot({ path: info.outputPath("icon-only-companion-header.png") });
+
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );

@@ -12,6 +12,7 @@ import { Icon } from "../icons";
 import { CitationList } from "./citation-list";
 import Link from "next/link";
 import { TutorPacing } from "./tutor-pacing";
+import { NewChatControl } from "./new-chat-control";
 const modeLabels = { academic: "Academic Master", pck: "CAPS Didactics / PCK" };
 type CompanionPanelProps = {
   studyUnitId: string;
@@ -130,23 +131,20 @@ export function CompanionPanel({
             }
           />
         )}
-        <button
-          className="reset-chat"
-          title="New conversation"
-          aria-label="Start a new conversation"
+        <NewChatControl
+          key={`${studyUnitId}:${sessionId ?? "unit"}`}
           disabled={busy}
-          onClick={() => {
+          onConfirm={() => {
             window.dispatchEvent(new Event("vela-stop-audio"));
             onReset();
+            requestAnimationFrame(() => inputRef.current?.focus());
           }}
-        >
-          ↺
-        </button>
+        />
         <button
           type="button"
           className="companion-close"
           onClick={onClose}
-          title="Close companion; your conversation stays here"
+          title="Close companion"
           aria-label="Close companion"
         >
           <svg
