@@ -243,6 +243,11 @@ function BoundDiscussionScope({
   }
   return (
     <section className="discussion-scope" aria-label="Paragraph discussions">
+      <DiscussionContext.Provider
+        value={enabled && data && !stale ? { paragraphs: data.paragraphs, counts, open } : null}
+      >
+        {children}
+      </DiscussionContext.Provider>
       <div className="discussion-opt-in">
         <button
           type="button"
@@ -265,11 +270,7 @@ function BoundDiscussionScope({
           posted automatically.
         </small>
       </div>
-      <DiscussionContext.Provider
-        value={enabled && data && !stale ? { paragraphs: data.paragraphs, counts, open } : null}
-      >
-        {children}
-      </DiscussionContext.Provider>
+
       {enabled && (
         <div className="peer-discussions" ref={panel} tabIndex={-1}>
           <h3>Discuss a paragraph</h3>

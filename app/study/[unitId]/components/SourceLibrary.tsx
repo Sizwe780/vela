@@ -7,9 +7,11 @@ type Page = { id: string; document: string; pageStart: number; review: string };
 export function SourceLibrary({
   unitId,
   triggerRef,
+  hiddenTrigger = false,
 }: {
   unitId: string;
   triggerRef?: Ref<HTMLButtonElement>;
+  hiddenTrigger?: boolean;
 }) {
   const [open, setOpen] = useState(false),
     [pages, setPages] = useState<Page[]>([]),
@@ -41,7 +43,12 @@ export function SourceLibrary({
   }
   return (
     <>
-      <button ref={triggerRef} className="notes-trigger" onClick={() => void show()}>
+      <button
+        hidden={hiddenTrigger}
+        ref={triggerRef}
+        className="notes-trigger"
+        onClick={() => void show()}
+      >
         Source library
       </button>
       {open && (

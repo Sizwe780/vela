@@ -2,7 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import { authClient } from "../lib/auth/client";
 import { IDLE_MS, PULSE_MS } from "../lib/activity/time";
-export function StudyTimer({ sessionId }: { sessionId: string }) {
+export function StudyTimer({
+  sessionId,
+  compact = false,
+}: {
+  sessionId: string;
+  compact?: boolean;
+}) {
   const { data } = authClient.useSession();
   const owner = data?.user?.id;
   const [choice, setChoice] = useState<{ owner?: string; enabled: boolean }>({ enabled: false });
@@ -121,14 +127,25 @@ export function StudyTimer({ sessionId }: { sessionId: string }) {
   const seconds = recorded.owner === owner ? recorded.seconds : 0;
   const counter = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
   return (
-    <div className="study-timer" aria-label="Focused study timer">
+    <div
+      className={`study-timer ${compact ? "study-timer-compact" : ""}`}
+      aria-label="Focused study timer"
+    >
       <button
         type="button"
         disabled={!owner}
+        title="Optional focused-time tracking. Pauses while away or idle; activity is separate from mastery."
+        aria-label={enabled ? `Pause study timer · ${counter}` : "Start study timer"}
         aria-pressed={enabled}
         onClick={() => setChoice({ owner, enabled: !enabled })}
       >
-        {enabled ? `Pause timer · ${counter}` : "Start study timer"}
+        {compact
+          ? enabled
+            ? counter
+            : "Timer"
+          : enabled
+            ? `Pause timer · ${counter}`
+            : "Start study timer"}
       </button>
       <span role="status">
         {enabled

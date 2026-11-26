@@ -1,4 +1,5 @@
 "use client";
+import { InlinePractice } from "./inline-practice";
 import { useId, useState } from "react";
 import { parseLearningBlocks } from "../lib/content/exercises";
 import type { Citation } from "../lib/tutor/types";
@@ -38,6 +39,7 @@ function Exercise({
         citations={citations}
         onCitation={onCitation}
       />
+      <InlinePractice practiceId={`${title}\n${question}`} question={question} revealed={shown} />
       <div className="exercise-actions">
         <button
           type="button"

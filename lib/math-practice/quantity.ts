@@ -47,6 +47,28 @@ function lookup(symbol: string): Unit {
 function parseUnit(raw: string): Unit {
   const input = raw
     .trim()
+    .replace(
+      /[⁻⁰¹²³⁴⁵⁶⁷⁸]+/g,
+      (exponent) =>
+        "^" +
+        [...exponent]
+          .map(
+            (c) =>
+              ({
+                "⁻": "-",
+                "⁰": "0",
+                "¹": "1",
+                "²": "2",
+                "³": "3",
+                "⁴": "4",
+                "⁵": "5",
+                "⁶": "6",
+                "⁷": "7",
+                "⁸": "8",
+              })[c],
+          )
+          .join(""),
+    )
     .replace(/\\(?:mathrm|text)\{([A-Za-zμ]+)\}/g, "$1")
     .replace(/\\cdot|\\times|[·⋅×]/g, "*")
     .replace(/\^\{(-?\d+)\}/g, "^$1")
@@ -112,4 +134,10 @@ export function checkQuantity(reference: Quantity, next: Quantity): MathFeedback
       message: error instanceof Error ? error.message : "This quantity could not be checked.",
     };
   }
+}
+
+/** Shared, bounded SI conversion for rounding-tolerant practice checks. */
+export function quantitySI(quantity: Quantity) {
+  const unit = parseUnit(quantity.unit);
+  return { value: siValue(quantity, unit), dimensions: unit.dimensions };
 }

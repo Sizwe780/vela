@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate --generator appClient && node scripts/prepare-build.mjs && next build --webpack",
+    "build": "prisma generate --generator appClient && node scripts/prepare-build.mjs && node scripts/build-offline.mjs && next build --webpack",
     "start": "next start",
     "test": "tsx --test tests/*.test.ts",
     "test:e2e": "playwright test",
@@ -61,9 +61,10 @@
     "content:ocr": "node --require ./scripts/windows-runtime.cjs --import tsx scripts/content-ocr.ts",
     "content:batch": "node --require ./scripts/windows-runtime.cjs --import tsx scripts/content-batch.ts",
     "content:generate": "node --require ./scripts/windows-runtime.cjs --import tsx scripts/generate-sessions.ts",
-    "predev": "node scripts/prepare-math-assets.mjs && node scripts/prepare-coach-worker.mjs",
+    "predev": "node scripts/build-offline.mjs",
     "prebuild": "node scripts/prepare-math-assets.mjs && node scripts/prepare-coach-worker.mjs",
-    "pretest": "node scripts/prepare-coach-worker.mjs"
+    "pretest": "node scripts/prepare-coach-worker.mjs",
+    "offline:build": "node scripts/build-offline.mjs"
   },
   "dependencies": {
     "@ai-sdk/openai": "3.0.137",

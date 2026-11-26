@@ -50,7 +50,7 @@ export function SessionTools({
   }
   return (
     <div ref={container} className="session-tools" role="toolbar" aria-label="Session tools">
-      <div>
+      <div className="session-overflow">
         <SavePassageButton
           studyUnitId={studyUnitId}
           sourceType="session"

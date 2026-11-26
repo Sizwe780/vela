@@ -32,7 +32,7 @@ export async function renderStudyWorkspace(unitId: string, initialSessionId?: st
   if (initialSessionId && !unit.sessions?.some((s) => s.id === initialSessionId)) notFound();
   return (
     <StudyWorkspace
-      key={`${unit.id}:${initialSessionId ?? "first"}`}
+      key={`${session.data?.user?.id ?? "preview"}:${unit.id}:${initialSessionId ?? "first"}`}
       initialSessionId={initialSessionId}
       unit={unit}
     />

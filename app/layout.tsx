@@ -19,6 +19,7 @@ import "./practice-notebook.css";
 import "./social-learning.css";
 import "./vela-design.css";
 import "./vela-pages.css";
+import "./workspace-upgrade.css";
 import { themeInitScript } from "../lib/theme";
 
 export const metadata = {

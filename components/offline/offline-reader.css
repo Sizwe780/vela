@@ -1,0 +1,100 @@
+html {
+  color-scheme: light;
+  background: #f8f8f2;
+  color: #263e36;
+  font-family: system-ui, sans-serif;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 880px;
+  margin: auto;
+  padding: 24px;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #d8dfd3;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+h1,
+h2 {
+  font-family: Georgia, serif;
+}
+p {
+  line-height: 1.8;
+}
+button,
+input {
+  font: inherit;
+  border: 1px solid #bccbbb;
+  border-radius: 10px;
+  padding: 12px;
+  background: white;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+  margin: 6px;
+}
+button:disabled {
+  opacity: 0.5;
+}
+label {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+}
+section.try-example,
+main > section {
+  border: 1px solid #d8dfd3;
+  padding: 16px;
+  border-radius: 14px;
+  margin: 20px 0;
+}
+small {
+  display: block;
+}
+svg {
+  max-width: 100%;
+  width: 100%;
+}
+.markdown {
+  overflow-wrap: anywhere;
+}
+.katex-display {
+  overflow-x: auto;
+  padding: 8px 0;
+}
+.lab-slider-controls {
+  display: flex;
+  align-items: center;
+}
+.lab-slider-controls input {
+  min-width: 0;
+  flex: 1;
+}
+.inline-practice textarea {
+  width: 95%;
+  min-height: 80px;
+}
+.inline-practice fieldset {
+  border: 1px solid #d8dfd3;
+  border-radius: 8px;
+}
+.inline-practice[data-checked] {
+  border-left: 4px solid #285849;
+  padding-left: 12px;
+}
+a {
+  color: #285849;
+}
+.pendulum-stage svg {
+  height: 200px;
+}
+.offline-model {
+  border-left: 3px solid #bc8b35;
+  padding: 12px;
+}

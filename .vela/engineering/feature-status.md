@@ -33,3 +33,7 @@ Earlier-tranche verification snapshot: 149 unit tests, 12 focused browser checks
 Current Academic Master release: 159 unit tests and 10 focused browser checks passed across follow-up runs, plus typecheck, schema validation, formatting and build. Live AI retesting remains pending the Cloudflare allowance reset; see the [Academic Master verification report](../reports/2026-11-19-academic-master-verification.md).
 
 Science ingestion update: CHE1501 U1-U8 are sequentially numbered in Neon staging. U4-U6 cover reactions, stoichiometry and concentrations; U7 covers equilibrium/Q/K; U8 covers ideal-gas relationships. Historical U7 kinetics, U9 acid-base equilibria and U10 thermochemistry remain excluded from the CHE1501 exam scope. Old U11 links redirect to U8; session identities are preserved. Practical Lab has particle, dilution, equilibrium and gas chambers. Qualified subject review remains required before promotion. See the [science workflow](science-ingestion.md) and [CHE1501 crosswalk](../reports/CHE1501-current-source-crosswalk.md).
+
+## Reading-first workspace (26 November 2026)
+
+Centered reader, on-demand companion/bottom sheet, Display menu, guided outline, reviewed local practice, animated pendulum and encrypted explicit offline lessons are implemented. See [workspace contract](reading-workspace.md) for evidence boundaries and offline limitations. Public assets build with offline:build; no API/private HTML service-worker cache.

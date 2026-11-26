@@ -16,6 +16,7 @@ import {
   useWorkspaceLayout,
   WorkspaceDivider,
 } from "./workspace/workspace-display";
+import { CompanionDock } from "./workspace/companion-dock";
 import { PanelToggle } from "./workspace/panel-toggle";
 import { ModuleCapabilitiesProvider } from "./module-capabilities";
 import { universalCapabilities } from "../lib/capabilities";
@@ -66,6 +67,7 @@ export function StudyWorkspace({
   const aiRef = useRef(aiChoice);
   aiRef.current = aiChoice;
   const [input, setInput] = useState("");
+  const [companionOpen, setCompanionOpen] = useState(false);
   const [mobilePanel, setMobilePanel] = useState<"reader" | "tutor">("reader");
   const [showLegacy, setShowLegacy] = useState(false);
   const hasStructured = unit.documents.some((document) => document.structuredContent);
@@ -77,7 +79,7 @@ export function StudyWorkspace({
     [unit.documents, hasStructured, showLegacy],
   );
   const [readerTab, setReaderTab] = useState<"text" | "outcomes" | "source">(
-    unit.documents.some((document) => document.structuredContent)
+    unit.sessions?.length || unit.documents.some((document) => document.structuredContent)
       ? "text"
       : unit.moduleInfo?.sources.length
         ? "source"
@@ -207,6 +209,47 @@ export function StudyWorkspace({
     }
   }, [input]);
 
+  const previousSelection = useRef("");
+  useEffect(() => {
+    previousSelection.current = "";
+    const selectedPassage = (event: Event) => {
+      const selection = window.getSelection(),
+        text = selection?.toString().trim() ?? "",
+        reader = document.getElementById("workspace-reader");
+      if (!text) {
+        previousSelection.current = "";
+        return;
+      }
+      if (
+        !(event.target instanceof Element) ||
+        event.target.closest("input,textarea,button,select,a,summary,math-field")
+      )
+        return;
+      if (
+        !selection ||
+        !reader?.contains(selection.anchorNode) ||
+        !reader.contains(selection.focusNode) ||
+        text.length < 12 ||
+        text.length > 2000 ||
+        text === previousSelection.current
+      )
+        return;
+      previousSelection.current = text;
+      setInput(`Help me understand this passage:\n${text}`);
+      setCompanionOpen(true);
+      setMobilePanel("tutor");
+    };
+    const key = (event: KeyboardEvent) => {
+      if (event.key === "Shift") selectedPassage(event);
+    };
+    document.addEventListener("mouseup", selectedPassage);
+    document.addEventListener("keyup", key);
+    return () => {
+      document.removeEventListener("mouseup", selectedPassage);
+      document.removeEventListener("keyup", key);
+    };
+  }, [unit.id, activeSessionId]);
+
   async function openCitation(id: string) {
     if (!availableChunks.some((chunk) => chunk.id === id)) {
       try {
@@ -252,6 +295,7 @@ export function StudyWorkspace({
     focusCompanion();
   }
   function focusCompanion() {
+    setCompanionOpen(true);
     setMobilePanel("tutor");
     inputRef.current?.focus();
   }
@@ -274,6 +318,7 @@ export function StudyWorkspace({
     clearError();
     setFollowing(true);
     setInput("");
+    setCompanionOpen(true);
     setMobilePanel("tutor");
     await sendMessage({ text: text.trim() });
   }
@@ -316,8 +361,12 @@ export function StudyWorkspace({
         ref={focus.workspace}
         className="workspace workspace-editorial"
         data-focus={focus.focused || undefined}
+        data-companion-open={companionOpen || undefined}
       >
         <WorkspaceHeader
+          fontSize={fontSize}
+          setFontSize={setFontSize}
+          messages={messages}
           activeSessionId={activeSessionId}
           unit={unit}
           dismissed={dismissed}
@@ -339,7 +388,13 @@ export function StudyWorkspace({
           noteClip={noteClip}
           onClipHandled={() => setNoteClip(null)}
         />
-        <PanelToggle panel={mobilePanel} onChange={setMobilePanel} />
+        <PanelToggle
+          panel={mobilePanel}
+          onChange={(panel) => {
+            setMobilePanel(panel);
+            setCompanionOpen(panel === "tutor");
+          }}
+        />
         <main
           id="main-content"
           tabIndex={-1}
@@ -370,56 +425,72 @@ export function StudyWorkspace({
             onAskCompanion={focusCompanion}
           />
           <WorkspaceDivider width={display.width} onResize={display.update} />
-          <CompanionPanel
-            studyUnitId={unit.id}
-            sessionId={activeSessionId}
-            mobilePanel={mobilePanel}
-            sessionTitle={unit.sessions?.find((s) => s.id === activeSessionId)?.title ?? unit.title}
-            mode={mode}
-            pace={pace}
-            onPaceChange={changePace}
-            strategy={strategy}
-            onStrategyChange={(next) => {
-              if (busy) return;
+          <CompanionDock
+            open={companionOpen}
+            onClose={() => {
+              setCompanionOpen(false);
+              setMobilePanel("reader");
               window.dispatchEvent(new Event("vela-stop-audio"));
-              strategyRef.current = next;
-              setStrategy(next);
-              if (next === "debate") changePace("normal");
-              hintRef.current = undefined;
-              clearError();
             }}
-            onHint={(tier) => void ask(input.trim() || lastQuestion.current, tier)}
-            hasHintQuestion={!!(input.trim() || lastQuestion.current)}
-            liveTutor={!unit.preview}
-            busy={busy}
-            switchMode={switchMode}
-            ask={ask}
-            messages={messages}
-            chatScroll={chatScroll}
-            setFollowing={setFollowing}
-            suggestions={suggestions}
-            setNoteClip={setNoteClip}
-            openCitation={openCitation}
-            status={status}
-            error={error}
-            submit={submit}
-            inputRef={inputRef}
-            input={input}
-            setInput={setInput}
-            stop={stop}
-            onReset={() => {
-              setMessages([]);
-              clearError();
-              setInput("");
-              hintRef.current = undefined;
-              lastQuestion.current = "";
-            }}
-            onRetry={() => {
-              clearError();
-              void regenerate();
-            }}
-          />
+          >
+            <CompanionPanel
+              studyUnitId={unit.id}
+              sessionId={activeSessionId}
+              mobilePanel={mobilePanel}
+              sessionTitle={
+                unit.sessions?.find((s) => s.id === activeSessionId)?.title ?? unit.title
+              }
+              mode={mode}
+              pace={pace}
+              onPaceChange={changePace}
+              strategy={strategy}
+              onStrategyChange={(next) => {
+                if (busy) return;
+                window.dispatchEvent(new Event("vela-stop-audio"));
+                strategyRef.current = next;
+                setStrategy(next);
+                if (next === "debate") changePace("normal");
+                hintRef.current = undefined;
+                clearError();
+              }}
+              onHint={(tier) => void ask(input.trim() || lastQuestion.current, tier)}
+              hasHintQuestion={!!(input.trim() || lastQuestion.current)}
+              liveTutor={!unit.preview}
+              busy={busy}
+              switchMode={switchMode}
+              ask={ask}
+              messages={messages}
+              chatScroll={chatScroll}
+              setFollowing={setFollowing}
+              suggestions={suggestions}
+              setNoteClip={setNoteClip}
+              openCitation={openCitation}
+              status={status}
+              error={error}
+              submit={submit}
+              inputRef={inputRef}
+              input={input}
+              setInput={setInput}
+              stop={stop}
+              onReset={() => {
+                setMessages([]);
+                clearError();
+                setInput("");
+                hintRef.current = undefined;
+                lastQuestion.current = "";
+              }}
+              onRetry={() => {
+                clearError();
+                void regenerate();
+              }}
+            />
+          </CompanionDock>
         </main>
+        {!companionOpen && (
+          <button className="companion-launcher" type="button" onClick={focusCompanion}>
+            ✦ {busy ? "Companion is thinking…" : "Ask your companion"}
+          </button>
+        )}
         {selected && (
           <SourceDrawer onClose={closeCitation}>
             <SourceDrawerContent

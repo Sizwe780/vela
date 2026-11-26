@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { ReactNode } from "react";
 import {
   axialExtension,
@@ -24,6 +24,7 @@ import {
   type Measurement,
   type PhysicsWorkshopId,
 } from "../../lib/sandboxes/physics";
+import { PendulumMotion } from "./pendulum-motion";
 import styles from "./physics-workshop.module.css";
 
 function Workshop({ title, children }: { title: string; children: ReactNode }) {
@@ -52,23 +53,45 @@ function Slider({
   value: number;
   change: (value: number) => void;
 }) {
+  const id = useId();
+  const adjust = (direction: number) =>
+    change(Math.max(min, Math.min(max, Number((value + direction * step).toFixed(8)))));
   return (
-    <label className={styles.slider}>
-      <span>
+    <div className={styles.slider}>
+      <label htmlFor={id}>
         {label}{" "}
         <strong>
           {value} {unit}
         </strong>
-      </span>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => change(e.currentTarget.valueAsNumber)}
-      />
-    </label>
+      </label>
+      <div className="lab-slider-controls">
+        <button
+          type="button"
+          aria-label={`Decrease ${label}`}
+          disabled={value <= min}
+          onClick={() => adjust(-1)}
+        >
+          −
+        </button>
+        <input
+          id={id}
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => change(e.currentTarget.valueAsNumber)}
+        />
+        <button
+          type="button"
+          aria-label={`Increase ${label}`}
+          disabled={value >= max}
+          onClick={() => adjust(1)}
+        >
+          +
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -169,31 +192,19 @@ function InstrumentBench() {
   );
 }
 
-function PendulumBench() {
+export function PendulumBench() {
   const [length, setLength] = useState(0.8);
   const [angle, setAngle] = useState(6);
   const [trials, setTrials] = useState<Measurement[]>([]);
   const trial = pendulumTrial(length);
   const fit = linearFit(trials);
-  const drawingLength = 35 + (90 * length) / 1.5;
-  const angleRadians = (angle * Math.PI) / 180;
-  const x = 190 + drawingLength * Math.sin(angleRadians);
-  const y = 20 + drawingLength * Math.cos(angleRadians);
   return (
     <Workshop title="Pendulum bench">
       <p>
         Virtual preparation. The model assumes a point bob, light string, negligible drag and a
         small release angle.
       </p>
-      <svg
-        viewBox="0 0 380 160"
-        role="img"
-        aria-label="Pendulum released to the right of the vertical equilibrium line"
-      >
-        <path d="M165 19h50 M190 20v126" stroke="currentColor" strokeDasharray="4 3" />
-        <line x1="190" y1="20" x2={x} y2={y} stroke="currentColor" strokeWidth="2" />
-        <circle cx={x} cy={y} r="10" fill="currentColor" />
-      </svg>
+      <PendulumMotion length={length} angle={angle} period={trial.period} />
       <Slider
         label="Pivot to bob centre"
         unit="m"
@@ -222,12 +233,17 @@ function PendulumBench() {
       >
         Record simulated time for 20 swings
       </button>
+      <Scatter points={trials} xLabel="Length (m)" yLabel="Period squared (s²)" trend origin />
       {trials.length > 0 && (
         <>
           <p>Latest recording: {(20 * Math.sqrt(trials.at(-1)!.y)).toFixed(2)} s.</p>
-          <Scatter points={trials} xLabel="Length (m)" yLabel="Period squared (s²)" trend />
+
           {fit && fit.slope > 0 ? (
-            <p>From the fitted slope, g = {((4 * Math.PI ** 2) / fit.slope).toFixed(2)} m/s².</p>
+            <p className="lab-fit-readout" role="status">
+              Fitted slope = {fit.slope.toFixed(3)} s²/m · estimated g ={" "}
+              {((4 * Math.PI ** 2) / fit.slope).toFixed(2)} m/s². These are ideal simulated
+              readings, not physical lab measurements.
+            </p>
           ) : (
             <p>Record three distinct lengths to estimate g.</p>
           )}
@@ -540,25 +556,58 @@ function Scatter({
   yLabel,
   cursor,
   trend = false,
+  origin = false,
 }: {
   points: Measurement[];
   xLabel: string;
   yLabel: string;
   cursor?: number;
   trend?: boolean;
+  origin?: boolean;
 }) {
   const fit = trend ? linearFit(points) : null;
-  const xMin = Math.min(...points.map((p) => p.x - p.dx));
-  const xMax = Math.max(...points.map((p) => p.x + p.dx));
+  const xMin = Math.min(
+    ...points.map((p) => p.x - p.dx),
+    ...(origin ? [0] : points.length ? [] : [0]),
+  );
+  const xMax = Math.max(
+    ...points.map((p) => p.x + p.dx),
+    ...(origin ? [1.5] : points.length ? [] : [1]),
+  );
   const fittedEnds = fit
     ? [fit.intercept + fit.slope * xMin, fit.intercept + fit.slope * xMax]
     : [];
-  const yMin = Math.min(...points.map((p) => p.y - p.dy), ...fittedEnds);
-  const yMax = Math.max(...points.map((p) => p.y + p.dy), ...fittedEnds);
+  const yMin = Math.min(
+    ...points.map((p) => p.y - p.dy),
+    ...fittedEnds,
+    ...(origin ? [0] : points.length ? [] : [0]),
+  );
+  const yMax = Math.max(
+    ...points.map((p) => p.y + p.dy),
+    ...fittedEnds,
+    ...(origin ? [6.5] : points.length ? [] : [1]),
+  );
   const horizontal = (x: number) => 58 + 286 * (xMax === xMin ? 0.5 : (x - xMin) / (xMax - xMin));
   const vertical = (y: number) => 137 - 103 * (yMax === yMin ? 0.5 : (y - yMin) / (yMax - yMin));
   return (
     <svg viewBox="0 0 375 175" role="img" aria-label={`${yLabel} versus ${xLabel}`}>
+      <g stroke="currentColor" opacity="0.12">
+        {[0, 1, 2, 3, 4].map((i) => (
+          <g key={i}>
+            <path d={`M58 ${137 - (i * 103) / 4}H344`} />
+            <path d={`M${58 + (i * 286) / 4} 31V137`} />
+          </g>
+        ))}
+      </g>
+      {origin && (
+        <circle
+          aria-label="Zero-origin reference"
+          cx={horizontal(0)}
+          cy={vertical(0)}
+          r="3"
+          fill="currentColor"
+        />
+      )}
       <path d="M58 31v106h288" fill="none" stroke="currentColor" />
       <g fill="currentColor" fontSize="10">
         <text x="14" y="20">

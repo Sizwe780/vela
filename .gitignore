@@ -29,3 +29,7 @@ generated/coach-cas/
 .vs/
 /deploy-stage/
 /vela-standalone.tar.gz
+
+/public/offline-assets/
+
+/.next-workspace-ux/

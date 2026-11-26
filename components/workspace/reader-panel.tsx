@@ -58,6 +58,7 @@ export function ReaderPanel({
   return (
     <section
       className={`reader-panel ${mobilePanel === "reader" ? "mobile-active" : ""}`}
+      data-reading-session={(!!unit.sessions?.length && readerTab === "text") || undefined}
       id="workspace-reader"
       aria-label="Study material"
     >
@@ -86,38 +87,6 @@ export function ReaderPanel({
             onClick={() => setReaderTab("outcomes")}
           >
             Learning outcomes <span>{unit.outcomes.length}</span>
-          </button>
-        </div>
-        <div className="font-controls" aria-label="Reading text size">
-          <RecallDrawer
-            chatSourceId={messages
-              .flatMap((m) =>
-                m.parts.flatMap((p) =>
-                  p.type === "data-citations" ? p.data.sources.map((s) => s.chunkId) : [],
-                ),
-              )
-              .at(-1)}
-            studyUnitId={unit.id}
-            chat={messages
-              .filter((m) => m.role === "assistant")
-              .map(messageText)
-              .join("\n\n")}
-          />
-          <button
-            type="button"
-            aria-label="Decrease text size"
-            disabled={fontSize <= 15}
-            onClick={() => setFontSize((size) => Math.max(15, size - 1))}
-          >
-            A−
-          </button>
-          <button
-            type="button"
-            aria-label="Increase text size"
-            disabled={fontSize >= 21}
-            onClick={() => setFontSize((size) => Math.min(21, size + 1))}
-          >
-            A+
           </button>
         </div>
       </div>

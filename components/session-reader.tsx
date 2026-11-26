@@ -2,7 +2,8 @@
 import { useStudentResource } from "../lib/student/client";
 import { PrerequisiteLinks } from "./learning/prerequisite-links";
 import { SessionTools } from "./session-tools";
-import { StudyTimer } from "./study-timer";
+import { PacedLesson } from "./paced-lesson";
+import { OfflineLessonButton } from "./offline/offline-lesson-button";
 import { useEffect, useState } from "react";
 import { notifyProgress } from "../lib/progress-events";
 import { ExerciseMarkdown } from "./exercise-markdown";
@@ -23,9 +24,9 @@ function LessonBody({
   onAsk?: (title: string, question: string) => void;
 }) {
   return (
-    <ExerciseMarkdown
+    <PacedLesson
       highlights={highlights}
-      text={inlineSessionVisual(markdown, visual)}
+      markdown={inlineSessionVisual(markdown, visual)}
       onAsk={onAsk}
     />
   );
@@ -128,29 +129,37 @@ export function SessionReader({
         </small>
         <h2 tabIndex={-1}>{session.title}</h2>
       </div>
-      {(session.version ?? 1) > 1 && (
-        <p className="revision-notice">
-          Expanded lesson · saved milestones are retained. Revisit the new checks; completion is
-          separate from assessed mastery.
-        </p>
-      )}
       {!unit.preview && unit.moduleId && (
-        <PrerequisiteLinks moduleId={unit.moduleId} sessionId={session.id} />
+        <details className="session-prerequisites">
+          <summary>Before you begin · prerequisites</summary>
+          <PrerequisiteLinks moduleId={unit.moduleId} sessionId={session.id} />
+        </details>
       )}
-      <div className="session-actions">
-        <SessionTools
-          key={`tools:${session.id}`}
-          studyUnitId={unit.id}
-          sessionId={session.id}
-          lesson={session}
-        />
-        {!unit.preview && <StudyTimer sessionId={session.id} />}
-        {!unit.preview && unit.moduleId && saved.userId && (
-          <button type="button" aria-expanded={roomOpen} onClick={() => setRoomOpen((v) => !v)}>
-            {roomOpen ? "Close study room" : "Study room"}
-          </button>
-        )}
-      </div>
+      <details className="session-more">
+        <summary>⋯ Lesson tools</summary>
+        <div className="session-actions">
+          <SessionTools
+            key={`tools:${session.id}`}
+            studyUnitId={unit.id}
+            sessionId={session.id}
+            lesson={session}
+          />
+          {!unit.preview && (
+            <OfflineLessonButton
+              lesson={{
+                ...session,
+                markdown: inlineSessionVisual(session.markdown, session.visual),
+                moduleCode: unit.moduleCode,
+              }}
+            />
+          )}
+          {!unit.preview && unit.moduleId && saved.userId && (
+            <button type="button" aria-expanded={roomOpen} onClick={() => setRoomOpen((v) => !v)}>
+              {roomOpen ? "Close study room" : "Study room"}
+            </button>
+          )}
+        </div>
+      </details>
       {roomOpen && unit.moduleId && saved.userId && (
         <StudyRoom
           key={unit.moduleId + ":" + saved.userId}
@@ -165,7 +174,7 @@ export function SessionReader({
         sourceId={session.id}
       >
         <LessonBody
-          key={`lesson:${session.id}`}
+          key={`lesson:${session.id}:${session.version ?? 1}`}
           highlights={highlights}
           onAsk={onAsk}
           markdown={session.markdown}
