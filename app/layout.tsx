@@ -32,8 +32,8 @@ export const metadata = {
   description: "A focused learning workspace for subject understanding and classroom practice.",
   icons: {
     icon: [
-      { url: "/vela-tab-v2.ico", sizes: "16x16 32x32 48x48", type: "image/x-icon" },
-      { url: "/vela-tab-v2.svg", sizes: "any", type: "image/svg+xml" },
+      { url: "/vela-tab-v3.ico", sizes: "16x16 32x32 48x48", type: "image/x-icon" },
+      { url: "/vela-tab-v3-32.png", sizes: "32x32", type: "image/png" },
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
     other: [{ url: "/icon-192x192.png", sizes: "192x192", type: "image/png" }],

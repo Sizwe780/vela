@@ -615,7 +615,7 @@ function Scatter({
 function MotionGrapher() {
   const [velocity, setVelocity] = useState(4);
   const [acceleration, setAcceleration] = useState(-2);
-  const [time, setTime] = useState(2);
+  const [time, setTime] = useState(0);
   const sample = straightLineMotion(velocity, acceleration, time);
   const timeline = Array.from({ length: 61 }, (_, i) => i / 10);
   return (

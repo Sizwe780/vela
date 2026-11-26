@@ -81,7 +81,8 @@ export default async function Sessions({ params }: { params: Promise<{ unitId: s
           <section>
             <h2>Your progress</h2>
             <p>
-              {done} of {unit.sessions.length} sessions complete
+              {done} of {unit.sessions.length} {unit.sessions.length === 1 ? "session" : "sessions"}{" "}
+              complete
             </p>
             {unit.sessions.length > 0 && (
               <progress aria-label="Sessions complete" value={done} max={unit.sessions.length} />

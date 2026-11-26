@@ -18,7 +18,7 @@ export function DensitySandbox({
           className="bench-vessel"
           viewBox="68 0 135 126"
           role="img"
-          aria-label={`Cylinder filled to ${volume} millilitres`}
+          aria-label={`Cylinder filled to ${volume} ${volume === 1 ? "millilitre" : "millilitres"}`}
         >
           <rect
             x="82"
@@ -56,7 +56,7 @@ export function DensitySandbox({
               step="5"
               value={mass}
               onChange={(event) => setMass(event.currentTarget.valueAsNumber)}
-              aria-valuetext={`${mass} grams`}
+              aria-valuetext={`${mass} ${mass === 1 ? "gram" : "grams"}`}
             />
           </label>
           <label>
@@ -68,7 +68,7 @@ export function DensitySandbox({
               step="5"
               value={volume}
               onChange={(event) => setVolume(event.currentTarget.valueAsNumber)}
-              aria-valuetext={`${volume} millilitres`}
+              aria-valuetext={`${volume} ${volume === 1 ? "millilitre" : "millilitres"}`}
             />
           </label>
         </div>

@@ -13,7 +13,10 @@ export function ConceptProgress() {
     <section className={styles.card} aria-label="Conceptual practice progress">
       <h2>Explain it. Make it yours.</h2>
       <p>
-        <strong>{data.points} conceptual points</strong> across {data.outcomes} outcomes.
+        <strong>
+          {data.points} {data.points === 1 ? "conceptual point" : "conceptual points"}
+        </strong>{" "}
+        across {data.outcomes} {data.outcomes === 1 ? "outcome" : "outcomes"}.
       </p>
       <small>
         AI-assisted teaching practice, capped at 10 points per outcome. Session completion and

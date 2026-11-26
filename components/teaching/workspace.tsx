@@ -163,7 +163,8 @@ export function TeachingWorkspace() {
                 </Panel>
                 <Panel title="Assignments">
                   <p>
-                    {data.assignments.length} recent assignments ·{" "}
+                    {data.assignments.length}{" "}
+                    {data.assignments.length === 1 ? "recent assignment" : "recent assignments"} ·{" "}
                     {data.assignments.reduce(
                       (total, assignment) => total + assignment._count.submissions,
                       0,

@@ -2,6 +2,8 @@
 
 This directory records product rules, architecture and verification expectations for contributors. It is not a chronological activity log. Start here before adding a learning feature.
 
+Production operations: [direct Azure release runbook](engineering/azure-release.md) and [26 November release verification](reports/production-release-2026-11-26.md).
+
 ## Read in this order
 
 1. [Architecture and boundaries](engineering/architecture.md).

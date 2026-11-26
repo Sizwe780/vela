@@ -121,7 +121,12 @@ export async function checkMathStep(request: MathCheckRequest): Promise<MathFeed
             message:
               request.mode === "antiderivative"
                 ? "The proposed line's derivative does not match the integrand. Inspect the residual for a sign or coefficient error."
-                : "These lines differ at the displayed test input. Check the signs, coefficients and brackets.",
+                : request.mode === "expression" &&
+                    original.limits.length > 0 &&
+                    candidate.limits.length === 0 &&
+                    candidate.variables.length > 0
+                  ? "The starting limit evaluates to a constant, but your line still contains a variable. Did you drop the limit operator? Keep it attached until you evaluate the limit."
+                  : "These lines differ at the displayed test input. Compare their values before inspecting the algebra.",
             residualLatex: residual.toTeX().slice(0, 500),
             counterexample: { values, previous, proposed },
             conditions,

@@ -198,8 +198,9 @@ export function QuizWorkspace({
                           : "You’ve found what to revisit."}
                       </h2>
                       <p>
-                        {result.earned} of {result.possible} points. Your latest score was saved for{" "}
-                        {result.mastery.length} learning{" "}
+                        {result.earned} of {result.possible}{" "}
+                        {result.possible === 1 ? "point" : "points"}. Your latest score was saved
+                        for {result.mastery.length} learning{" "}
                         {result.mastery.length === 1 ? "outcome" : "outcomes"}.
                       </p>
                     </div>

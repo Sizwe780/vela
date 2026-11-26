@@ -109,7 +109,7 @@ export function ConceptCanvas({
               <text className="concept-node-detail" x={n.x + 14} y={n.y + 51}>
                 {n.probability === null
                   ? "Ready to practise"
-                  : `${Math.round(n.probability * 100)}% estimate · ${n.observations} checks`}
+                  : `${Math.round(n.probability * 100)}% estimate · ${n.observations} ${n.observations === 1 ? "check" : "checks"}`}
               </text>
             </g>
           ))}

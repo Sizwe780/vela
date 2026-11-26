@@ -96,7 +96,8 @@ export function SessionReader({
     <section id={`session-${session.id}`} className="session-reader">
       <div className="session-progress">
         <span>
-          YOUR LEARNING PATH · {done.length}/{sessions.length} milestones
+          YOUR LEARNING PATH · {done.length}/{sessions.length}{" "}
+          {sessions.length === 1 ? "milestone" : "milestones"}
         </span>
         <progress
           aria-label="Session milestones completed"

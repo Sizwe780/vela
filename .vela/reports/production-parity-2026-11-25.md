@@ -1,5 +1,7 @@
 # Production parity review
 
+Superseded by the [26 November production deployment, content promotion and verification report](production-release-2026-11-26.md).
+
 Production is served through Cloudflare and Azure App Service. The home page returned HTTP 200 with dynamic caching. A read-only comparison of the Azure-configured Neon database and the dedicated staging database matched sessions by institution, module, unit code and position. It compared Markdown hashes and checked session IDs separately.
 
 | Module | Missing from production | Changed Markdown | Production-only | Matched session IDs |

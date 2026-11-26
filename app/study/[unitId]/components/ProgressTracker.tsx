@@ -73,7 +73,8 @@ export function ProgressTracker({ unitId }: { unitId?: string }) {
           {percent}%
           <small>
             {" "}
-            · {unit.completed}/{unit.total} sessions · mastery {Math.round(unit.mastery * 100)}%
+            · {unit.completed}/{unit.total} {unit.total === 1 ? "session" : "sessions"} · mastery{" "}
+            {Math.round(unit.mastery * 100)}%
           </small>
         </span>
       </span>
@@ -85,9 +86,10 @@ export function ProgressTracker({ unitId }: { unitId?: string }) {
         <article key={c.id}>
           <h2>{c.title}</h2>
           <p>
-            {c.completedModules}/{c.modules.length} enrolled modules complete (
+            {c.completedModules}/{c.modules.length}{" "}
+            {c.modules.length === 1 ? "enrolled module" : "enrolled modules"} complete (
             {Math.round((100 * c.completedModules) / (c.modules.length || 1))}%) · {c.completed}/
-            {c.total} available sessions
+            {c.total} {c.total === 1 ? "available session" : "available sessions"}
           </p>
           <progress
             aria-label="Course module completion"
@@ -101,14 +103,15 @@ export function ProgressTracker({ unitId }: { unitId?: string }) {
           {c.modules.map((m) => (
             <details key={m.id}>
               <summary>
-                {m.code} · {m.completed}/{m.total} sessions (
+                {m.code} · {m.completed}/{m.total} {m.total === 1 ? "session" : "sessions"} (
                 {Math.round((100 * m.completed) / (m.total || 1))}%) {m.complete ? "Complete" : ""}
               </summary>
               {m.units.length ? (
                 m.units.map((u) => (
                   <p key={u.id}>
-                    <a href={`/study/${u.id}`}>{u.code}</a> · {u.completed}/{u.total} sessions ·
-                    mastery {Math.round(u.mastery * 100)}%
+                    <a href={`/study/${u.id}`}>{u.code}</a> · {u.completed}/{u.total}{" "}
+                    {u.total === 1 ? "session" : "sessions"} · mastery {Math.round(u.mastery * 100)}
+                    %
                   </p>
                 ))
               ) : (

@@ -109,7 +109,10 @@ export function ReviewQueue({ preferredUnit }: { preferredUnit?: string }) {
               </ul>
               {upcoming.length > 3 && (
                 <details>
-                  <summary>Show all {upcoming.length} upcoming units</summary>
+                  <summary>
+                    Show all {upcoming.length}{" "}
+                    {upcoming.length === 1 ? "upcoming unit" : "upcoming units"}
+                  </summary>
                   <ul>
                     {upcoming.slice(3).map((unit) => (
                       <ReviewUnit key={unit.id} unit={unit} />

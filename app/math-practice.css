@@ -237,3 +237,20 @@
   box-shadow: var(--shadow-card);
   cursor: pointer;
 }
+
+.math-lab .math-current,
+.math-lab .math-result {
+  padding: 10px 14px;
+  margin-block: 10px;
+}
+.math-lab .math-history {
+  gap: 8px;
+}
+.math-lab .math-current .katex-display,
+.math-lab .math-result .katex-display {
+  margin: 0.45em 0;
+}
+.math-lab .math-current .markdown p,
+.math-lab .math-result .markdown p {
+  margin-block: 0.35em;
+}

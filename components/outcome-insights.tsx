@@ -45,8 +45,10 @@ export function OutcomeInsights({ compact = false }: { compact?: boolean }) {
         <>
           {compact ? (
             <p>
-              {data.completedSessions}/{data.totalSessions} reading milestones · {quizzed}/
-              {data.outcomes.length} outcomes with recent quiz evidence.
+              {data.completedSessions}/{data.totalSessions}{" "}
+              {data.totalSessions === 1 ? "reading milestone" : "reading milestones"} · {quizzed}/
+              {data.outcomes.length} {data.outcomes.length === 1 ? "outcome" : "outcomes"} with
+              recent quiz evidence.
             </p>
           ) : (
             <div className="outcome-summary">
@@ -149,7 +151,7 @@ export function OutcomeInsights({ compact = false }: { compact?: boolean }) {
                           <dd>
                             {o.mixedScore === null
                               ? "Not started"
-                              : `${Math.round(o.mixedScore * 100)}% · ${o.attempts} recorded activities (mixed sources)`}
+                              : `${Math.round(o.mixedScore * 100)}% · ${o.attempts} ${o.attempts === 1 ? "recorded activity" : "recorded activities"} (mixed sources)`}
                           </dd>
                           <dt>Review schedule</dt>
                           <dd>{o.due ? new Date(o.due).toLocaleDateString() : "Not scheduled"}</dd>
@@ -168,7 +170,7 @@ export function OutcomeInsights({ compact = false }: { compact?: boolean }) {
                             <p>
                               {o.quizChange === null
                                 ? "Two quiz attempts are needed for a comparison."
-                                : `${o.quizChange > 0 ? "+" : ""}${o.quizChange} percentage points from your previous quiz practice.`}
+                                : `${o.quizChange > 0 ? "+" : ""}${o.quizChange} ${o.quizChange === 1 ? "percentage point" : "percentage points"} from your previous quiz practice.`}
                             </p>
                           </div>
                         )}

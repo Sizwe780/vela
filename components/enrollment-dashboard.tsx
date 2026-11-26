@@ -112,8 +112,8 @@ export function EnrollmentDashboard() {
                     aria-label={`${m.code} session completion`}
                   />
                   <p>
-                    {stats.completed}/{stats.total} sessions · {percentage}% complete · {mastery}%
-                    average unit mastery
+                    {stats.completed}/{stats.total} {stats.total === 1 ? "session" : "sessions"} ·{" "}
+                    {percentage}% complete · {mastery}% average unit mastery
                   </p>
                 </>
               ) : (

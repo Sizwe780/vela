@@ -47,7 +47,7 @@ export function ModerationQueue() {
             {p.moduleCode} · {p.unitTitle}
           </h2>
           <small>
-            {p.alias} · {p.reports} reports
+            {p.alias} · {p.reports} {p.reports === 1 ? "report" : "reports"}
           </small>
           <Markdown text={p.body} citations={[]} />
           <Link href={p.href}>Open unit</Link>

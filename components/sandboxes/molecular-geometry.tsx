@@ -184,7 +184,8 @@ export function MolecularGeometry({
         </div>
       </div>
       <output aria-live="polite">
-        {model.geometry} · {model.angle} · {model.bonds.length} bonding domains and{" "}
+        {model.geometry} · {model.angle} · {model.bonds.length}{" "}
+        {model.bonds.length === 1 ? "bonding domain" : "bonding domains"} and{" "}
         {model.lonePairs.length} central lone pairs. Electron-domain geometry:{" "}
         {model.electronGeometry}.{showStructure && showDipoles && ` ${model.interpretation}`}
       </output>

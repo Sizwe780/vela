@@ -106,7 +106,7 @@ export function TeachTutor({ studyUnitId, sessionId }: { studyUnitId: string; se
               </h3>
               <p>
                 {result.verified
-                  ? `+${result.pointsEarned} conceptual points · personal best ${result.bestPoints}/10 for this outcome`
+                  ? `+${result.pointsEarned} ${result.pointsEarned === 1 ? "conceptual point" : "conceptual points"} · personal best ${result.bestPoints}/10 for this outcome`
                   : `No mastery or points were recorded because the evidence checks were incomplete or the model was uncertain.`}
               </p>
               <Markdown text={result.grade.summary} />

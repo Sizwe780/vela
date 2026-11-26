@@ -93,7 +93,7 @@ export function FrameworkDiagram({
       role="img"
       aria-label={
         cycle
-          ? `${count} stages connected in a clockwise cycle`
+          ? `${count} ${count === 1 ? "stage" : "stages"} connected in a clockwise cycle`
           : "Seven professional roles connected around shared learner needs"
       }
     >

@@ -68,7 +68,9 @@ export default async function ModulePage({ params }: { params: Promise<{ moduleI
           </span>
           <h1>{module.title}</h1>
           <p>
-            {module.studyUnits.length} study units · {sessionCount} learning sessions
+            {module.studyUnits.length}{" "}
+            {module.studyUnits.length === 1 ? "study unit" : "study units"} · {sessionCount}{" "}
+            {sessionCount === 1 ? "learning session" : "learning sessions"}
           </p>
         </div>
         <Link
@@ -110,7 +112,10 @@ export default async function ModulePage({ params }: { params: Promise<{ moduleI
               <Icon name="arrow" size={18} />
             </div>
             <h3>{u.title}</h3>
-            <p>{u._count.sessions} learning sessions</p>
+            <p>
+              {u._count.sessions}{" "}
+              {u._count.sessions === 1 ? "learning session" : "learning sessions"}
+            </p>
           </Link>
         ))}
       </div>

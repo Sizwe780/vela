@@ -234,8 +234,8 @@ export function InstitutionWorkspace() {
                 {report.qualification} · {report.title}
               </h3>
               <p>
-                {report.modules} modules · {report.active} active · {report.completed} completed ·{" "}
-                {report.withdrawn} withdrawn
+                {report.modules} {report.modules === 1 ? "module" : "modules"} · {report.active}{" "}
+                active · {report.completed} completed · {report.withdrawn} withdrawn
               </p>
             </article>
           ))}

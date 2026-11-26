@@ -26,6 +26,7 @@ export function MathLab({
   const [problem, setProblem] = useState<MathProblem | null>(null);
   const [reference, setReference] = useState(initialReference || "(x+1)^2");
   const [next, setNext] = useState("");
+  const [editingStart, setEditingStart] = useState(false);
   const [mode, setMode] = useState<SymbolicMode>(
     initialReference.trim().startsWith("\\int") ? "antiderivative" : "expression",
   );
@@ -90,13 +91,16 @@ export function MathLab({
     ]);
     if (["equivalent", "conditional"].includes(result.status)) {
       setConditions((c) => [...new Set([...c, ...(result.conditions ?? [])])]);
-      setNext("");
+      setNext(matrix ? next : "");
     }
     setBusy(false);
   }
   const accepted =
     history.filter((e) => ["equivalent", "conditional"].includes(e.feedback.status)).at(-1)
       ?.latex ?? reference;
+  useEffect(() => {
+    if (matrix) setNext((draft) => (draft.trim() ? draft : accepted));
+  }, [matrix, accepted]);
   async function restore(saved: PracticeSnapshot) {
     controller.current?.abort();
     const control = new AbortController();
@@ -195,18 +199,24 @@ export function MathLab({
               <p>{problem.question}</p>
             </div>
           )}
-          <details className="math-settings">
+          <details
+            className="math-settings"
+            onToggle={(e) => setEditingStart(e.currentTarget.open)}
+          >
             <summary>Set your own starting expression</summary>
-            <MathInput
-              label="Starting expression"
-              value={reference}
-              disabled={busy}
-              onChange={(v) => {
-                setReference(v);
-                reset();
-                setProblem(null);
-              }}
-            />
+            {editingStart && (
+              <MathInput
+                preview={false}
+                label="Starting expression"
+                value={reference}
+                disabled={busy}
+                onChange={(v) => {
+                  setReference(v);
+                  reset();
+                  setProblem(null);
+                }}
+              />
+            )}
             <label>
               Check type
               <select
@@ -265,10 +275,10 @@ export function MathLab({
                   <Markdown text={`$$\n${entry.latex}\n$$`} />
                   <p>{entry.feedback.message}</p>
                   {entry.feedback.residualLatex && (
-                    <>
-                      <small>Difference to inspect</small>
+                    <details>
+                      <summary>Show difference</summary>
                       <Markdown text={`$$\n${entry.feedback.residualLatex}\n$$`} />
-                    </>
+                    </details>
                   )}
                   {entry.feedback.counterexample && (
                     <p>
@@ -276,8 +286,10 @@ export function MathLab({
                       {Object.entries(entry.feedback.counterexample.values)
                         .map(([k, v]) => `${k} = ${v}`)
                         .join(", ")}
-                      : expected value {entry.feedback.counterexample.previous.toPrecision(5)},
-                      proposed value {entry.feedback.counterexample.proposed.toPrecision(5)}
+                      : expected value{" "}
+                      {Number(entry.feedback.counterexample.previous.toPrecision(5)).toString()},
+                      proposed value{" "}
+                      {Number(entry.feedback.counterexample.proposed.toPrecision(5)).toString()}
                       {mode === "antiderivative" ? " (after differentiating your line)" : ""}.
                     </p>
                   )}
@@ -349,6 +361,8 @@ export function MathLab({
               {operation.kind !== "swap" && (
                 <MathInput
                   label="Row factor"
+                  scalar
+                  preview={false}
                   value={operation.factor}
                   onChange={(v) => setOperation({ ...operation, factor: v })}
                 />
@@ -356,6 +370,18 @@ export function MathLab({
             </fieldset>
           )}
           <MathInput
+            preview={false}
+            allowedTemplates={
+              matrix
+                ? ["Fraction", "Power", "Matrix"]
+                : mode === "antiderivative" || topic === "integral"
+                  ? ["Fraction", "Power", "Integral"]
+                  : mode === "derivative" || topic === "derivative"
+                    ? ["Fraction", "Power", "Derivative"]
+                    : topic === "limit" || reference.includes("\\lim")
+                      ? ["Fraction", "Power", "Limit"]
+                      : ["Fraction", "Power"]
+            }
             label={matrix ? "Your next matrix" : "Your next line"}
             value={next}
             disabled={busy}

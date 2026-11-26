@@ -19,7 +19,7 @@ export function EnergyLevelSandbox() {
       <svg
         viewBox="0 0 280 145"
         role="img"
-        aria-label={`Energy level diagram from ${initial} to ${final} electronvolts`}
+        aria-label={`Energy level diagram from ${initial} to ${final} ${final === 1 ? "electronvolt" : "electronvolts"}`}
       >
         <defs>
           <marker

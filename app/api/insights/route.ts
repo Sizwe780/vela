@@ -1,3 +1,4 @@
+import { publishedStudyUnit } from "../../../lib/study/published-units";
 import { requireLearner } from "../../../lib/auth/server";
 import { prisma } from "../../../lib/db";
 import {
@@ -37,7 +38,9 @@ export async function GET() {
       since = new Date(Date.now() - 90 * 86400000);
     const [outcomes, sessions, completed, quizzes, concepts] = await Promise.all([
       prisma.learningOutcome.findMany({
-        where: { studyUnit: { moduleId: { in: ids }, sessions: { some: {} } } },
+        where: {
+          studyUnit: { ...publishedStudyUnit, moduleId: { in: ids }, sessions: { some: {} } },
+        },
         include: {
           mastery: { where: { studentId: learner.id } },
           studyUnit: { select: { title: true, moduleId: true } },
@@ -46,13 +49,16 @@ export async function GET() {
         take: 5000,
       }),
       prisma.studySession.findMany({
-        where: { studyUnit: { moduleId: { in: ids } } },
+        where: { studyUnit: { ...publishedStudyUnit, moduleId: { in: ids } } },
         orderBy: [{ studyUnit: { position: "asc" } }, { position: "asc" }],
         select: { id: true, studyUnitId: true },
         take: 5000,
       }),
       prisma.sessionProgress.findMany({
-        where: { studentId: learner.id, session: { studyUnit: { moduleId: { in: ids } } } },
+        where: {
+          studentId: learner.id,
+          session: { studyUnit: { ...publishedStudyUnit, moduleId: { in: ids } } },
+        },
         select: { sessionId: true },
         take: 5000,
       }),
@@ -60,7 +66,7 @@ export async function GET() {
         where: {
           studentId: learner.id,
           submittedAt: { gte: since },
-          studyUnit: { moduleId: { in: ids } },
+          studyUnit: { ...publishedStudyUnit, moduleId: { in: ids } },
         },
         select: { id: true, studyUnitId: true, submittedAt: true, result: true },
         orderBy: { submittedAt: "desc" },
@@ -71,7 +77,7 @@ export async function GET() {
           studentId: learner.id,
           verified: true,
           submittedAt: { gte: since },
-          learningOutcome: { studyUnit: { moduleId: { in: ids } } },
+          learningOutcome: { studyUnit: { ...publishedStudyUnit, moduleId: { in: ids } } },
         },
         select: { id: true, learningOutcomeId: true, score: true, submittedAt: true },
         orderBy: { submittedAt: "desc" },

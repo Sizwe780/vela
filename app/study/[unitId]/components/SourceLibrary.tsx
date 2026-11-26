@@ -46,7 +46,9 @@ export function SourceLibrary({
       </button>
       {open && (
         <SourceDrawer label="Source library" onClose={() => setOpen(false)}>
-          <h2>Source library · {pages.length} pages</h2>
+          <h2>
+            Source library · {pages.length} {pages.length === 1 ? "page" : "pages"}
+          </h2>
           <p>
             Converted reference text and source illustrations. Machine OCR may contain recognition
             errors; compare equations with the original PDF. Vela-written sessions are your primary

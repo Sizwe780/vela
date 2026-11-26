@@ -138,7 +138,8 @@ export function ReaderPanel({
             <details className="module-info">
               <summary>
                 <strong>
-                  NQF {unit.moduleInfo.nqfLevel} · {unit.moduleInfo.credits} credits ·{" "}
+                  NQF {unit.moduleInfo.nqfLevel} · {unit.moduleInfo.credits}{" "}
+                  {unit.moduleInfo.credits === 1 ? "credit" : "credits"} ·{" "}
                   {unit.moduleInfo.delivery}
                 </strong>
               </summary>
@@ -154,12 +155,13 @@ export function ReaderPanel({
             <span>
               <Icon name="book" size={14} />
               {unit.sessions?.length
-                ? `${unit.sessions.length} learning sessions`
-                : `${visibleDocuments.length} readings`}
+                ? `${unit.sessions.length} ${unit.sessions.length === 1 ? "learning session" : "learning sessions"}`
+                : `${visibleDocuments.length} ${visibleDocuments.length === 1 ? "reading" : "readings"}`}
             </span>
             <span>
               <Icon name="check" size={14} />
-              {unit.outcomes.length} learning outcomes
+              {unit.outcomes.length}{" "}
+              {unit.outcomes.length === 1 ? "learning outcome" : "learning outcomes"}
             </span>
           </div>
           {readerTab === "source" && unit.moduleInfo ? (

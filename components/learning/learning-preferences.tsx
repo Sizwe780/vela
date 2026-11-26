@@ -197,7 +197,8 @@ export function LearningPreferences({
         <ul>
           {slots.map((s, i) => (
             <li key={s.startAt + i}>
-              {new Date(s.startAt).toLocaleString()} · {s.minutes} minutes{" "}
+              {new Date(s.startAt).toLocaleString()} · {s.minutes}{" "}
+              {s.minutes === 1 ? "minute" : "minutes"}{" "}
               <button type="button" onClick={() => setSlots((v) => v.filter((_, j) => j !== i))}>
                 Remove period {i + 1}
               </button>

@@ -24,3 +24,8 @@ generated/coach-cas/
 /math-verification.json
 /module-conversion-*.json
 /module-lessons-*.json
+
+# Local IDE state and packaged deployment artifacts
+.vs/
+/deploy-stage/
+/vela-standalone.tar.gz

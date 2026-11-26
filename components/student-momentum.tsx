@@ -49,7 +49,7 @@ export function StudentMomentum() {
         <h2>Your next review</h2>
         <p>
           {reviews.data
-            ? `${reviews.data.due} outcomes due · ${reviews.data.newOutcomes} not yet practised`
+            ? `${reviews.data.due} ${reviews.data.due === 1 ? "outcome" : "outcomes"} due · ${reviews.data.newOutcomes} not yet practised`
             : reviews.error || "Checking your review queue…"}
         </p>
         <Link className={styles.link} href="/review">

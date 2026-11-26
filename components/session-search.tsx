@@ -56,7 +56,12 @@ export function SessionSearch() {
         <>
           {loading && <p role="status">Searching…</p>}
           {error && <p role="alert">{error}</p>}
-          {data && <p role="status">{data.results.length} matching sessions</p>}
+          {data && (
+            <p role="status">
+              {data.results.length}{" "}
+              {data.results.length === 1 ? "matching session" : "matching sessions"}
+            </p>
+          )}
           {data?.results.map((result) => (
             <article className={styles.card} key={result.id}>
               <small>

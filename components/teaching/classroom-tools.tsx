@@ -45,7 +45,8 @@ export function ClassroomTools({
         {data.cohorts.map((cohort) => (
           <details className={styles.entry} key={cohort.id}>
             <summary>
-              {cohort.name} · {cohort.members.length} learners
+              {cohort.name} · {cohort.members.length}{" "}
+              {cohort.members.length === 1 ? "learner" : "learners"}
             </summary>
             <ul>
               {cohort.members.map((member) => (

@@ -135,7 +135,7 @@ test("AI SDK factory streams Chat Completions using llama3 and the local endpoin
         const finish = { ...delta, choices: [{ index: 0, delta: {}, finish_reason: "stop" }] };
         return new Response(`data: ${JSON.stringify(delta)}\n\ndata: ${JSON.stringify(finish)}\n\ndata: [DONE]\n\n`, { headers: { "content-type": "text/event-stream" } });
       };
-      const result = streamText({ model: createChatModel(), prompt: "Explain the derivative", maxRetries: 0 });
+      const result = streamText({ model: createChatModel("ollama"), prompt: "Explain the derivative", maxRetries: 0 });
       assert.equal(await result.text, "A locally streamed answer.");
       assert.equal(calls, 1);
     } finally { globalThis.fetch = oldFetch; }

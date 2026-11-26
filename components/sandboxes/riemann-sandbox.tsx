@@ -116,8 +116,8 @@ export function RiemannSandbox({
         role="img"
         aria-label="Polynomial curve with signed Riemann rectangles"
       >
-        The current finite sum is {numberLabel(values.sum)} over {n} rectangles. Controls and
-        numerical bounds are below.
+        The current finite sum is {numberLabel(values.sum)} over {n}{" "}
+        {n === 1 ? "rectangle" : "rectangles"}. Controls and numerical bounds are below.
       </canvas>
       <label>
         Rectangles n · {n}

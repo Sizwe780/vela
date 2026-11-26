@@ -212,7 +212,11 @@ function BoundDiscussionScope({
           {p.staff ? " · Staff" : ""} · {new Date(p.createdAt).toLocaleString()}
         </small>
         <Markdown text={p.body} citations={[]} />
-        {!!p.reports && <strong>{p.reports} reports · staff review</strong>}
+        {!!p.reports && (
+          <strong>
+            {p.reports} {p.reports === 1 ? "report" : "reports"} · staff review
+          </strong>
+        )}
         <div className="peer-actions">
           {p.canRemove && (
             <button type="button" disabled={busy} onClick={() => setConfirmRemove(p.id)}>

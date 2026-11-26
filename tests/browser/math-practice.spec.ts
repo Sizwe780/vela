@@ -66,7 +66,7 @@ test("visual math editor, bounded CAS worker, hidden answers and generated varia
     await expect(page.getByRole("button", { name: "Check step", exact: true })).toBeEnabled();
     await expect(
       page.locator('.math-preview[aria-label="Your next line preview"] .katex'),
-    ).toBeVisible();
+    ).toHaveCount(0);
     const input = page.locator(".math-input").filter({ has: next });
     await input.getByRole("button", { name: "Fraction", exact: true }).click();
     expect(await next.evaluate((el) => (el as HTMLElement & { value: string }).value)).toContain(

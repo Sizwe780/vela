@@ -30,9 +30,10 @@ export function AcademicBriefing({ fallback }: { fallback: ReactNode }) {
       <span className="eyebrow">ACADEMIC MASTER · YOUR LEARNING BRIEFING</span>
       <h1>Welcome back, {name}.</h1>
       <p>
-        {data.progress.completedSessions}/{data.progress.publishedSessions} reading milestones ·{" "}
-        {data.modules.length} enrolled modules with published units. Reading completion is separate
-        from assessed practice.
+        {data.progress.completedSessions}/{data.progress.publishedSessions}{" "}
+        {data.progress.publishedSessions === 1 ? "reading milestone" : "reading milestones"} ·{" "}
+        {data.modules.length} {data.modules.length === 1 ? "enrolled module" : "enrolled modules"}{" "}
+        with published units. Reading completion is separate from assessed practice.
       </p>
       {first ? (
         <p>
@@ -47,7 +48,7 @@ export function AcademicBriefing({ fallback }: { fallback: ReactNode }) {
       {slot ? (
         <p>
           Your next entered availability: {new Date(slot.startAt).toLocaleString()}. Suggested study
-          block: {slot.minutes} minutes.
+          block: {slot.minutes} {slot.minutes === 1 ? "minute" : "minutes"}.
         </p>
       ) : (
         <p>Add your available study periods for private scheduling suggestions.</p>
@@ -112,7 +113,8 @@ export function LearningPanel({
   return (
     <div className="learning-panel">
       <p>
-        {view.progress.completedSessions}/{view.progress.publishedSessions} reading milestones.
+        {view.progress.completedSessions}/{view.progress.publishedSessions}{" "}
+        {view.progress.publishedSessions === 1 ? "reading milestone" : "reading milestones"}.
         Concept estimates use separate, directly assessed practice.
       </p>
       <nav className="vela-switcher" aria-label="Concept map scope">
@@ -156,7 +158,8 @@ export function LearningPanel({
             {view.periods.map((s) => (
               <li key={s.startAt}>
                 <time dateTime={s.startAt}>{new Date(s.startAt).toLocaleString()}</time> ·{" "}
-                {s.minutes} minutes within your {s.availableMinutes}-minute availability
+                {s.minutes} {s.minutes === 1 ? "minute" : "minutes"} within your{" "}
+                {s.availableMinutes}-minute availability
               </li>
             ))}
           </ul>

@@ -17,11 +17,17 @@ export function MathInput({
   value,
   onChange,
   disabled = false,
+  scalar = false,
+  preview = true,
+  allowedTemplates,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   disabled?: boolean;
+  scalar?: boolean;
+  preview?: boolean;
+  allowedTemplates?: readonly string[];
 }) {
   const host = useRef<HTMLDivElement>(null),
     field = useRef<MathfieldElement | null>(null);
@@ -122,16 +128,22 @@ export function MathInput({
         </label>
       )}
       <div className="math-palette" aria-label={`${label} templates`}>
-        {templates.map(([name, latex]) => (
-          <button
-            key={name}
-            type="button"
-            disabled={disabled || state !== "ready"}
-            onClick={() => insert(latex)}
-          >
-            {name}
-          </button>
-        ))}
+        {templates
+          .filter(
+            ([name]) =>
+              (!scalar || name === "Fraction" || name === "Power") &&
+              (!allowedTemplates || allowedTemplates.includes(name)),
+          )
+          .map(([name, latex]) => (
+            <button
+              key={name}
+              type="button"
+              disabled={disabled || state !== "ready"}
+              onClick={() => insert(latex)}
+            >
+              {name}
+            </button>
+          ))}
         <button
           type="button"
           disabled={disabled || state !== "ready"}
@@ -159,7 +171,7 @@ export function MathInput({
           </button>
         </div>
       )}
-      {value && !blocked && (
+      {preview && value && !blocked && (
         <div className="math-preview" aria-label={`${label} preview`}>
           <Markdown
             text={`$$\n${value.replace(/\\placeholder(?:\[[^\]]*\])?\{[^{}]*\}/g, "\\square")}\n$$`}

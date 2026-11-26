@@ -53,19 +53,22 @@ export function StaffAnalytics() {
                   {m.code} · {m.title}
                 </h3>
                 <p>
-                  {m.enrolledStudents} enrolled · {m.completedEnrollments} completed enrollments
+                  {m.enrolledStudents} enrolled · {m.completedEnrollments}{" "}
+                  {m.completedEnrollments === 1 ? "completed enrollment" : "completed enrollments"}
                 </p>
                 <p>
                   {m.completionPercent}% session completion · {Math.round(m.meanMastery * 100)}%
                   mean outcome mastery
                 </p>
                 <p>
-                  Content: {m.units} units · {m.sessions} published sessions
+                  Content: {m.units} {m.units === 1 ? "unit" : "units"} · {m.sessions}{" "}
+                  {m.sessions === 1 ? "published session" : "published sessions"}
                 </p>
                 {m.conversion ? (
                   <p>
-                    Source conversion: {m.conversion.converted}/{m.conversion.total} pages ·{" "}
-                    {m.conversion.needsReview} held · {m.conversion.status}
+                    Source conversion: {m.conversion.converted}/{m.conversion.total}{" "}
+                    {m.conversion.total === 1 ? "page" : "pages"} · {m.conversion.needsReview} held
+                    · {m.conversion.status}
                     {m.conversion.updatedAt
                       ? ` · checkpoint ${new Date(m.conversion.updatedAt).toLocaleString()}`
                       : ""}

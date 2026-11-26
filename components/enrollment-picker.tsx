@@ -144,7 +144,7 @@ export function EnrollmentPicker({
               : `Year ${studyYear}`}
             {enrolled.has(module.id) ? " · On your plan" : ""}
             {module._count.studyUnits
-              ? ` · ${module._count.studyUnits} study units`
+              ? ` · ${module._count.studyUnits} ${module._count.studyUnits === 1 ? "study unit" : "study units"}`
               : " · Content in preparation"}
           </small>
           {qualification?.isPsm && !!entry?.coRequisites?.length && (
@@ -214,7 +214,8 @@ export function EnrollmentPicker({
               </label>
             </fieldset>
             <p aria-live="polite">
-              {year}: {load.annual}/{psmLimits.annual} credits · Semester 1: {load.first}/
+              {year}: {load.annual}/{psmLimits.annual}{" "}
+              credits · Semester 1: {load.first}/
               {psmLimits.semester} · Semester 2: {load.second}/{psmLimits.semester}
             </p>
             <p className={styles.note}>
