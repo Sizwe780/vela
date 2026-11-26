@@ -12,6 +12,7 @@ import { katexOptions } from "../lib/content/katex";
 import { normalizeMath } from "../lib/content/normalize-math";
 import type { Citation } from "../lib/tutor/types";
 import { DiscussionParagraph } from "./social/discussion-context";
+import { selectedMathText } from "../lib/content/math-selection";
 
 export function Markdown({
   text,
@@ -29,7 +30,16 @@ export function Markdown({
   const highlight = useMemo(() => savedHighlightPlugin(highlights ?? []), [highlights]);
   const markdown = useMemo(() => normalizeMath(text), [text]);
   return (
-    <div className="markdown">
+    <div
+      className="markdown"
+      onCopy={(event) => {
+        const text = selectedMathText(window.getSelection());
+        if (text !== null) {
+          event.clipboardData.setData("text/plain", text);
+          event.preventDefault();
+        }
+      }}
+    >
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath, highlight]}
         rehypePlugins={[[rehypeKatex, katexOptions]]}

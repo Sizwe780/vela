@@ -1,7 +1,8 @@
 "use client";
 import { notifyProgress } from "../lib/progress-events";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { AnswerSymbols } from "./math/answer-symbols";
 import { Markdown } from "./markdown";
 import { AccountMenu } from "./account-menu";
 import { VelaBrand } from "./learning-frame";
@@ -27,6 +28,16 @@ export function QuizWorkspace({
   const [result, setResult] = useState<QuizResult | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
+  const [operation, setOperation] = useState<"generate" | "submit" | null>(null);
+  const [elapsed, setElapsed] = useState(0);
+  const controller = useRef<AbortController | null>(null);
+  useEffect(() => () => controller.current?.abort(), []);
+  useEffect(() => {
+    if (!pending) return;
+    setElapsed(0);
+    const timer = setInterval(() => setElapsed((n) => n + 1), 1000);
+    return () => clearInterval(timer);
+  }, [pending]);
   const summary = useRef<HTMLDivElement>(null);
   const questionHeading = useRef<HTMLHeadingElement>(null);
   function goToStep(index: number) {
@@ -34,7 +45,10 @@ export function QuizWorkspace({
     requestAnimationFrame(() => questionHeading.current?.focus());
   }
   async function request<T>(path: string, body: unknown): Promise<T> {
+    const current = new AbortController();
+    controller.current = current;
     const response = await fetch(path, {
+      signal: AbortSignal.any([current.signal, AbortSignal.timeout(45000)]),
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -45,6 +59,8 @@ export function QuizWorkspace({
     return data as T;
   }
   async function generate() {
+    if (pending) return;
+    setOperation("generate");
     setPending(true);
     setError("");
     try {
@@ -54,13 +70,14 @@ export function QuizWorkspace({
       setResult(null);
       goToStep(0);
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Quiz generation failed.");
+      setError(requestError(caught, "Quiz generation failed. Please retry."));
     } finally {
       setPending(false);
     }
   }
   async function submit() {
-    if (!quiz) return;
+    if (!quiz || pending) return;
+    setOperation("submit");
     setPending(true);
     setError("");
     try {
@@ -78,9 +95,7 @@ export function QuizWorkspace({
         summary.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       });
     } catch (caught) {
-      setError(
-        caught instanceof Error ? caught.message : "Your answers could not be saved. Retry safely.",
-      );
+      setError(requestError(caught, "Your answers could not be saved. Retry safely."));
     } finally {
       setPending(false);
     }
@@ -135,7 +150,7 @@ export function QuizWorkspace({
                       disabled={pending}
                     >
                       <option value="heuristic">Free practice · no AI needed</option>
-                      <option value="auto">Configured AI · free fallback</option>
+                      <option value="auto">Automatic · instant source practice</option>
                       <option value="ollama">Local Ollama · free fallback</option>
                       <option value="groq">Groq · free fallback</option>
                       <option value="gemini">Gemini · free fallback</option>
@@ -158,6 +173,28 @@ export function QuizWorkspace({
                 </div>
               </section>
             )}
+            {pending && (
+              <div className="quiz-loading-status" role="status" aria-live="polite">
+                <strong>
+                  {operation === "submit"
+                    ? "Checking answers and saving your evidence"
+                    : provider === "heuristic" || provider === "auto"
+                      ? "Selecting passages and preparing source-based questions"
+                      : elapsed < 20
+                        ? "Drafting and validating AI questions"
+                        : "Still preparing practice; timed-out AI requests use the free fallback"}
+                </strong>
+                <p>
+                  {elapsed}s elapsed.{" "}
+                  {operation === "generate"
+                    ? "AI generation is limited to 20 seconds before a free fallback; database preparation can take a little longer."
+                    : "Unsupported or ambiguous answers are left ungraded, rather than counted wrong."}
+                </p>
+                <button type="button" onClick={() => controller.current?.abort()}>
+                  Cancel request
+                </button>
+              </div>
+            )}
             {error && (
               <p className="quiz-error" role="alert">
                 {error}
@@ -173,7 +210,7 @@ export function QuizWorkspace({
                   </span>
                   <span>
                     {result
-                      ? `${result.correct} of ${result.total} correct`
+                      ? `${result.correct} of ${result.feedback.filter((f) => f.status !== "unverified").length} graded correct`
                       : `${answered} of ${quiz.questions.length} answered`}
                   </span>
                 </div>
@@ -190,18 +227,24 @@ export function QuizWorkspace({
                 />
                 {result && (
                   <div className="quiz-result" tabIndex={-1} ref={summary} role="status">
-                    <span className="quiz-score">{result.score}%</span>
+                    <span className="quiz-score">
+                      {result.score === null ? "Needs review" : `${result.score}%`}
+                    </span>
                     <div>
                       <h2>
-                        {result.score >= 80
-                          ? "The ideas are taking hold."
-                          : "You’ve found what to revisit."}
+                        {result.score === null
+                          ? "No automatic grade was assigned."
+                          : result.score >= 80
+                            ? "The ideas are taking hold."
+                            : "You’ve found what to revisit."}
                       </h2>
                       <p>
                         {result.earned} of {result.possible}{" "}
                         {result.possible === 1 ? "point" : "points"}. Your latest score was saved
                         for {result.mastery.length} learning{" "}
                         {result.mastery.length === 1 ? "outcome" : "outcomes"}.
+                        {result.feedback.some((f) => f.status === "unverified") &&
+                          " Ungraded items are excluded from this score and from mastery updates."}
                       </p>
                     </div>
                   </div>
@@ -229,7 +272,7 @@ export function QuizWorkspace({
                       return (
                         <fieldset
                           key={question.id}
-                          className={`quiz-question ${feedback ? (feedback.correct ? "answer-correct" : "answer-incorrect") : ""}`}
+                          className={`quiz-question ${feedback ? (feedback.status === "unverified" ? "answer-unverified" : feedback.correct ? "answer-correct" : "answer-incorrect") : ""}`}
                           disabled={pending || !!result}
                         >
                           <legend>
@@ -266,39 +309,59 @@ export function QuizWorkspace({
                               ))}
                             </div>
                           ) : (
-                            <label className="short-answer">
-                              Your answer
-                              <input
-                                aria-label={`Answer to question ${index + 1}`}
-                                value={answers[question.id] ?? ""}
-                                maxLength={500}
-                                required
-                                autoComplete="off"
-                                onChange={(event) =>
-                                  setAnswers((current) => ({
-                                    ...current,
-                                    [question.id]: event.target.value,
-                                  }))
-                                }
-                              />
+                            <div className="short-answer">
+                              <label>
+                                Your answer
+                                <input
+                                  aria-label={`Answer to question ${index + 1}`}
+                                  value={answers[question.id] ?? ""}
+                                  maxLength={500}
+                                  required
+                                  autoComplete="off"
+                                  onChange={(event) =>
+                                    setAnswers((current) => ({
+                                      ...current,
+                                      [question.id]: event.target.value,
+                                    }))
+                                  }
+                                />
+                              </label>
+                              {!result && (
+                                <AnswerSymbols
+                                  question={question.prompt}
+                                  value={answers[question.id] ?? ""}
+                                  onChange={(value) =>
+                                    setAnswers((current) => ({
+                                      ...current,
+                                      [question.id]: value.slice(0, 500),
+                                    }))
+                                  }
+                                  disabled={pending}
+                                />
+                              )}
                               <small>
-                                Use the source term. Letter case, spacing and surrounding
-                                punctuation are ignored; equivalent mathematical expressions are not
-                                evaluated.
+                                You may use plain notation or LaTeX, including outer dollar
+                                delimiters. Supported formulas are checked symbolically. Define
+                                alternative symbols; ambiguous answers are left ungraded. For
+                                missing-term questions, use the source term or accepted equivalent
+                                terminology.
                               </small>
-                            </label>
+                            </div>
                           )}
                           {feedback && (
                             <div className="quiz-feedback">
                               <strong>
-                                {feedback.correct ? "✓ Correct" : "Revisit this idea"} ·{" "}
-                                {feedback.earned}/{feedback.points}
+                                {feedback.status === "unverified"
+                                  ? "Needs review · ungraded"
+                                  : `${feedback.correct ? "Correct" : "Revisit this idea"} · ${feedback.earned}/${feedback.points}`}
                               </strong>
                               {!feedback.correct && (
-                                <p>
-                                  Expected answer: <b>{feedback.answer}</b>
-                                </p>
+                                <div>
+                                  <strong>Reference answer</strong>
+                                  <Markdown text={feedback.answer} />
+                                </div>
                               )}
+                              {feedback.gradingMessage && <p>{feedback.gradingMessage}</p>}
                               <Markdown text={feedback.explanation} />
                               <Link href={feedback.sourceUrl}>Review the source passage →</Link>
                             </div>
@@ -356,4 +419,12 @@ export function QuizWorkspace({
       </main>
     </div>
   );
+}
+
+function requestError(error: unknown, fallback: string): string {
+  if (error instanceof Error && error.name === "AbortError")
+    return "Request cancelled. Your current answers are still here.";
+  if (error instanceof Error && error.name === "TimeoutError")
+    return "The request took too long. Your answers are still here; please retry.";
+  return error instanceof Error ? error.message : fallback;
 }

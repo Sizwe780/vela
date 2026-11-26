@@ -858,3 +858,64 @@
   background: var(--accent, #285849);
   color: white;
 }
+.markdown .katex {
+  letter-spacing: normal;
+  word-spacing: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+.markdown .katex-html {
+  white-space: nowrap;
+}
+.quiz-loading-status {
+  padding: 18px 22px;
+  margin: 20px 0;
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  background: var(--surface-soft);
+}
+.quiz-loading-status p {
+  margin: 8px 0;
+}
+.quiz-question.answer-unverified {
+  border-color: var(--border-default);
+  background: var(--surface-soft);
+}
+.evidence-guide {
+  margin: 20px 0;
+}
+.evidence-guide li {
+  margin-block: 8px;
+}
+.coach-pacing {
+  display: grid;
+  gap: 10px;
+  margin-block: 16px;
+  padding: 16px;
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  background: var(--surface-soft);
+}
+.coach-pacing h3,
+.coach-pacing p {
+  margin: 0;
+}
+.coach-pacing .tutor-pacing-control {
+  margin-inline-start: 0;
+}
+
+.answer-symbols {
+  min-width: 0;
+  margin-block: 12px;
+}
+.answer-symbols > summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding-block: 10px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+}
+.answer-symbols .math-palette button {
+  min-width: 44px;
+  min-height: 44px;
+}

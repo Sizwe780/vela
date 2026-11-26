@@ -7,6 +7,7 @@ import { unsafeMathFormatting } from "../../lib/math-practice/display";
 const templates = [
   ["Fraction", String.raw`\frac{#?}{#?}`],
   ["Power", "#?^{#?}"],
+  ["Subscript", "#?_{#?}"],
   ["Matrix", String.raw`\begin{bmatrix}#?&#?&#?\\#?&#?&#?\\#?&#?&#?\end{bmatrix}`],
   ["Integral", String.raw`\int #?\,dx`],
   ["Limit", String.raw`\lim_{x\to #?}\left(#?\right)`],

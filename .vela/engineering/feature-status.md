@@ -1,10 +1,11 @@
 # Feature status and remaining work
-Updated: 24 November 2026
+Updated: 27 November 2026
 
 “Implemented” describes code; “verified” requires the applicable checks. Re-run the current verification commands before deployment. Source-conversion counts are separate from published teaching and runtime quality.
 
 | Area | Implemented baseline | Limits / current verification |
 | --- | --- | --- |
+| Assessment entry and tutor pacing | Question-scoped MathLive/symbol tools in quiz and written lesson attempts; bounded symbolic short-answer checking; unverified responses excluded from score/mastery; instant default recall; bounded progress reads and explicit evidence help. Normal/Deep transfer now lives in Tools. | 209 unit tests and four desktop/mobile real-route UI cases passed. Quiz/tutor browser responses were mocked. Unknown notation and unsupported reasoning remain ungraded; old submissions are not regraded. See [verification](assessment-entry-verification.md). Not yet deployed to Azure. |
 | Shared interface | Public landing, authenticated learning sidebar, shared editorial headings and semantic light/dark palettes. The study workspace includes a remembered split, fullscreen focus, mobile panel tabs and expandable session navigation. | Desktop and mobile Chromium checks cover real MAT1503 and MAT1512 sessions, the divider, focus, notes and narrow-screen tools. |
 | Identity and enrollment | Neon auth/OTP, qualification/module selection, server source/unit gates, scoped staff memberships | Shared subscription tenancy and billing are future work. |
 | Published content | 30 MAT1512 and 78 MAT1503 conceptual sessions; source-linked original teaching, gated examples, visual hooks | Last documented source audit covered 547/547 MAT1512 pages and 192/192 MAT1503 pages including one verified blank. These are audit snapshots, not a guarantee of every OCR statement or publication rights. |

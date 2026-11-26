@@ -11,7 +11,6 @@ import { messageText } from "../../lib/tutor/chat-history";
 import { Icon } from "../icons";
 import { CitationList } from "./citation-list";
 import Link from "next/link";
-import { TutorPacing } from "./tutor-pacing";
 import { NewChatControl } from "./new-chat-control";
 const modeLabels = { academic: "Academic Master", pck: "CAPS Didactics / PCK" };
 type CompanionPanelProps = {
@@ -167,7 +166,6 @@ export function CompanionPanel({
         {liveTutor && strategy === "debate" && (
           <span className="preview-response-label">Socratic debate</span>
         )}
-        {liveTutor && <TutorPacing value={pace} disabled={busy} onChange={onPaceChange} />}
       </div>
       <div
         className="chat-scroll"
@@ -308,6 +306,8 @@ export function CompanionPanel({
         <div className="composer">
           {(liveTutor || capabilities.math || capabilities.calculus || capabilities.matrix) && (
             <CoachTools
+              pace={liveTutor ? pace : undefined}
+              onPaceChange={liveTutor ? onPaceChange : undefined}
               key={sessionId}
               studyUnitId={studyUnitId}
               sessionId={sessionId}

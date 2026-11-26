@@ -21,7 +21,7 @@ export async function studentRequest<T>(
 }
 export const studentNavUpdate = "vela:student-navigation-updated";
 
-export function useStudentResource<T>(url: string | null) {
+export function useStudentResource<T>(url: string | null, timeoutMs = 25000) {
   const { data: session, isPending } = authClient.useSession();
   const owner = session?.user?.id;
   const [revision, setRevision] = useState(0);
@@ -46,6 +46,16 @@ export function useStudentResource<T>(url: string | null) {
       error: "",
       loading: true,
     }));
+    const timer = setTimeout(() => {
+      setState((s) => ({
+        ...s,
+        owner,
+        url,
+        error: "This view took too long to load. Retry when your connection is stable.",
+        loading: false,
+      }));
+      c.abort();
+    }, timeoutMs);
     void studentRequest<T>(url, "GET", undefined, c.signal)
       .then((data) => {
         if (!c.signal.aborted) setState({ owner, url, data, error: "", loading: false });
@@ -57,9 +67,13 @@ export function useStudentResource<T>(url: string | null) {
             error: e instanceof Error ? e.message : "Please retry.",
             loading: false,
           }));
-      });
-    return () => c.abort();
-  }, [url, owner, revision]);
+      })
+      .finally(() => clearTimeout(timer));
+    return () => {
+      clearTimeout(timer);
+      c.abort();
+    };
+  }, [url, owner, revision, timeoutMs]);
   const current = state.owner === owner && state.url === url;
   return {
     data: current ? state.data : null,

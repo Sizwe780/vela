@@ -12,19 +12,46 @@ type Insights = {
   windowLimited: boolean;
 };
 export function OutcomeInsights({ compact = false }: { compact?: boolean }) {
-  const resource = useStudentResource<Insights>("/api/insights"),
+  const resource = useStudentResource<Insights>("/api/insights", 20000),
     [module, setModule] = useState("");
+  const [sessionSlow, setSessionSlow] = useState(false);
   useEffect(() => {
-    const stop = watchProgress(resource.reload);
+    if (resource.userId) {
+      setSessionSlow(false);
+      return;
+    }
+    const timer = setTimeout(() => setSessionSlow(true), 15000);
+    return () => clearTimeout(timer);
+  }, [resource.userId]);
+  useEffect(() => {
+    let refreshTimer: ReturnType<typeof setTimeout>;
+    const refresh = () => {
+      clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(resource.reload, 250);
+    };
+    const stop = watchProgress(refresh);
     const timer = setInterval(() => {
       if (!document.hidden) resource.reload();
     }, 60000);
     return () => {
       stop();
+      clearTimeout(refreshTimer);
       clearInterval(timer);
     };
   }, [resource.reload]);
-  if (!resource.userId) return null;
+  if (!resource.userId)
+    return (
+      <section className="learning-insights" aria-label="Learning evidence session">
+        <p role="status">
+          {sessionSlow ? "Your session could not be confirmed yet." : "Confirming your session…"}
+        </p>
+        {sessionSlow && (
+          <button type="button" onClick={() => window.location.reload()}>
+            Reload session
+          </button>
+        )}
+      </section>
+    );
   const data = resource.data;
   const quizzed = data?.outcomes.filter((outcome) => outcome.quiz).length ?? 0;
   const checked = data?.outcomes.filter((outcome) => outcome.concept).length ?? 0;
@@ -40,7 +67,9 @@ export function OutcomeInsights({ compact = false }: { compact?: boolean }) {
         </p>
       )}
       {!data ? (
-        <p>Loading your learning evidence…</p>
+        resource.loading ? (
+          <p role="status">Loading your learning evidence…</p>
+        ) : null
       ) : (
         <>
           {compact ? (
@@ -63,13 +92,43 @@ export function OutcomeInsights({ compact = false }: { compact?: boolean }) {
                 total={data.outcomes.length}
               />
               <EvidenceMeter
-                label="Outcomes with conceptual checks"
+                label="Outcomes with Teach-the-Tutor reviews"
                 value={checked}
                 total={data.outcomes.length}
               />
             </div>
           )}
-          {!compact && <h2 className="outcome-subheading">Recommended next steps</h2>}
+          {!compact && (
+            <>
+              <details className="outcome-method evidence-guide">
+                <summary>Which actions update these counters?</summary>
+                <ul>
+                  <li>
+                    <strong>Reading:</strong> press Mark milestone complete in a lesson.
+                  </li>
+                  <li>
+                    <strong>Quiz evidence:</strong> submit a unit quiz with automatically graded
+                    questions. Ungraded items do not add outcome evidence.
+                  </li>
+                  <li>
+                    <strong>Teach-the-Tutor reviews:</strong> open a lesson, then Companion → Tools
+                    → Teach the Tutor. Submit an explanation and receive a validated review for the
+                    mapped outcome shown in the tool. These are AI-assisted estimates over the last
+                    90 days.
+                  </li>
+                </ul>
+                <p>
+                  Show answer, Check my attempt, Normal/Deep chat, hints, debate and recall ratings
+                  do not increment the Teach-the-Tutor counter. Direct checks in Concept map update
+                  separate concept estimates.
+                </p>
+              </details>
+              {resource.loading && (
+                <p role="status">Refreshing evidence; your last loaded results remain visible.</p>
+              )}
+              <h2 className="outcome-subheading">Recommended next steps</h2>
+            </>
+          )}
           <ul className="recommendation-list">
             {data.recommendations.slice(0, 3).map((r) => (
               <li key={r.outcomeId}>

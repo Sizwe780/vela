@@ -5,6 +5,8 @@ import { SourceDrawer } from "../source-drawer";
 import { useModuleCapabilities } from "../module-capabilities";
 import { MathInsert } from "../math/math-insert";
 import { Icon } from "../icons";
+import { TutorPacing } from "../workspace/tutor-pacing";
+import type { TutorPace } from "../../lib/tutor/types";
 const PhotoDiagnosis = dynamic(() => import("./photo-diagnosis").then((m) => m.PhotoDiagnosis), {
   ssr: false,
   loading: () => <p>Opening photo tools…</p>,
@@ -23,6 +25,8 @@ export function CoachTools({
   onInsertMath,
   guidance,
   busy,
+  pace,
+  onPaceChange,
 }: {
   studyUnitId: string;
   sessionId?: string;
@@ -30,6 +34,8 @@ export function CoachTools({
   onInsertMath: (latex: string) => void;
   guidance?: (close: () => void) => ReactNode;
   busy: boolean;
+  pace?: TutorPace;
+  onPaceChange?: (pace: TutorPace) => void;
 }) {
   const capabilities = useModuleCapabilities();
   const enrolled = studyUnitId !== "demo" && !!sessionId;
@@ -44,6 +50,9 @@ export function CoachTools({
         type="button"
         className="coach-tools-trigger"
         aria-label="Tutor tools"
+        title={
+          pace ? `Tutor tools · ${pace === "transfer" ? "Deep transfer" : "Normal"}` : "Tutor tools"
+        }
         aria-haspopup="dialog"
         aria-expanded={open}
         onClick={() => {
@@ -62,6 +71,15 @@ export function CoachTools({
                 ×
               </button>
             </header>
+            {pace && onPaceChange && (
+              <section className="coach-pacing" aria-label="Response style">
+                <h3>Response style</h3>
+                <p>
+                  Normal gives direct help. Deep transfer guides you through one question at a time.
+                </p>
+                <TutorPacing value={pace} disabled={busy} onChange={onPaceChange} />
+              </section>
+            )}
             <div className="coach-tabs" role="group" aria-label="Learning tools">
               {guidance && (
                 <button

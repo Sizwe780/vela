@@ -260,9 +260,14 @@ test("staged chemistry units render formulas, reveal answers and run original si
       await page.route("**/api/tutor", (route) => route.abort("internetdisconnected"), {
         times: 1,
       });
+      await page.getByRole("button", { name: "Tutor tools", exact: true }).click();
       await page.getByRole("radio", { name: "Deep transfer", exact: true }).click();
+      await page.getByRole("button", { name: "Close tutor tools", exact: true }).click();
       await page.getByRole("button", { name: "Check my understanding" }).click();
-      await expect(page.getByRole("radio", { name: "Deep transfer", exact: true })).toBeChecked();
+      await expect(page.getByRole("button", { name: "Tutor tools", exact: true })).toHaveAttribute(
+        "title",
+        "Tutor tools · Deep transfer",
+      );
       await expect(page.getByText("Check my understanding", { exact: true })).toBeVisible();
       const tutor = page.getByRole("log", { name: "Tutor conversation" });
       await page.getByRole("button", { name: "Try again" }).click();

@@ -25,8 +25,12 @@ export function SourceDrawer({
       className="source-dialog"
       ref={ref}
       aria-label={label}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") e.stopPropagation();
+      }}
       onCancel={(e) => {
         e.preventDefault();
+        e.stopPropagation();
         onClose();
       }}
       onClick={(e) => {

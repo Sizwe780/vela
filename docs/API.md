@@ -23,8 +23,8 @@ Routes return JSON unless noted. Learner identity comes from the authenticated s
 | `POST /api/enrollments` | `{action:"enroll",qualificationId,moduleIds}` creates/reactivates up to 40 distinct qualification modules atomically. `{action:"withdraw",enrollmentId}` revokes access while preserving work. `{action:"complete",enrollmentId}` requires all published sessions complete. Identity fields are rejected. |
 | `POST /api/tutor` | `{studyUnitId, sessionId?, query, mode: "academic" | "pck", provider?, history?, live?}`. Streams Vercel AI SDK UI message events and citation data. Session must belong to the selected unit. |
 | `POST /api/tutor/voice` | Pass `?studyUnitId=…` for enrolled-unit microphone turn transcription; browser audio playback is separate. This is turn-based voice, not a full realtime audio protocol. |
-| `POST /api/quiz/generate` | `{studyUnitId, provider?}` generates a stored attempt with hidden answer keys. Heuristic generation works without an AI key. |
-| `POST /api/quiz/submit` | `{attemptId, answers:[{questionId,value}]}` evaluates the learner-owned attempt and updates mastery transactionally. |
+| `POST /api/quiz/generate` | `{studyUnitId, provider?}` generates a stored attempt with hidden answer keys. `auto` and `heuristic` use instant source recall without an AI request. Explicit AI providers have a 20-second generation deadline and free recall fallback. |
+| `POST /api/quiz/submit` | `{attemptId, answers:[{questionId,value}]}` evaluates the learner-owned attempt and updates mastery transactionally. Supported short expressions use a bounded local symbolic checker. Feedback status is `correct`, `incorrect` or `unverified`; unverified items do not enter score denominators or mastery updates. `score` is null when no item can be graded. Old stored results remain unchanged. |
 | `GET /api/notes?studyUnitId=…` | Returns `{body,revision,updatedAt,ownerId}` for this learner. |
 | `PUT /api/notes` | `{studyUnitId,body,revision,ownerId?}`. Maximum 16,000 characters; stale revisions/account changes return 409, preserving the editor's draft. |
 | `GET /api/sessions?unit=…` | Returns own completed session IDs. |

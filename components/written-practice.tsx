@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useEffect, useId, useRef, useState } from "react";
+import { AnswerSymbols } from "./math/answer-symbols";
 import { Markdown } from "./markdown";
 
 export type PracticeSession = {
@@ -108,6 +109,17 @@ export function WrittenPractice({
         placeholder="Explain your reasoning, show your steps, or give a value with units…"
         onChange={(e) => {
           setAttempt(e.target.value);
+          setResult(null);
+          setError("");
+          onStatus("tried");
+        }}
+      />
+      <AnswerSymbols
+        question={question}
+        value={attempt}
+        disabled={busy}
+        onChange={(value) => {
+          setAttempt(value.slice(0, 6000));
           setResult(null);
           setError("");
           onStatus("tried");

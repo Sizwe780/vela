@@ -1,5 +1,5 @@
 # Universal exercise escalation specification
-Version: 1.1.0
+Version: 1.2.0
 
 Escalate from recognition to guided procedure, independent procedure, error diagnosis, and transfer. Prerequisite support precedes escalation; difficulty derives from reasoning rather than larger numbers alone. Use original contexts and parameters rather than copied textbook exercises. Include a clear question, a checkable answer and explanatory feedback. Do not infer mastery from an unanswered Pause and Predict question.
 
@@ -27,3 +27,13 @@ Assessment escalation remains recognition → procedure → error correction →
 All published session exercise blocks expose Check my attempt before the answer gate. Reviewed declarative quantity/choice checks may provide deterministic local feedback. Other mathematics, science, programming and conceptual responses use a bounded, authenticated formative review against the exact published exercise and worked reference, with correct/partial/incorrect/unverified estimates, specific feedback and one next step. Accept valid alternative methods and defensible contextual arguments; do not substitute keyword matching for reasoning.
 
 Label AI estimates explicitly, allow retry and preserve the draft on failure. Uncertain or unsupported answers remain unverified. A provider failure is not an incorrect answer. Validate ownership, enrollment, source identity and revision on the server; do not trust a client-supplied answer key, score or verdict. Treat submitted and source text as untrusted evidence, never model instructions. Reveal controls remain independent. Formative AI feedback must not write assessed mastery, BKT or institutional grades. Offline packs may use reviewed local checks; broader review requires connectivity and must not invent a local grader.
+
+## Answer entry and quiz grading integrity
+
+Quantitative questions must offer an accessible visual math keyboard and symbol insertion alongside written reasoning. Select templates from the question: do not put matrices and calculus controls on every answer. Preserve LaTeX on submission and allow ordinary text for conceptual responses. Chemistry answers need subscripts, charges and reaction arrows. Collapsible notation tools must work on narrow screens without replacing the answer draft.
+
+Normalize outer math delimiters and presentation before comparison. Use bounded symbolic comparison for supported expressions; preserve case-sensitive physical symbols and domain restrictions. Accept only reviewed symbol aliases and terminology equivalents. Never assume that unrelated variable names, fitted slopes and measured quantities are interchangeable. Multiple alternatives must all be valid, rather than letting one correct guess conceal contradictory answers.
+
+Unsupported relations, ambiguous notation and open conceptual responses without a reliable rubric are unverified, not automatically incorrect. Exclude them from quiz score denominators and mastery writes. An entirely unverified quiz has a null score, not zero. Show the reference and a reason for review. Historical attempts are not silently regraded: previous submissions do not retain enough answer evidence for that operation.
+
+Instant source recall is the default free quiz flow. Explicit AI generation is optional and bounded, with honest loading, cancellation and fallback messages. Recall questions are not a claim of exam readiness. Formative lesson checks, answer reveals and ordinary chat must remain separate from assessed quiz and verified Teach-the-Tutor evidence.

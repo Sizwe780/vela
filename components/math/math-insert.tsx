@@ -6,10 +6,12 @@ export function MathInsert({
   onInsert,
   disabled = false,
   embedded = false,
+  allowedTemplates,
 }: {
   onInsert: (latex: string) => void;
   disabled?: boolean;
   embedded?: boolean;
+  allowedTemplates?: readonly string[];
 }) {
   const [open, setOpen] = useState(false),
     [value, setValue] = useState("");
@@ -27,7 +29,13 @@ export function MathInsert({
       )}
       {(embedded || open) && (
         <div className="math-insert-editor">
-          <MathInput label="Math to insert" value={value} onChange={setValue} disabled={disabled} />
+          <MathInput
+            label="Math to insert"
+            value={value}
+            onChange={setValue}
+            disabled={disabled}
+            allowedTemplates={allowedTemplates}
+          />
           <button
             type="button"
             disabled={disabled || !value.trim()}

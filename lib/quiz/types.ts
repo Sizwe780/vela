@@ -6,7 +6,7 @@ export type DraftQuestion = {
   kind: "MULTIPLE_CHOICE" | "SHORT_ANSWER";
   prompt: string;
   options: { id: string; text: string }[] | null;
-  answer: { optionId?: string; accepted?: string[] };
+  answer: { optionId?: string; accepted?: string[]; grading?: import("./answers").AnswerRules };
   explanation: string;
 };
 export type PublicQuestion = Pick<
@@ -24,6 +24,8 @@ export type Quiz = {
 export type QuizFeedback = {
   questionId: string;
   correct: boolean;
+  status?: "correct" | "incorrect" | "unverified";
+  gradingMessage?: string;
   earned: number;
   points: number;
   answer: string;
@@ -32,7 +34,7 @@ export type QuizFeedback = {
 };
 export type QuizResult = {
   attemptId: string;
-  score: number;
+  score: number | null;
   earned: number;
   possible: number;
   correct: number;

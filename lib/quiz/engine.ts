@@ -4,8 +4,9 @@ import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { IngestError } from "../ingest/errors";
 import type { Database } from "../ingest/repository";
-import { generateQuiz, normalizeAnswer, proseSentences } from "./generator";
+import { generateQuiz, proseSentences } from "./generator";
 import type { DraftQuestion, Quiz, QuizResult, QuizSource } from "./types";
+import { checkShortAnswers } from "./answers";
 
 const id = z.string().regex(/^[a-zA-Z0-9_-]{1,100}$/);
 const generateInput = z
@@ -20,7 +21,7 @@ const submitInput = z
   .object({
     attemptId: id,
     answers: z
-      .array(z.object({ questionId: id, value: z.string().max(500) }).strict())
+      .array(z.object({ questionId: id, value: z.string().trim().min(1).max(500) }).strict())
       .min(1)
       .max(6),
   })
@@ -38,12 +39,12 @@ function input<S extends z.ZodTypeAny>(schema: S, value: unknown): z.output<S> {
   return result.data;
 }
 
-export function gradeQuiz(
+export async function gradeQuiz(
   attemptId: string,
   studyUnitId: string,
   questions: StoredQuestion[],
   answers: { questionId: string; value: string }[],
-): QuizResult {
+): Promise<QuizResult> {
   if (
     answers.length !== questions.length ||
     new Set(answers.map((answer) => answer.questionId)).size !== questions.length ||
@@ -54,15 +55,28 @@ export function gradeQuiz(
       "INCOMPLETE_QUIZ",
       "Answer every question exactly once, using the questions issued for this attempt.",
     );
+  const shortQuestions = questions.filter((q) => q.kind === "SHORT_ANSWER");
+  const decisions = await checkShortAnswers(
+    shortQuestions.map((q) => ({
+      prompt: q.prompt,
+      accepted: q.answer.accepted ?? [],
+      rules: q.answer.grading,
+      value: answers.find((a) => a.questionId === q.id)!.value,
+    })),
+  );
+  const byQuestion = new Map(shortQuestions.map((q, i) => [q.id, decisions[i]]));
   const outcomes = new Map<string, { earned: number; possible: number }>();
   const feedback = questions.map((question) => {
     const value = answers.find((answer) => answer.questionId === question.id)!.value;
-    const correct =
+    const decision =
       question.kind === "MULTIPLE_CHOICE"
-        ? value === question.answer.optionId
-        : (question.answer.accepted ?? []).some(
-            (answer) => normalizeAnswer(answer) === normalizeAnswer(value),
-          );
+        ? {
+            status:
+              value === question.answer.optionId ? ("correct" as const) : ("incorrect" as const),
+            message: "Checked against the issued option.",
+          }
+        : byQuestion.get(question.id)!;
+    const correct = decision.status === "correct";
     if (
       question.kind === "MULTIPLE_CHOICE" &&
       !question.options?.some((option) => option.id === value)
@@ -73,28 +87,35 @@ export function gradeQuiz(
         "Select one of the options issued for each multiple-choice question.",
       );
     const earned = correct ? question.points : 0;
-    const outcome = outcomes.get(question.learningOutcomeId) ?? { earned: 0, possible: 0 };
-    outcome.earned += earned;
-    outcome.possible += question.points;
-    outcomes.set(question.learningOutcomeId, outcome);
+    if (decision.status !== "unverified") {
+      const outcome = outcomes.get(question.learningOutcomeId) ?? { earned: 0, possible: 0 };
+      outcome.earned += earned;
+      outcome.possible += question.points;
+      outcomes.set(question.learningOutcomeId, outcome);
+    }
     return {
       questionId: question.id,
       correct,
+      status: decision.status,
+      gradingMessage: decision.message,
       earned,
       points: question.points,
       answer:
         question.kind === "MULTIPLE_CHOICE"
           ? question.options!.find((option) => option.id === question.answer.optionId)!.text
-          : question.answer.accepted![0],
+          : (question.answer.accepted?.[0] ?? "No reviewed reference is available."),
       explanation: question.explanation,
       sourceUrl: `/study/${encodeURIComponent(studyUnitId)}#chunk-${encodeURIComponent(question.sourceChunkId)}`,
     };
   });
   const earned = feedback.reduce((sum, item) => sum + item.earned, 0);
-  const possible = feedback.reduce((sum, item) => sum + item.points, 0);
+  const possible = feedback.reduce(
+    (sum, item) => sum + (item.status === "unverified" ? 0 : item.points),
+    0,
+  );
   return {
     attemptId,
-    score: Math.round((100 * earned) / possible),
+    score: possible ? Math.round((100 * earned) / possible) : null,
     earned,
     possible,
     correct: feedback.filter((item) => item.correct).length,
@@ -143,6 +164,8 @@ export function createQuizEngine(db: Database, generator: typeof generateQuiz = 
       const generated = await generator(sources, requested, signal);
       const attemptId = randomUUID();
       const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+      if (signal?.aborted)
+        throw new IngestError(499, "REQUEST_CANCELLED", "Quiz generation was cancelled.");
       const questions = await db.transaction(async (tx) => {
         // Serialize question-position allocation with other quizzes of this unit.
         await tx.query(
@@ -217,7 +240,7 @@ export function createQuizEngine(db: Database, generator: typeof generateQuiz = 
             "QUIZ_CONTENT_CHANGED",
             "Quiz content changed. Start a fresh practice attempt.",
           );
-        const result = gradeQuiz(attemptId, attempt.studyUnitId, questions, answers);
+        const result = await gradeQuiz(attemptId, attempt.studyUnitId, questions, answers);
         // Stable lock ordering plus atomic upserts preserve attempt counts when
         // separate quizzes for the same learner finish concurrently.
         for (const mastery of [...result.mastery].sort((a, b) =>
