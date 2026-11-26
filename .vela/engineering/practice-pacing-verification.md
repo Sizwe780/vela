@@ -22,3 +22,11 @@ Local evidence: practice-pacing-all-tests.log, practice-review-unit-final.log, p
 No migration or content reseed is required. Broader written feedback needs an online authenticated lesson and an available configured AI provider; the existing coach request allowance applies. Offline packs retain reviewed local checks, with broader feedback unavailable. Generated chat exercises and arbitrary legacy text cannot supply their own authoritative answer key through this endpoint. Application changes require the normal production build and direct Azure deployment; a Git commit alone does not update Azure.
 
 Final checks: schema validation, TypeScript and the production build passed. Four targeted desktop/mobile browser cases passed (practice UI and pacing UI). The 204-test suite passed with bounded concurrency. Azure was not redeployed in this change.
+
+## Direct Azure deployment — 26 November 2026
+
+Runtime source 7547b2c was deployed directly with scripts/deploy-azure.ps1, without GitHub workflows. Azure reported RuntimeSuccessful, one successful instance and zero failures. Both velastudy.app and the Azure origin matched production build _orZYjFX1K_lR-9e9Kutc.
+
+Production post-deployment checks passed: four desktop/mobile UI cases across seven populated modules, including practice fields/feedback display and pacing-pill keyboard selection, draft retention and selected request pacing. Feedback and chat responses were mocked for these UI checks; this is not a live AI grading accuracy certification. Root, signup, session, service-worker and offline-reader routes returned HTTP 200. The practice API returned 401 for unsigned requests and 403 for a foreign Origin, with private/no-store responses.
+
+Evidence: practice-pacing-azure-deploy.log and practice-pacing-production-browser.log under the local task work directory. No curriculum migration or source promotion was required.
