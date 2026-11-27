@@ -5,6 +5,7 @@ import { Markdown } from "./markdown";
 
 export type PracticeSession = {
   ownerId: string;
+  title?: string;
   studyUnitId: string;
   sessionId: string;
   version: number;
@@ -106,7 +107,15 @@ export function WrittenPractice({
         value={attempt}
         maxLength={6000}
         disabled={busy}
-        placeholder="Explain your reasoning, show your steps, or give a value with units…"
+        placeholder={
+          /\b(?:mass|volume|force|velocity|speed|density|pressure|units?|temperature|distance|time)\b/i.test(
+            question,
+          )
+            ? "Show your working and include the appropriate units…"
+            : /\$|formula|matrix|equation|calculate/i.test(question)
+              ? "Enter your expression and explain the steps…"
+              : "Explain your reasoning in your own words…"
+        }
         onChange={(e) => {
           setAttempt(e.target.value);
           setResult(null);

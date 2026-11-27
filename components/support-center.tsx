@@ -1,6 +1,7 @@
 "use client";
 import { useState, type FormEvent } from "react";
 import { studentRequest, useStudentResource } from "../lib/student/client";
+import { RetentionPanel } from "./retention-panel";
 import styles from "./student-pages.module.css";
 
 type Ticket = {
@@ -11,6 +12,7 @@ type Ticket = {
   status: string;
   response?: string;
   updatedAt: string;
+  deletionTarget?: string | null;
 };
 type Report = { ownerId: string; operator: boolean; requests: Ticket[] };
 export function SupportCenter({ deletionOnly = false }: { deletionOnly?: boolean }) {
@@ -73,6 +75,7 @@ export function SupportCenter({ deletionOnly = false }: { deletionOnly?: boolean
           </button>
         </div>
       )}
+      {data?.operator && view === "inbox" && <RetentionPanel />}
       {!deletionOnly && view === "mine" && (
         <form className={styles.form} onSubmit={report}>
           <label>
@@ -150,6 +153,13 @@ export function SupportCenter({ deletionOnly = false }: { deletionOnly?: boolean
               {item.subject} · {item.status.replaceAll("_", " ")}
             </summary>
             <p>{item.body}</p>
+            {item.deletionTarget && (
+              <p>
+                Deletion review target: {new Date(item.deletionTarget).toLocaleDateString()}.
+                Eligible live data is removed after identity review, subject to documented holds and
+                record requirements.
+              </p>
+            )}
             <p className={styles.note}>
               Reference <code>{item.id}</code>
             </p>

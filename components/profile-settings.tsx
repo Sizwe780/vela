@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { authClient } from "../lib/auth/client";
 import { useStudentResource, studentRequest, studentNavUpdate } from "../lib/student/client";
+import { ProfileLearningPreferences } from "./learning/profile-learning-preferences";
 import { EmailVerification } from "./email-verification";
 import { AccountSecurity } from "./account-security";
 import { SupportCenter } from "./support-center";
@@ -22,6 +23,7 @@ type Profile = {
   emailRemindersAvailable: boolean;
   emailTestAllowed: boolean;
   emailProvider: string | null;
+  hasClassroom?: boolean;
 };
 export function ProfileSettings() {
   const { data, error, loading, reload } = useStudentResource<Profile>("/api/profile");
@@ -115,10 +117,13 @@ function ProfileEditor({ data, reload }: { data: Profile; reload: () => void }) 
           <label className={styles.checkChoice}>
             <input
               type="checkbox"
-              checked={classroomAlerts}
+              disabled={!data.hasClassroom}
+              checked={data.hasClassroom && classroomAlerts}
               onChange={(event) => setClassroomAlerts(event.target.checked)}
             />{" "}
-            Show a Classroom badge for assignments I still need to submit
+            {data.hasClassroom
+              ? "Show a Classroom badge for assignments I still need to submit"
+              : "Assignment badges become available when you join a class"}
           </label>
           {!data.emailRemindersAvailable && (
             <p className={styles.note}>
@@ -133,6 +138,8 @@ function ProfileEditor({ data, reload }: { data: Profile; reload: () => void }) 
           <p role="status">{notice}</p>
         </form>
       </section>
+      <ProfileLearningPreferences />
+      <ReminderPreview />
       <AccountSecurity
         key={data.studentId}
         owner={data.studentId}
@@ -211,5 +218,26 @@ function ProfileEditor({ data, reload }: { data: Profile; reload: () => void }) 
         </p>
       </section>
     </>
+  );
+}
+
+function ReminderPreview() {
+  const { data, error } = useStudentResource<{ due: number }>("/api/review");
+  return (
+    <details className="profile-learning-settings">
+      <summary>Preview your recall digest</summary>
+      <h3>Your next review is ready</h3>
+      <p>
+        {data
+          ? `${data.due} learning ${data.due === 1 ? "outcome is" : "outcomes are"} due for review.`
+          : error || "Loading your current review count…"}
+      </p>
+      <p>Open your review queue, recall the idea, then choose what to practise next.</p>
+      <Link href="/review">Open review queue →</Link>
+      <p>
+        This is an in-app preview. It sends no email and does not change your reminder preference.
+        Your notes, answers and scores are not included in the digest.
+      </p>
+    </details>
   );
 }

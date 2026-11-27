@@ -45,6 +45,6 @@ Publication and source conversion are separate. Follow [MAT1503_ONBOARDING.md](M
 
 ## Public origin, policies and operator roles
 
-Set `NEXT_PUBLIC_SITE_URL` to the deployed HTTPS origin before public indexing. Local development robots disallow crawling. Terms/privacy are labelled development drafts until operator/legal review; configure `POLICIES_APPROVED=true` only after completing that review and the missing business/retention/source-rights details.
+Set `NEXT_PUBLIC_SITE_URL` to the deployed HTTPS origin before public indexing. Local development robots disallow crawling. The public policies distinguish approved retention targets from deployed enforcement. Complete `.vela/legal/launch-readiness.md` before treating the notice as a final compliance deliverable; an operator flag is not a legal certification.
 
 See [COMPETITIVE_GAPS.md](COMPETITIVE_GAPS.md) for verified admin setup and feature limitations. Neon authentication email verification uses a one-time code entered on `/profile`. It is separate from the product welcome/recall queue. Resend development-inbox sending is connected; see [EMAIL_SETUP.md](EMAIL_SETUP.md) for consent, free limits, local scheduling and requirements for wider delivery.

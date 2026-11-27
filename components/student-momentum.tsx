@@ -38,7 +38,7 @@ export function StudentMomentum() {
               className="primary-button"
               href={`/study/${latest.session.studyUnit.id}/sessions/${latest.sessionId}`}
             >
-              Continue where you left off
+              Start today’s session
             </Link>
           </>
         ) : (

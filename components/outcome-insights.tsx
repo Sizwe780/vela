@@ -176,67 +176,122 @@ export function OutcomeInsights({ compact = false }: { compact?: boolean }) {
                   )}
                 </select>
               </label>
-              <div className="outcome-grid">
-                {data.outcomes
-                  .filter((o) => !module || o.moduleId === module)
-                  .map((o) => (
-                    <article key={o.id}>
-                      <small>
-                        {o.moduleCode} · {o.unitTitle}
-                      </small>
-                      <h3>
-                        <Link href={o.studyLink}>{o.title}</Link>
-                      </h3>
-                      <details className="outcome-evidence">
-                        <summary>
-                          {o.quiz
-                            ? `Latest quiz · ${Math.round(o.quiz.score * 100)}%`
-                            : "View evidence"}
-                        </summary>
-                        <dl>
-                          <dt>Latest quiz practice</dt>
-                          <dd>
-                            {o.quiz
-                              ? `${Math.round(o.quiz.score * 100)}% · ${o.quizAttempts} recent ${o.quizAttempts === 1 ? "attempt" : "attempts"}`
-                              : "No recent quiz evidence"}
-                          </dd>
-                          <dt>AI-assisted conceptual practice</dt>
-                          <dd>
-                            {o.concept
-                              ? `${Math.round(o.concept.score * 100)}% estimate · ${o.conceptAttempts} recent ${o.conceptAttempts === 1 ? "attempt" : "attempts"}`
-                              : "No verified conceptual review recorded"}
-                          </dd>
-                          <dt>Recall / practice aggregate</dt>
-                          <dd>
-                            {o.mixedScore === null
-                              ? "Not started"
-                              : `${Math.round(o.mixedScore * 100)}% · ${o.attempts} ${o.attempts === 1 ? "recorded activity" : "recorded activities"} (mixed sources)`}
-                          </dd>
-                          <dt>Review schedule</dt>
-                          <dd>{o.due ? new Date(o.due).toLocaleDateString() : "Not scheduled"}</dd>
-                        </dl>
-                        {o.quizHistory.length > 0 && (
-                          <div aria-label="Recent quiz practice history">
-                            <ol className="evidence-history">
-                              {o.quizHistory.map((e) => (
-                                <li key={e.id}>
-                                  <time dateTime={e.at}>{new Date(e.at).toLocaleDateString()}</time>
-                                  <meter min={0} max={1} value={e.score} />
-                                  <span>{Math.round(e.score * 100)}%</span>
-                                </li>
-                              ))}
-                            </ol>
-                            <p>
-                              {o.quizChange === null
-                                ? "Two quiz attempts are needed for a comparison."
-                                : `${o.quizChange > 0 ? "+" : ""}${o.quizChange} ${o.quizChange === 1 ? "percentage point" : "percentage points"} from your previous quiz practice.`}
-                            </p>
-                          </div>
-                        )}
-                      </details>
-                    </article>
-                  ))}
+              <div className="mastery-breakdown" aria-label="Quiz practice distribution">
+                <span
+                  style={{
+                    width: `${(100 * data.outcomes.filter((o) => o.quiz && o.quiz.score >= 0.8).length) / Math.max(1, data.outcomes.length)}%`,
+                  }}
+                />
+                <span
+                  style={{
+                    width: `${(100 * data.outcomes.filter((o) => (o.quiz || o.concept) && !(o.quiz && o.quiz.score >= 0.8)).length) / Math.max(1, data.outcomes.length)}%`,
+                  }}
+                />
               </div>
+              <p>
+                Strong quiz evidence:{" "}
+                {data.outcomes.filter((o) => o.quiz && o.quiz.score >= 0.8).length} · Practising:{" "}
+                {
+                  data.outcomes.filter(
+                    (o) => (o.quiz || o.concept) && !(o.quiz && o.quiz.score >= 0.8),
+                  ).length
+                }{" "}
+                · No assessed evidence: {data.outcomes.filter((o) => !o.quiz && !o.concept).length}
+              </p>
+              {(() => {
+                const weakest = [...data.outcomes]
+                  .filter((o) => o.quiz)
+                  .sort((a, b) => a.quiz!.score - b.quiz!.score)[0];
+                return weakest ? (
+                  <Link className="primary-button" href={weakest.studyLink}>
+                    Practise your weakest recorded outcome →
+                  </Link>
+                ) : null;
+              })()}
+              {[...new Map(data.outcomes.map((o) => [o.moduleId, o.moduleCode])).entries()]
+                .filter(([id]) => !module || module === id)
+                .map(([id, code]) => {
+                  const items = data.outcomes.filter((o) => o.moduleId === id);
+                  const observed = items.filter((o) => o.quiz || o.concept).length;
+                  return (
+                    <details key={id} className="outcome-module" open={observed > 0}>
+                      <summary>
+                        <strong>{code}</strong>
+                        <span>
+                          {observed}/{items.length} outcomes with assessed practice
+                        </span>
+                        <progress
+                          max={Math.max(1, items.length)}
+                          value={observed}
+                          aria-label={`${code} outcomes with evidence`}
+                        />
+                      </summary>
+                      <div className="outcome-grid">
+                        {items.map((o) => (
+                          <article key={o.id}>
+                            <small>
+                              {o.moduleCode} · {o.unitTitle}
+                            </small>
+                            <h3>
+                              <Link href={o.studyLink}>{o.title}</Link>
+                            </h3>
+                            <details className="outcome-evidence">
+                              <summary>
+                                {o.quiz
+                                  ? `Latest quiz · ${Math.round(o.quiz.score * 100)}%`
+                                  : "View evidence"}
+                              </summary>
+                              <dl>
+                                <dt>Latest quiz practice</dt>
+                                <dd>
+                                  {o.quiz
+                                    ? `${Math.round(o.quiz.score * 100)}% · ${o.quizAttempts} recent ${o.quizAttempts === 1 ? "attempt" : "attempts"}`
+                                    : "No recent quiz evidence"}
+                                </dd>
+                                <dt>AI-assisted conceptual practice</dt>
+                                <dd>
+                                  {o.concept
+                                    ? `${Math.round(o.concept.score * 100)}% estimate · ${o.conceptAttempts} recent ${o.conceptAttempts === 1 ? "attempt" : "attempts"}`
+                                    : "No verified conceptual review recorded"}
+                                </dd>
+                                <dt>Recall / practice aggregate</dt>
+                                <dd>
+                                  {o.mixedScore === null
+                                    ? "Not started"
+                                    : `${Math.round(o.mixedScore * 100)}% · ${o.attempts} ${o.attempts === 1 ? "recorded activity" : "recorded activities"} (mixed sources)`}
+                                </dd>
+                                <dt>Review schedule</dt>
+                                <dd>
+                                  {o.due ? new Date(o.due).toLocaleDateString() : "Not scheduled"}
+                                </dd>
+                              </dl>
+                              {o.quizHistory.length > 0 && (
+                                <div aria-label="Recent quiz practice history">
+                                  <ol className="evidence-history">
+                                    {o.quizHistory.map((e) => (
+                                      <li key={e.id}>
+                                        <time dateTime={e.at}>
+                                          {new Date(e.at).toLocaleDateString()}
+                                        </time>
+                                        <meter min={0} max={1} value={e.score} />
+                                        <span>{Math.round(e.score * 100)}%</span>
+                                      </li>
+                                    ))}
+                                  </ol>
+                                  <p>
+                                    {o.quizChange === null
+                                      ? "Two quiz attempts are needed for a comparison."
+                                      : `${o.quizChange > 0 ? "+" : ""}${o.quizChange} ${o.quizChange === 1 ? "percentage point" : "percentage points"} from your previous quiz practice.`}
+                                  </p>
+                                </div>
+                              )}
+                            </details>
+                          </article>
+                        ))}
+                      </div>
+                    </details>
+                  );
+                })}
             </>
           )}
         </>

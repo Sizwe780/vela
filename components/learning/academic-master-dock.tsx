@@ -19,6 +19,7 @@ export function AcademicMasterDock() {
     const key = (event: KeyboardEvent) => {
       if (
         (event.ctrlKey || event.metaKey) &&
+        event.shiftKey &&
         event.key.toLowerCase() === "k" &&
         !document.querySelector("dialog[open]") &&
         !(

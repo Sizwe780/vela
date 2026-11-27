@@ -4,10 +4,12 @@ import { SourceDrawer } from "./source-drawer";
 export function MobileTools({
   label = "Learning tools",
   maxWidth = 380,
+  glyph = "⋯",
   children,
 }: {
   label?: string;
   maxWidth?: number;
+  glyph?: string;
   children: ReactNode | ((close: () => void) => ReactNode);
 }) {
   const [open, setOpen] = useState(false);
@@ -47,7 +49,7 @@ export function MobileTools({
         aria-controls={open ? id : undefined}
         onClick={() => setOpen(true)}
       >
-        ⋯
+        {glyph}
       </button>
       {open && (
         <SourceDrawer id={id} label={label} onClose={close}>

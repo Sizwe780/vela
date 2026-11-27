@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LearningShell } from "../../components/learning-shell";
+import { InformationPage } from "../../components/information-page";
 import styles from "../../components/student-pages.module.css";
 export const metadata = {
   title: "Learn deeply. Teach confidently. · Vela",
@@ -8,7 +8,11 @@ export const metadata = {
 };
 export default function About() {
   return (
-    <LearningShell publicPage title="Learn deeply. Teach confidently.">
+    <InformationPage
+      title="Where understanding takes shape."
+      intro="A calmer space to learn deeply, practise deliberately and grow into a confident teacher."
+      eyebrow="THE IDEA BEHIND VELA"
+    >
       <p>
         Vela brings your lessons, practice and learning companion into one focused workspace. It is
         being built for higher education, beginning with UNISA B.Ed mathematics and teacher
@@ -22,22 +26,22 @@ export default function About() {
           Explore the free preview
         </Link>
       </div>
-      <div className={styles.grid}>
-        <article className={styles.card}>
+      <div className="information-features">
+        <article className="information-feature">
           <h2>Understanding before answers</h2>
           <p>
             Follow conceptual sessions, explore interactive mathematical models, and try examples
             before revealing worked solutions.
           </p>
         </article>
-        <article className={styles.card}>
+        <article className="information-feature">
           <h2>A companion with context</h2>
           <p>
             Ask about your current session. Explore academic explanations or how to teach the idea,
             with sources you can inspect.
           </p>
         </article>
-        <article className={styles.card}>
+        <article className="information-feature">
           <h2>Keep what you learn</h2>
           <p>
             Use personal notes, saved passages, recall ratings and a review queue. Continue from the
@@ -63,6 +67,6 @@ export default function About() {
           Privacy
         </Link>
       </p>
-    </LearningShell>
+    </InformationPage>
   );
 }

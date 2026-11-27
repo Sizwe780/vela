@@ -17,7 +17,7 @@ Version: 1.0.0
 - Bind drafts and asynchronous responses to the current account and source. Account/session/provider changes must stop inappropriate voice/context reuse. Never save an old account's draft under a new identity silently.
 - Keep database keys, model credentials and realtime secrets out of the client, logs, screenshots and committed files. Use private uncached responses for learner data. Do not cache authenticated HTML/API data in the public service worker.
 - Community posts require an explicit posting action. Never publish private highlights/notes, infer consent from enrollment, or send welcome/reminder/community messages as a side effect of a test against real recipients.
-- Reports and staff moderation need scope checks. Removing a post redacts its body; document remaining reply/report retention honestly. Final operator/legal retention decisions remain outstanding.
+- Reports and staff moderation need scope checks. Removing a post redacts its body; document remaining reply/report retention honestly. Approved retention targets and the preview-first enforcement boundary are documented in `.vela/legal/retention-schedule-proposal.md`; provider backup/log settings and qualified legal review remain separate rollout work.
 
 ## Evidence integrity
 
@@ -53,3 +53,9 @@ Version: 1.0.0
 Use readable components, shared semantic CSS tokens, light mode by default, explicit dark preference, compact headers and mobile overflow controls. Keep teaching text readable and controls keyboard-labelled; automated checks do not replace a manual screen-reader audit.
 
 Use the public frame for discovery and policy pages and the learning frame for private learner routes. Keep the primary task and its controls visible at the current pane width. Put supporting lists and technical details behind labelled disclosures when they would push reading or practice below the fold. Verify resizing on real unit routes, including tablet widths between the desktop split and mobile tabs.
+
+Navigation and settings belong to one deliberate place: group learner navigation by Learn, Practice and Insights; use the account menu for account/device utilities and Profile for availability/privacy controls. Keep Overview task-focused and put full outcome histories in Progress. Destructive enrollment actions require a clearly named confirmation. Review-day cutoffs must be shared by the queue, recall eligibility and reminder service; display the scheduling timezone explicitly. Do not infer that an empty class, missing concept check or unpublished module is a learner failure.
+
+See [the page audit](site-wide-audit.md) before adding back removed chrome or old extractive quiz fallbacks. Declare unsupported grading and sparse evidence honestly rather than replacing missing evidence with scores or locking learners out of a concept on the basis of estimates.
+
+Production packaging must exclude `.next/server/route-cache` and other runtime caches, retaining only current build seeds. With Windows `cleanDistDir: false`, clear the production route cache before building. A new `deployment-version.json` alone does not prove that HTML is current: the 27 November incident reproduced old cached legal/auth pages despite a correct build ID and fresh HTML seeds. Verify visible page content after the runtime is ready. Never assume missing UI means missing database records; test scoped access and data connectivity separately.

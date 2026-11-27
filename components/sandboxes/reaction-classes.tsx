@@ -4,24 +4,14 @@ import { useState } from "react";
 import { equationBalance } from "../../lib/content/reaction-check";
 import { Markdown } from "../markdown";
 
-type ReactionKey = "water" | "iron";
+import {
+  reactionLibrary,
+  practiceEquation,
+  type ReactionKey,
+} from "../../lib/content/reaction-library";
 type Practice = "equation-balancing" | "redox-practice";
 
-const reactions: Record<
-  ReactionKey,
-  { label: string; formulas: [string, string, string]; coefficients: [number, number, number] }
-> = {
-  water: {
-    label: "Hydrogen and oxygen form water",
-    formulas: ["H2", "O2", "H2O"],
-    coefficients: [2, 1, 2],
-  },
-  iron: {
-    label: "Iron oxidation",
-    formulas: ["Fe", "O2", "Fe2O3"],
-    coefficients: [4, 3, 2],
-  },
-};
+const reactions = reactionLibrary;
 
 const redoxCases = {
   zinc: {
@@ -39,7 +29,7 @@ const redoxCases = {
 } as const;
 
 function coefficient(value: number) {
-  return Number.isFinite(value) ? Math.min(8, Math.max(1, Math.trunc(value))) : 1;
+  return Number.isFinite(value) ? Math.min(12, Math.max(1, Math.trunc(value))) : 1;
 }
 
 export function ReactionClasses({
@@ -53,19 +43,20 @@ export function ReactionClasses({
 }) {
   const [practice, setPractice] = useState<Practice>(initial);
   const [reaction, setReaction] = useState<ReactionKey>(initialReaction);
-  const [a, setA] = useState(initialCoefficients[0]);
-  const [b, setB] = useState(initialCoefficients[1]);
-  const [c, setC] = useState(initialCoefficients[2]);
+  const [coefficients, setCoefficients] = useState<number[]>(() =>
+    [
+      ...reactionLibrary[initialReaction].reactants,
+      ...reactionLibrary[initialReaction].products,
+    ].map((_, index) => initialCoefficients[index] ?? 1),
+  );
   const [redox, setRedox] = useState<keyof typeof redoxCases>("zinc");
   const [oxidized, setOxidized] = useState("");
   const [electrons, setElectrons] = useState("");
   const model = reactions[reaction];
   const redoxCase = redoxCases[redox];
-  const simplest =
-    a === model.coefficients[0] && b === model.coefficients[1] && c === model.coefficients[2];
+  const simplest = coefficients.every((value, index) => value === model.coefficients[index]);
   const redoxCorrect = oxidized === redoxCase.species[0] && electrons === redoxCase.electrons;
-  const [first, second, product] = model.formulas;
-  const equation = `${a}${first} + ${b}${second} -> ${c}${product}`;
+  const equation = practiceEquation(model, coefficients);
   const { atoms, balanced } = equationBalance(equation);
 
   return (
@@ -80,9 +71,8 @@ export function ReactionClasses({
                 value={reaction}
                 onChange={(event) => {
                   setReaction(event.currentTarget.value as ReactionKey);
-                  setA(1);
-                  setB(1);
-                  setC(1);
+                  const next = reactions[event.currentTarget.value as ReactionKey];
+                  setCoefficients([...next.reactants, ...next.products].map(() => 1));
                 }}
               >
                 {Object.entries(reactions).map(([key, item]) => (
@@ -92,39 +82,24 @@ export function ReactionClasses({
                 ))}
               </select>
               <Markdown text={`$\\ce{${equation}}$`} />
+              <p className="reaction-category">{model.category}</p>
               <div className="coefficient-row">
-                <label>
-                  First coefficient
-                  <input
-                    type="number"
-                    min="1"
-                    max="8"
-                    value={a}
-                    onChange={(event) => setA(coefficient(event.currentTarget.valueAsNumber))}
-                  />
-                </label>
-                <span>+</span>
-                <label>
-                  Second coefficient
-                  <input
-                    type="number"
-                    min="1"
-                    max="8"
-                    value={b}
-                    onChange={(event) => setB(coefficient(event.currentTarget.valueAsNumber))}
-                  />
-                </label>
-                <span>→</span>
-                <label>
-                  Product coefficient
-                  <input
-                    type="number"
-                    min="1"
-                    max="8"
-                    value={c}
-                    onChange={(event) => setC(coefficient(event.currentTarget.valueAsNumber))}
-                  />
-                </label>
+                {[...model.reactants, ...model.products].map((formula, index) => (
+                  <label key={`${index}:${formula}`}>
+                    Coefficient for {formula}
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      min="1"
+                      max="12"
+                      value={coefficients[index]}
+                      onChange={(event) => {
+                        const value = coefficient(event.currentTarget.valueAsNumber);
+                        setCoefficients((prior) => prior.map((n, i) => (i === index ? value : n)));
+                      }}
+                    />
+                  </label>
+                ))}
               </div>
             </>
           ) : (

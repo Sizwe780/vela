@@ -7,7 +7,6 @@ import { ActivityOverview } from "../components/activity-overview";
 import { ConceptProgress } from "../components/coach/concept-progress";
 import { connection } from "next/server";
 import { LearnerServices } from "../components/learner-services";
-import { MasteryTree } from "../components/mastery-tree";
 import { OutcomeInsights } from "../components/outcome-insights";
 import { auth } from "../lib/auth/server";
 import { VelaLanding } from "../components/vela-landing";
@@ -43,7 +42,6 @@ export default async function Home() {
           <div className="vela-dashboard-main">
             <EnrollmentDashboard />
             <OutcomeInsights compact />
-            <MasteryTree />
           </div>
           <aside className="vela-dashboard-support" aria-label="Study rhythm and practice">
             <ActivityOverview compact />

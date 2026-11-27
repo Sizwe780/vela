@@ -1,3 +1,4 @@
+import { publishedStudyUnit } from "../../lib/study/published-units";
 export const dynamic = "force-dynamic";
 import { requireStudentPage } from "../../lib/student/page-auth";
 import { prisma } from "../../lib/db";
@@ -14,7 +15,13 @@ export default async function Page() {
         },
       },
     },
-    select: { id: true, code: true, title: true, institution: true },
+    select: {
+      id: true,
+      code: true,
+      title: true,
+      institution: true,
+      studyUnits: { where: publishedStudyUnit, select: { id: true }, take: 1 },
+    },
     orderBy: { code: "asc" },
     take: 200,
   });
@@ -30,7 +37,14 @@ export default async function Page() {
               {m.institution} · {m.code}
             </span>
             <h2>{m.title}</h2>
-            <Link href={`/lounge/${m.id}`}>Open study room →</Link>
+            {m.studyUnits.length ? (
+              <>
+                <span className="session-meta">Join to see anonymous live presence</span>
+                <Link href={`/lounge/${m.id}`}>Open study room →</Link>
+              </>
+            ) : (
+              <span className="session-meta">Content in preparation · room not active yet</span>
+            )}
           </article>
         ))}
       </div>

@@ -1,3 +1,4 @@
+import { mat1503Skills } from "../../../../content/mat1503/skills";
 import { notFound, redirect } from "next/navigation";
 import { IngestError } from "../../../../lib/ingest/errors";
 import Link from "next/link";
@@ -24,6 +25,7 @@ export default async function Sessions({ params }: { params: Promise<{ unitId: s
     where: { id },
     select: {
       title: true,
+      code: true,
       position: true,
       module: { select: { id: true, code: true } },
       learningOutcomes: { select: { id: true, description: true }, orderBy: { code: "asc" } },
@@ -32,6 +34,8 @@ export default async function Sessions({ params }: { params: Promise<{ unitId: s
           id: true,
           position: true,
           title: true,
+          markdown: true,
+          concepts: true,
           progress: { where: { studentId: user.id }, select: { completedAt: true } },
           studyPositions: { where: { studentId: user.id }, select: { sessionId: true } },
         },
@@ -40,6 +44,10 @@ export default async function Sessions({ params }: { params: Promise<{ unitId: s
     },
   });
   if (!unit) notFound();
+  const minutes = (text: string) => Math.max(5, Math.ceil(text.split(/\s+/).length / 180));
+  const skills =
+    mat1503Skills[unit.code] ??
+    unit.learningOutcomes.flatMap((o) => o.description.split(/(?<=[.!?])\s+/));
   const path = `/study/${id}`;
   const done = unit.sessions.filter((session) => session.progress.length).length;
   const resume = unit.sessions.find((session) => session.studyPositions.length);
@@ -62,9 +70,23 @@ export default async function Sessions({ params }: { params: Promise<{ unitId: s
                     <span className="curriculum-unit-index">
                       {String(session.position).padStart(2, "0")}
                     </span>
-                    <strong>{session.title}</strong>
+                    <div>
+                      <strong>{session.title}</strong>
+                      <div className="session-meta">
+                        <span>About {minutes(session.markdown)} min</span>
+                        {topics(session.concepts).length > 0 &&
+                          topics(session.concepts)
+                            .slice(0, 3)
+                            .filter((c) => typeof c === "string")
+                            .map((c) => <span key={String(c)}>{String(c)}</span>)}
+                      </div>
+                    </div>
                     <span className="session-list-state">
-                      {session.progress.length ? "Complete" : "Open"}{" "}
+                      {session.progress.length
+                        ? "Completed ✓"
+                        : session.studyPositions.length
+                          ? "In progress"
+                          : "Not started"}{" "}
                       <Icon name={session.progress.length ? "check" : "arrow"} size={16} />
                     </span>
                   </Link>
@@ -87,6 +109,13 @@ export default async function Sessions({ params }: { params: Promise<{ unitId: s
             {unit.sessions.length > 0 && (
               <progress aria-label="Sessions complete" value={done} max={unit.sessions.length} />
             )}
+            <p>
+              About{" "}
+              {unit.sessions
+                .filter((s) => !s.progress.length)
+                .reduce((n, s) => n + minutes(s.markdown), 0)}{" "}
+              minutes of reading remaining. Estimates exclude extended practice.
+            </p>
             <div className="unit-study-actions">
               {next && (
                 <Link className="primary-button" href={`${path}/sessions/${next.id}`}>
@@ -98,13 +127,17 @@ export default async function Sessions({ params }: { params: Promise<{ unitId: s
                 Open unit quiz
               </Link>
             </div>
+            <p>
+              Recommended after all {unit.sessions.length} sessions, or take the quiz now to check
+              your starting point.
+            </p>
           </section>
           {unit.learningOutcomes.length > 0 && (
             <details className="unit-outcomes">
               <summary>Learning outcomes</summary>
               <ul>
-                {unit.learningOutcomes.map((outcome) => (
-                  <li key={outcome.id}>{outcome.description}</li>
+                {skills.map((skill, index) => (
+                  <li key={index}>{skill}</li>
                 ))}
               </ul>
             </details>
@@ -113,4 +146,10 @@ export default async function Sessions({ params }: { params: Promise<{ unitId: s
       </div>
     </LearningShell>
   );
+}
+
+function topics(value: unknown): string[] {
+  if (Array.isArray(value)) return value.filter((item): item is string => typeof item === "string");
+  if (value && typeof value === "object" && "topics" in value) return topics(value.topics);
+  return [];
 }

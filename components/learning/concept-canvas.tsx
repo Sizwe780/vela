@@ -1,5 +1,5 @@
 "use client";
-import { useId, useState } from "react";
+import { useId, useState, useRef } from "react";
 import type { LearningConcept } from "../../lib/learning/types";
 export function ConceptCanvas({
   nodes,
@@ -12,6 +12,8 @@ export function ConceptCanvas({
 }) {
   const [zoom, setZoom] = useState(100),
     marker = useId().replace(/:/g, "");
+  const viewport = useRef<HTMLDivElement>(null);
+  const drag = useRef<{ x: number; left: number } | null>(null);
   const levels = new Map<string, number>();
   function level(id: string): number {
     if (levels.has(id)) return levels.get(id)!;
@@ -31,10 +33,10 @@ export function ConceptCanvas({
     const l = level(n.id),
       row = groups.get(l) ?? 0;
     groups.set(l, row + 1);
-    return { ...n, x: 30 + l * 260, y: 30 + row * 110 };
+    return { ...n, x: 30 + l * 260, y: 30 + row * 135 };
   });
   const width = Math.max(500, ...positions.map((p) => p.x + 240)),
-    height = Math.max(180, ...positions.map((p) => p.y + 100));
+    height = Math.max(180, ...positions.map((p) => p.y + 125));
   if (!nodes.length)
     return (
       <p>
@@ -49,18 +51,52 @@ export function ConceptCanvas({
         <input
           type="range"
           aria-label="Map zoom"
-          min={70}
+          min={15}
           max={150}
           value={zoom}
           onChange={(e) => setZoom(Number(e.target.value))}
         />
         <output>{zoom}%</output>
       </label>
+      <button
+        type="button"
+        onClick={() => {
+          const w = viewport.current?.clientWidth ?? width;
+          setZoom(Math.max(15, Math.min(100, Math.floor((w / width) * 100))));
+          viewport.current?.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+        }}
+      >
+        Fit to view
+      </button>
       <p className="learning-caption">
         Arrows show curated prerequisites. Select a concept for a short refresher and independent
         check. Pan horizontally on a small screen.
       </p>
-      <div className="concept-map-scroll">
+      <div
+        className="concept-map-scroll"
+        ref={viewport}
+        tabIndex={0}
+        aria-label="Scrollable concept map"
+        onPointerDown={(e) => {
+          if (
+            e.pointerType !== "mouse" ||
+            (e.target instanceof Element && e.target.closest("[role=button]"))
+          )
+            return;
+          drag.current = { x: e.clientX, left: e.currentTarget.scrollLeft };
+          e.currentTarget.setPointerCapture(e.pointerId);
+        }}
+        onPointerMove={(e) => {
+          if (drag.current)
+            e.currentTarget.scrollLeft = drag.current.left - (e.clientX - drag.current.x);
+        }}
+        onPointerUp={() => {
+          drag.current = null;
+        }}
+        onPointerCancel={() => {
+          drag.current = null;
+        }}
+      >
         <svg
           viewBox={`0 0 ${width} ${height}`}
           style={{ width: (width * zoom) / 100, minWidth: 320 }}
@@ -102,11 +138,16 @@ export function ConceptCanvas({
               }}
               className={`concept-node ${n.probability === null ? "unobserved" : n.probability >= 0.85 && n.observations >= 3 ? "consistent" : "developing"}`}
             >
-              <rect x={n.x} y={n.y} width={220} height={78} rx={14} />
-              <text x={n.x + 14} y={n.y + 25}>
-                {n.title.length > 29 ? n.title.slice(0, 27) + "…" : n.title}
+              <rect x={n.x} y={n.y} width={220} height={110} rx={14} />
+              <title>{n.title}</title>
+              <text x={n.x + 14} y={n.y + 24}>
+                {wrapTitle(n.title).map((line, i) => (
+                  <tspan key={i} x={n.x + 14} dy={i ? 16 : 0}>
+                    {line}
+                  </tspan>
+                ))}
               </text>
-              <text className="concept-node-detail" x={n.x + 14} y={n.y + 51}>
+              <text className="concept-node-detail" x={n.x + 14} y={n.y + 92}>
                 {n.probability === null
                   ? "Ready to practise"
                   : `${Math.round(n.probability * 100)}% estimate · ${n.observations} ${n.observations === 1 ? "check" : "checks"}`}
@@ -122,4 +163,14 @@ export function ConceptCanvas({
       </p>
     </section>
   );
+}
+
+function wrapTitle(title: string) {
+  const lines: string[] = [""];
+  for (const word of title.split(" ")) {
+    const last = lines.length - 1;
+    if ((lines[last] + " " + word).trim().length > 27 && lines[last]) lines.push(word);
+    else lines[last] = (lines[last] + " " + word).trim();
+  }
+  return lines;
 }

@@ -720,6 +720,30 @@ model SupportRequest {
   @@index([status, updatedAt])
 }
 
+// Operator-only lifecycle controls. Explicit scopes protect shared or legally held data.
+model RetentionHold {
+  id String @id @default(uuid())
+  scope String
+  targetId String?
+  reason String
+  createdBy String
+  createdAt DateTime @default(now())
+  expiresAt DateTime?
+  releasedAt DateTime?
+  releasedBy String?
+  @@index([scope,targetId,releasedAt])
+}
+
+model RetentionRun {
+  id String @id @default(uuid())
+  actorId String
+  mode String
+  policyVersion String
+  counts Json
+  createdAt DateTime @default(now())
+  @@index([createdAt])
+}
+
 enum InstitutionPermission {
   curriculum
   directory

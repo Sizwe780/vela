@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate --generator appClient && node scripts/prepare-build.mjs && node scripts/build-offline.mjs && next build --webpack",
+    "build": "prisma generate --generator appClient && npm run content:verify-quizzes && node scripts/prepare-build.mjs && node scripts/build-offline.mjs && next build --webpack",
     "start": "next start",
     "test": "tsx --test tests/*.test.ts",
     "test:e2e": "playwright test",
@@ -64,7 +64,10 @@
     "predev": "node scripts/build-offline.mjs",
     "prebuild": "node scripts/prepare-math-assets.mjs && node scripts/prepare-coach-worker.mjs",
     "pretest": "node scripts/prepare-coach-worker.mjs",
-    "offline:build": "node scripts/build-offline.mjs"
+    "offline:build": "node scripts/build-offline.mjs",
+    "content:verify-quizzes": "node --import tsx scripts/verify-quiz-banks.ts",
+    "retention:preview": "node --require ./scripts/windows-runtime.cjs --import tsx scripts/retention-maintenance.ts",
+    "retention:apply": "node --require ./scripts/windows-runtime.cjs --import tsx scripts/retention-maintenance.ts --apply"
   },
   "dependencies": {
     "@ai-sdk/openai": "3.0.137",

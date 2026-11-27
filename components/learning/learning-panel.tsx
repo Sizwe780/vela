@@ -5,9 +5,9 @@ import { authClient } from "../../lib/auth/client";
 import { useStudentResource } from "../../lib/student/client";
 import { watchProgress } from "../../lib/progress-events";
 import type { LearningView } from "../../lib/learning/types";
+import { SourceDrawer } from "../source-drawer";
 import { ConceptCanvas } from "./concept-canvas";
 import { ConceptDetail } from "./concept-detail";
-import { LearningPreferences } from "./learning-preferences";
 export function AcademicBriefing({ fallback }: { fallback: ReactNode }) {
   const { data, error, reload, userId } = useStudentResource<LearningView>("/api/learning"),
     { data: session } = authClient.useSession();
@@ -88,7 +88,8 @@ export function LearningPanel({
   const resource = useStudentResource<LearningView>(
       `/api/learning${moduleId ? `?moduleId=${encodeURIComponent(moduleId)}` : ""}`,
     ),
-    [selected, setSelected] = useState(initialConcept ?? "");
+    [selected, setSelected] = useState(initialConcept ?? ""),
+    [detailOpen, setDetailOpen] = useState(!!initialConcept);
   useEffect(() => setSelected(initialConcept ?? ""), [initialConcept, moduleId]);
   useEffect(() => watchProgress(resource.reload), [resource.reload]);
   useEffect(() => {
@@ -132,17 +133,32 @@ export function LearningPanel({
         ))}
       </nav>
       <div className="concept-workspace">
-        <ConceptCanvas nodes={view.concepts} selected={node?.id} onSelect={setSelected} />
-        {node && (
-          <ConceptDetail
-            key={view.ownerId + (moduleId ?? "all") + node.id}
-            node={node}
-            view={view}
-            onSaved={resource.reload}
-          />
+        <ConceptCanvas
+          nodes={view.concepts}
+          selected={node?.id}
+          onSelect={(id) => {
+            setSelected(id);
+            setDetailOpen(true);
+          }}
+        />
+        {node && detailOpen && (
+          <SourceDrawer label="Concept refresher" onClose={() => setDetailOpen(false)}>
+            <button type="button" onClick={() => setDetailOpen(false)}>
+              Close refresher ×
+            </button>
+            <ConceptDetail
+              key={view.ownerId + (moduleId ?? "all") + node.id}
+              node={node}
+              view={view}
+              onSaved={resource.reload}
+            />
+          </SourceDrawer>
         )}
       </div>
-      <p className="learning-caption">{view.model}. Estimates are based on direct checks.</p>
+      <p className="learning-caption">
+        Early practice estimates improve as you complete more direct checks. They are separate from
+        course marks.
+      </p>
       <div className="learning-recommendations">
         {view.recommendations.map((r) => (
           <button type="button" key={r.conceptId} onClick={() => setSelected(r.conceptId)}>
@@ -151,23 +167,11 @@ export function LearningPanel({
           </button>
         ))}
       </div>
-      <section className="learning-periods">
-        <h2>Suggested study periods</h2>
-        {view.periods.length ? (
-          <ul>
-            {view.periods.map((s) => (
-              <li key={s.startAt}>
-                <time dateTime={s.startAt}>{new Date(s.startAt).toLocaleString()}</time> ·{" "}
-                {s.minutes} {s.minutes === 1 ? "minute" : "minutes"} within your{" "}
-                {s.availableMinutes}-minute availability
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No future availability entered. Add periods below when you are ready.</p>
-        )}
-      </section>
-      <LearningPreferences key={view.ownerId} view={view} onSaved={resource.reload} />
+      <p className="learning-caption">
+        <Link href="/profile#learning-preferences">
+          Manage your study schedule and tutor privacy in Profile →
+        </Link>
+      </p>
       {resource.error && <p role="status">{resource.error}</p>}
     </div>
   );

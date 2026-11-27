@@ -31,6 +31,7 @@ const prisma = new PrismaClient({
 async function execute() {
   await prisma.$transaction(
     async (tx) => {
+      await transactionLock(tx, "vela:retention");
       const request = await tx.supportRequest.findFirst({
         where: {
           id: requestId,
@@ -42,6 +43,11 @@ async function execute() {
       });
       if (!request?.studentId) throw Error("An in-review deletion request is required.");
       const studentId = request.studentId;
+      const holds = await tx.$queryRaw<
+        { id: string }[]
+      >`SELECT id FROM "RetentionHold" WHERE "releasedAt" IS NULL AND ("expiresAt" IS NULL OR "expiresAt">CURRENT_TIMESTAMP) AND (scope='all' OR (scope='account' AND ("targetId" IS NULL OR "targetId"=${studentId})) OR (scope='support' AND ("targetId" IS NULL OR "targetId"=${requestId}))) LIMIT 1`;
+      if (holds.length)
+        throw Error("Resolve the documented retention hold before account deletion.");
       await transactionLock(tx, "vela:account:" + studentId);
       const institutionOwnerships = await tx.institutionMembership.findMany({
         where: { studentId, owner: true },
@@ -88,6 +94,8 @@ async function execute() {
       if (!args.has("--apply"))
         throw Error("Use --apply after verifying the deletion request and branch.");
       const anonymousSubject = "deleted-" + requestId;
+      await tx.$executeRaw`UPDATE "RetentionRun" SET "actorId"=${anonymousSubject} WHERE "actorId"=${studentId}`;
+      await tx.$executeRaw`UPDATE "RetentionHold" SET "createdBy"=CASE WHEN "createdBy"=${studentId} THEN ${anonymousSubject} ELSE "createdBy" END,"releasedBy"=CASE WHEN "releasedBy"=${studentId} THEN ${anonymousSubject} ELSE "releasedBy" END WHERE "createdBy"=${studentId} OR "releasedBy"=${studentId}`;
       const where = { studentId };
       await tx.teachingSubmission.deleteMany({ where });
       await tx.teachingCohortMember.deleteMany({ where });

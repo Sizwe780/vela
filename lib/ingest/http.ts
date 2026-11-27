@@ -1,7 +1,7 @@
 import { IngestError } from "./errors";
 import { MAX_REQUEST_BYTES } from "./input";
 
-export async function readJson(request: Request): Promise<unknown> {
+export async function readJson(request: Request, maxBytes = MAX_REQUEST_BYTES): Promise<unknown> {
   if (
     request.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !== "application/json"
   )
@@ -10,8 +10,12 @@ export async function readJson(request: Request): Promise<unknown> {
       "UNSUPPORTED_MEDIA_TYPE",
       "Send a request body as application/json.",
     );
-  if (Number(request.headers.get("content-length")) > MAX_REQUEST_BYTES)
-    throw new IngestError(413, "REQUEST_TOO_LARGE", "Request exceeds 2 MB.");
+  if (Number(request.headers.get("content-length")) > maxBytes)
+    throw new IngestError(
+      413,
+      "REQUEST_TOO_LARGE",
+      maxBytes === MAX_REQUEST_BYTES ? "Request exceeds 2 MB." : "This request is too large.",
+    );
   const reader = request.body?.getReader();
   if (!reader) throw new IngestError(400, "INVALID_JSON", "A JSON request body is required.");
   const parts: Uint8Array[] = [];
@@ -21,9 +25,13 @@ export async function readJson(request: Request): Promise<unknown> {
       const { done, value } = await reader.read();
       if (done) break;
       size += value.byteLength;
-      if (size > MAX_REQUEST_BYTES) {
+      if (size > maxBytes) {
         await reader.cancel();
-        throw new IngestError(413, "REQUEST_TOO_LARGE", "Request exceeds 2 MB.");
+        throw new IngestError(
+          413,
+          "REQUEST_TOO_LARGE",
+          maxBytes === MAX_REQUEST_BYTES ? "Request exceeds 2 MB." : "This request is too large.",
+        );
       }
       parts.push(value);
     }

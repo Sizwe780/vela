@@ -1,6 +1,7 @@
 "use client";
+import { PracticeSessionContext } from "./written-practice";
 import { InlinePractice } from "./inline-practice";
-import { useId, useState } from "react";
+import { useId, useState, useContext } from "react";
 import { parseLearningBlocks } from "../lib/content/exercises";
 import type { Citation } from "../lib/tutor/types";
 import { Markdown } from "./markdown";
@@ -28,9 +29,15 @@ function Exercise({
   const [shown, setShown] = useState(false);
   const capabilities = useModuleCapabilities();
   const id = useId();
+  const lesson = useContext(PracticeSessionContext);
+  const displayTitle =
+    title === lesson?.title ||
+    /^(?:recognition|procedure|error correction|transfer|original worked example)$/i.test(title)
+      ? "Try this question"
+      : title;
   return (
     <section className="try-example">
-      <h4>{title}</h4>
+      <h4>{displayTitle}</h4>
       <p className="attempt-note">Try it yourself before revealing the worked answer.</p>
       <Markdown
         approvedLessonFigures

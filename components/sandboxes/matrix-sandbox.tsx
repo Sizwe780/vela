@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Markdown } from "../markdown";
 import {
   applyMatrix,
@@ -20,6 +20,9 @@ export function MatrixSandbox({ initialMatrix = [1, 2, -1, 1] }: { initialMatrix
     [inverse, setInverse] = useState(false),
     [probe, setProbe] = useState<[number, number]>([1, 1]),
     [showEigen, setShowEigen] = useState(true);
+  const geometry = useRef<Plot | null>(null);
+  const dragging = useRef<{ column: number; plot: Plot } | null>(null);
+  const [dragExtent, setDragExtent] = useState<number | null>(null);
   const inv = inverseMatrix(matrix),
     target = inverse && inv ? inv : matrix,
     preview = matrixPreview(target, t),
@@ -27,11 +30,13 @@ export function MatrixSandbox({ initialMatrix = [1, 2, -1, 1] }: { initialMatrix
     det = determinant(shown),
     eigen = realEigensystem(shown),
     output = applyMatrix(shown, probe);
-  const extent = Math.max(
-      5,
-      3 * (Math.abs(target[0]) + Math.abs(target[1])),
-      3 * (Math.abs(target[2]) + Math.abs(target[3])),
-    ),
+  const extent =
+      dragExtent ??
+      Math.max(
+        5,
+        3 * (Math.abs(target[0]) + Math.abs(target[1])),
+        3 * (Math.abs(target[2]) + Math.abs(target[3])),
+      ),
     range: [number, number] = [-extent, extent];
   const playback = usePlayback((f) => setT(f), 1800);
   function change(next: Matrix2) {
@@ -42,6 +47,7 @@ export function MatrixSandbox({ initialMatrix = [1, 2, -1, 1] }: { initialMatrix
   }
   const canvas = useCanvasPlot(
     (plot: Plot) => {
+      geometry.current = plot;
       const { context: c, x, y, colors } = plot;
       c.font = "11px system-ui";
       c.fillStyle = colors.text;
@@ -56,6 +62,19 @@ export function MatrixSandbox({ initialMatrix = [1, 2, -1, 1] }: { initialMatrix
           line(plot, applyMatrix(shown, [n, -3]), applyMatrix(shown, [n, 3]), colors.curve);
           line(plot, applyMatrix(shown, [-3, n]), applyMatrix(shown, [3, n]), colors.curve);
         }
+        if (!inverse && t === 1)
+          for (const point of [
+            [shown[0], shown[2]],
+            [shown[1], shown[3]],
+          ]) {
+            c.beginPath();
+            c.arc(x(point[0]), y(point[1]), 9, 0, 2 * Math.PI);
+            c.fillStyle = colors.secondary;
+            c.fill();
+            c.strokeStyle = colors.surface;
+            c.lineWidth = 2;
+            c.stroke();
+          }
         line(plot, [-extent, 0], [extent, 0], colors.axis);
         line(plot, [0, -extent], [0, extent], colors.axis);
         c.setLineDash([4, 4]);
@@ -157,6 +176,45 @@ export function MatrixSandbox({ initialMatrix = [1, 2, -1, 1] }: { initialMatrix
       />
       <canvas
         ref={canvas}
+        style={{ touchAction: "none", cursor: inverse || t !== 1 ? "default" : "grab" }}
+        onPointerDown={(e) => {
+          const p = geometry.current;
+          if (!p || inverse || t !== 1) return;
+          const box = e.currentTarget.getBoundingClientRect(),
+            x = ((e.clientX - box.left) * p.width) / box.width,
+            y = ((e.clientY - box.top) * p.height) / box.height;
+          const distances = [
+            Math.hypot(x - p.x(matrix[0]), y - p.y(matrix[2])),
+            Math.hypot(x - p.x(matrix[1]), y - p.y(matrix[3])),
+          ];
+          const column = distances[0] <= distances[1] ? 0 : 1;
+          if (distances[column] > 24) return;
+          dragging.current = { column, plot: p };
+          setDragExtent(extent);
+          e.currentTarget.setPointerCapture(e.pointerId);
+          playback.stop();
+        }}
+        onPointerMove={(e) => {
+          const drag = dragging.current;
+          if (!drag) return;
+          const p = drag.plot,
+            box = e.currentTarget.getBoundingClientRect();
+          const x = ((e.clientX - box.left) * p.width) / box.width,
+            y = ((e.clientY - box.top) * p.height) / box.height;
+          const bounded = (n: number) => Math.round(Math.max(-3, Math.min(3, n)) * 10) / 10;
+          const copy = [...matrix] as Matrix2;
+          copy[drag.column] = bounded((x - p.x(0)) / (p.x(1) - p.x(0)));
+          copy[drag.column + 2] = bounded((y - p.y(0)) / (p.y(1) - p.y(0)));
+          change(copy);
+        }}
+        onPointerUp={() => {
+          dragging.current = null;
+          setDragExtent(null);
+        }}
+        onPointerCancel={() => {
+          dragging.current = null;
+          setDragExtent(null);
+        }}
         className="sandbox-canvas"
         role="img"
         aria-label="Original and transformed coordinate grids with a unit square"
@@ -164,6 +222,10 @@ export function MatrixSandbox({ initialMatrix = [1, 2, -1, 1] }: { initialMatrix
         The square's transformed area is {numberLabel(Math.abs(det))}. Use the entry controls and
         textual readouts.
       </canvas>
+      <p className="learning-caption">
+        Drag either filled basis-vector handle to change a matrix column. The entry controls provide
+        a keyboard alternative. Dragging is available in the full forward transformation view.
+      </p>
       <div className="sandbox-readouts">
         <output aria-live={playback.playing ? "off" : "polite"}>
           Signed determinant: <strong>{numberLabel(det)}</strong> · area scaling:{" "}

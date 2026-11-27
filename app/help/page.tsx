@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { auth } from "../../lib/auth/server";
-import { supportEmail } from "../../lib/site";
+import { SupportContact } from "../../components/support-contact";
+import { GuestContact } from "../../components/guest-contact";
 import { LearningShell } from "../../components/learning-shell";
 import { SupportCenter } from "../../components/support-center";
 import styles from "../../components/student-pages.module.css";
@@ -30,10 +31,10 @@ export default async function HelpPage() {
           </li>
         </ul>
         <p>
-          If you can’t sign in, email <a href={"mailto:" + supportEmail}>{supportEmail}</a> for
-          help.
+          Need help with access or privacy? <SupportContact />.
         </p>
       </section>
+      <GuestContact />
       {data?.user ? (
         <SupportCenter />
       ) : (

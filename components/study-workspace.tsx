@@ -485,8 +485,14 @@ export function StudyWorkspace({
           </CompanionDock>
         </main>
         {!companionOpen && (
-          <button className="companion-launcher" type="button" onClick={focusCompanion}>
-            ✦ {busy ? "Companion is thinking…" : "Ask your companion"}
+          <button
+            className="companion-launcher"
+            type="button"
+            onClick={focusCompanion}
+            aria-label={busy ? "Companion is thinking" : "Ask your companion"}
+            title="Ask your companion"
+          >
+            <span aria-hidden="true">✦</span>
           </button>
         )}
         {selected && (

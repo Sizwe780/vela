@@ -19,8 +19,8 @@ export function ConceptProgress() {
         across {data.outcomes} {data.outcomes === 1 ? "outcome" : "outcomes"}.
       </p>
       <small>
-        AI-assisted teaching practice, capped at 10 points per outcome. Session completion and
-        institutional marks are separate.
+        All-time AI-assisted teaching practice, capped at 10 points per outcome. Session completion
+        and institutional marks are separate.
       </small>
     </section>
   );

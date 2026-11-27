@@ -1,3 +1,4 @@
+import { nextStudyMidnight } from "../../../lib/activity/time";
 import { authoredLessonPrefix } from "../../../lib/content/current-lesson-evidence";
 import { requireUnitAccess } from "../../../lib/enrollment/access";
 import { z } from "zod";
@@ -44,7 +45,7 @@ export async function POST(request: Request) {
         select: { learningOutcomeId: true, nextReviewAt: true },
       });
       const due = mastery
-        .filter((m) => !m.nextReviewAt || m.nextReviewAt <= new Date())
+        .filter((m) => !m.nextReviewAt || m.nextReviewAt < nextStudyMidnight(new Date()))
         .map((m) => m.learningOutcomeId);
       const eligible = {
         studyUnitId: input.studyUnitId,

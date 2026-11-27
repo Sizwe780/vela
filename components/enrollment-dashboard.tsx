@@ -47,6 +47,12 @@ export function EnrollmentDashboard() {
   );
 
   async function withdraw(row: Enrollment) {
+    if (
+      !confirm(
+        `Withdraw from ${row.qualificationModule.module.code}? You will lose module access; your saved work is retained.`,
+      )
+    )
+      return;
     setPending(row.id);
     setMutationError("");
     try {
@@ -66,6 +72,63 @@ export function EnrollmentDashboard() {
   const loading = !enrollment.data && enrollment.loading;
   const error = enrollment.error || mutationError;
   const active = rows.filter((e) => e.status !== "withdrawn");
+  function card(e: Enrollment) {
+    const m = e.qualificationModule.module;
+    const stats = progress.find((p) => p.id === m.id);
+    const percentage = stats?.total ? Math.round((100 * stats.completed) / stats.total) : 0;
+    const mastery = stats?.units.length
+      ? Math.round((100 * stats.units.reduce((s, u) => s + u.mastery, 0)) / stats.units.length)
+      : 0;
+    return (
+      <article className={styles.card} key={e.id}>
+        <small>
+          {e.qualificationModule.qualification.institution} ·{" "}
+          {e.qualificationModule.qualification.code} · {e.status}
+          {e.studyPlanYear && ` · ${e.studyPlanYear}`}
+          {e.studyPlanSemester &&
+            psmStudyPeriod(m.code) === "semester" &&
+            ` · Semester ${e.studyPlanSemester}`}
+        </small>
+        <h3>
+          {m.code} · {m.title}
+        </h3>
+        {!m.studyUnits.length ? (
+          <p>Content in preparation</p>
+        ) : stats ? (
+          <>
+            <progress max={100} value={percentage} aria-label={`${m.code} session completion`} />
+            <p>
+              {stats.completed}/{stats.total} {stats.total === 1 ? "session" : "sessions"} ·{" "}
+              {percentage}% complete · {mastery}% average unit mastery
+            </p>
+          </>
+        ) : (
+          <p>
+            {statsResource.error
+              ? "Progress is temporarily unavailable."
+              : "Loading session progress…"}
+          </p>
+        )}
+        <div className={styles.actions}>
+          <Link className="primary-button" href={`/modules/${m.id}`}>
+            Open {m.code}
+          </Link>
+          {m.studyUnits[0] && <Link href={`/study/${m.studyUnits[0].id}`}>Start studying</Link>}
+          <details className="module-options">
+            <summary>Module options</summary>
+            <button
+              type="button"
+              disabled={pending === e.id}
+              aria-label={`Withdraw from ${m.code}`}
+              onClick={() => void withdraw(e)}
+            >
+              Withdraw
+            </button>
+          </details>
+        </div>
+      </article>
+    );
+  }
   return (
     <section className={styles.dashboard} aria-label="My enrolled modules">
       <div className={styles.heading}>
@@ -80,69 +143,20 @@ export function EnrollmentDashboard() {
         <p>No enrolled modules yet. Choose your qualification and modules to begin.</p>
       )}
       <div className={styles.courseGrid}>
-        {active.map((e) => {
-          const m = e.qualificationModule.module;
-          const stats = progress.find((p) => p.id === m.id);
-          const percentage = stats?.total ? Math.round((100 * stats.completed) / stats.total) : 0;
-          const mastery = stats?.units.length
-            ? Math.round(
-                (100 * stats.units.reduce((s, u) => s + u.mastery, 0)) / stats.units.length,
-              )
-            : 0;
-          return (
-            <article className={styles.card} key={e.id}>
-              <small>
-                {e.qualificationModule.qualification.institution} ·{" "}
-                {e.qualificationModule.qualification.code} · {e.status}
-                {e.studyPlanYear && ` · ${e.studyPlanYear}`}
-                {e.studyPlanSemester &&
-                  psmStudyPeriod(m.code) === "semester" &&
-                  ` · Semester ${e.studyPlanSemester}`}
-              </small>
-              <h3>
-                {m.code} · {m.title}
-              </h3>
-              {!m.studyUnits.length ? (
-                <p>Content in preparation</p>
-              ) : stats ? (
-                <>
-                  <progress
-                    max={100}
-                    value={percentage}
-                    aria-label={`${m.code} session completion`}
-                  />
-                  <p>
-                    {stats.completed}/{stats.total} {stats.total === 1 ? "session" : "sessions"} ·{" "}
-                    {percentage}% complete · {mastery}% average unit mastery
-                  </p>
-                </>
-              ) : (
-                <p>
-                  {statsResource.error
-                    ? "Progress is temporarily unavailable."
-                    : "Loading session progress…"}
-                </p>
-              )}
-              <div className={styles.actions}>
-                <Link className="primary-button" href={`/modules/${m.id}`}>
-                  Open {m.code}
-                </Link>
-                {m.studyUnits[0] && (
-                  <Link href={`/study/${m.studyUnits[0].id}`}>Start studying</Link>
-                )}
-                <button
-                  type="button"
-                  disabled={pending === e.id}
-                  aria-label={`Withdraw from ${m.code}`}
-                  onClick={() => void withdraw(e)}
-                >
-                  Withdraw
-                </button>
-              </div>
-            </article>
-          );
-        })}
+        {active.filter((e) => e.qualificationModule.module.studyUnits.length > 0).map(card)}
       </div>
+      {active.some((e) => !e.qualificationModule.module.studyUnits.length) && (
+        <details className="module-preparation">
+          <summary>
+            Coming soon ·{" "}
+            {active.filter((e) => !e.qualificationModule.module.studyUnits.length).length} modules
+            in preparation
+          </summary>
+          <div className={styles.courseGrid}>
+            {active.filter((e) => !e.qualificationModule.module.studyUnits.length).map(card)}
+          </div>
+        </details>
+      )}
       {rows.some((e) => e.status === "withdrawn") && (
         <details>
           <summary>Withdrawn modules · progress retained</summary>

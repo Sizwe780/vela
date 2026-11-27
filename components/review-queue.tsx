@@ -1,4 +1,5 @@
 "use client";
+import { DailyReview } from "./daily-review";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useStudentResource } from "../lib/student/client";
@@ -21,6 +22,7 @@ export type ReviewSummary = {
 export function ReviewQueue({ preferredUnit }: { preferredUnit?: string }) {
   const { data, error, loading, reload } = useStudentResource<ReviewSummary>("/api/review");
   const [activeUnit, setActiveUnit] = useState<string>();
+  const [module, setModule] = useState("");
   useEffect(() => watchProgress(reload), [reload]);
   if (!data)
     return (
@@ -29,7 +31,9 @@ export function ReviewQueue({ preferredUnit }: { preferredUnit?: string }) {
       </p>
     );
   const units = [...data.queue]
-    .filter((u) => !preferredUnit || u.id === preferredUnit)
+    .filter(
+      (u) => (!preferredUnit || u.id === preferredUnit) && (!module || u.moduleCode === module),
+    )
     .sort(
       (a, b) =>
         b.due - a.due ||
@@ -42,6 +46,21 @@ export function ReviewQueue({ preferredUnit }: { preferredUnit?: string }) {
   const scheduled = units.filter((unit) => !unit.due && !unit.newOutcomes && unit.id !== first?.id);
   return (
     <>
+      <div className="filter-pills" role="group" aria-label="Review module">
+        <button type="button" aria-pressed={!module} onClick={() => setModule("")}>
+          All modules
+        </button>
+        {[...new Set(data.queue.map((u) => u.moduleCode))].sort().map((code) => (
+          <button
+            key={code}
+            type="button"
+            aria-pressed={module === code}
+            onClick={() => setModule(code)}
+          >
+            {code}
+          </button>
+        ))}
+      </div>
       {preferredUnit && (
         <p>
           Showing the recommended unit. <Link href="/review">Show all enrolled units</Link>
@@ -66,6 +85,7 @@ export function ReviewQueue({ preferredUnit }: { preferredUnit?: string }) {
                 ? "Try to recall the idea from memory. Reveal the answer when you’re ready, then rate how it went."
                 : "Check the schedule below, or open a lesson for more practice."}
             </p>
+            {first && <DailyReview units={units} />}
             {first && (
               <div className={styles.row}>
                 <RecallDrawer
@@ -150,7 +170,7 @@ function ReviewUnit({ unit }: { unit: ReviewSummary["queue"][number] }) {
           {unit.due || unit.newOutcomes
             ? `${unit.due} due · ${unit.newOutcomes} new`
             : unit.nextReviewAt
-              ? `Next review ${new Date(unit.nextReviewAt).toLocaleDateString()}`
+              ? `Next review ${new Date(unit.nextReviewAt).toLocaleDateString("en-ZA", { timeZone: "Africa/Johannesburg" })}`
               : "Available for extra practice"}
         </p>
       </div>

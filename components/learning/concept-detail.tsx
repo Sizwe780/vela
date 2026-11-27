@@ -86,7 +86,7 @@ export function ConceptDetail({
       <p>
         {node.probability === null
           ? "Ready to practise. Read the refresher and try a check to get your first estimate."
-          : `${Math.round(node.probability * 100)}% provisional practice estimate from ${node.observations} distinct assessed items. Shared concept evidence can span modules.`}
+          : `${Math.round(node.probability * 100)}% practice estimate from ${node.observations} independent checks. ${node.observations < 3 ? `Complete ${3 - node.observations} more checks for a better-supported estimate.` : "Keep practising to strengthen the evidence."}`}
       </p>
       <ExerciseMarkdown text={node.refresher} />
       <div className="learning-actions">

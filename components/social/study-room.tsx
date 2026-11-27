@@ -160,7 +160,7 @@ export function StudyRoom({ moduleId, ownerId }: { moduleId: string; ownerId: st
             {others} other {others === 1 ? "learner" : "learners"} active in this room
           </p>
           <small>
-            {status === "live" ? "Live · Neon Realtime" : "Periodic updates · every 25 seconds"}
+            {status === "live" ? "Live updates" : "Periodic updates · every 25 seconds"}
           </small>
           <div className="pomodoro" aria-label="Shared Pomodoro">
             <span>{cycle.phase}</span>

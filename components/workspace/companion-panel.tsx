@@ -90,7 +90,7 @@ export function CompanionPanel({
         <button
           type="button"
           className="companion-mark"
-          title="Academic Master briefing (Ctrl/Cmd + K)"
+          title="Academic Master briefing (Ctrl/Cmd + Shift + K)"
           aria-label="Open Academic Master briefing"
           onClick={() => window.dispatchEvent(new CustomEvent("vela-open-master"))}
         >

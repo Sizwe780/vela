@@ -34,6 +34,9 @@ export async function GET() {
         emailVerified: !!user.emailVerified,
         displayName: profile?.displayName ?? user.name ?? "Learner",
         ownerId: user.id,
+        hasClassroom: !!(await prisma.teachingCohortMember.count({
+          where: { studentId: user.id },
+        })),
         role: profile?.staffMemberships.some((item) => item.role === "admin")
           ? "admin"
           : profile?.staffMemberships.some((item) => item.role === "staff")

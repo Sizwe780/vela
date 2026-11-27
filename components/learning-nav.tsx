@@ -23,7 +23,6 @@ export function LearningNav({
   }, [reload]);
   const learning = [
     { href: "/", label: "Overview", symbol: "▦", enabled: rail },
-    { href: "/search", label: "Search", symbol: "⌕", enabled: true },
     { href: "/review", label: "Review queue", symbol: "↻", enabled: true },
     {
       href: "/classroom",
@@ -38,7 +37,13 @@ export function LearningNav({
       href: "/practice/lab",
       label: "Practical Lab",
       symbol: "∑",
-      enabled: data?.capabilities.math || data?.capabilities.matrix || data?.capabilities.calculus,
+      enabled:
+        data?.capabilities.math ||
+        data?.capabilities.matrix ||
+        data?.capabilities.calculus ||
+        data?.capabilities.units ||
+        data?.capabilities.molecules ||
+        data?.capabilities.reactions,
     },
     { href: "/activity", label: "Study activity", symbol: "▥", enabled: true },
   ];
@@ -53,7 +58,6 @@ export function LearningNav({
       enabled: !!data?.institutions?.length,
     },
     { href: "/help", label: "Help and support", symbol: "?", enabled: true },
-    { href: "/profile", label: "Profile", symbol: "○", enabled: true },
     {
       href: "/discussions/moderation",
       label: "Peer reports",
@@ -84,11 +88,22 @@ export function LearningNav({
 
   return (
     <nav className={rail ? "vela-rail-nav" : styles.nav} aria-label="Learning navigation">
-      {links(learning)}
+      {(
+        [
+          ["Learn", ["/", "/classroom", "/learning-map"]],
+          ["Practice", ["/review", "/practice/lab", "/lounge"]],
+          ["Insights", ["/progress", "/activity"]],
+        ] as const
+      ).map(([title, routes]) => (
+        <div key={title} className="nav-section">
+          <span className="nav-section-label">{title}</span>
+          {links(learning.filter((item) => (routes as readonly string[]).includes(item.href)))}
+        </div>
+      ))}
       {rail && <span className="rail-divider" />}
       <button
         type="button"
-        title="Learning briefing (Ctrl/Cmd + K)"
+        title="Learning briefing (Ctrl/Cmd + Shift + K)"
         onClick={() => {
           onNavigate?.();
           window.dispatchEvent(new CustomEvent("vela-open-master"));

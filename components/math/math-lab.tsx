@@ -423,8 +423,8 @@ export function MathLab({
           )}
         </div>
         <aside className="math-lab-rail" aria-label="Scratchpad tools and guidance">
-          <section>
-            <h3>Your notebook</h3>
+          <details className="notebook-side-drawer" open={openNotebook || undefined}>
+            <summary>My practice notebook</summary>
             <PracticeNotebook
               initiallyOpen={openNotebook}
               busy={busy}
@@ -441,7 +441,7 @@ export function MathLab({
                 lines: history.map((entry) => ({ latex: entry.latex, operation: entry.operation })),
               }}
             />
-          </section>
+          </details>
           <details className="math-support">
             <summary>What can this checker verify?</summary>
             <p>

@@ -200,7 +200,7 @@ export async function generateQuiz(
   sources: QuizSource[],
   requested: QuizProvider,
   signal?: AbortSignal,
-) {
+): Promise<{ questions: DraftQuestion[]; provider: string; notice: string }> {
   if (requested !== "heuristic" && requested !== "auto") {
     try {
       const config = configuredAI(requested);

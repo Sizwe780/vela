@@ -31,7 +31,7 @@ export const curriculum = [...systemsUnits, ...determinantUnits, ...vectorUnits]
           const markdown = model
             ? session.markdown.replace(
                 "## Procedure",
-                `Independent interactive model: ${model.description}. Explore its parameters as a separate teaching model; the gated worked problem below has its own givens.\n\n## Procedure`,
+                `Explore the pattern here: ${model.description}. Change one value at a time and explain what you notice. Then apply the method in the example that follows.\n\n## Procedure`,
               )
             : session.markdown;
           return { ...session, visual, markdown };

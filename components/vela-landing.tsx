@@ -37,18 +37,32 @@ const features = [
   },
 ] as const;
 
-export function PublicFrame({ children }: { children: ReactNode }) {
+export function PublicFrame({
+  children,
+  documentHeader = false,
+}: {
+  children: ReactNode;
+  documentHeader?: boolean;
+}) {
   return (
     <div className="vela-landing">
       <header className="landing-nav">
         <VelaBrand />
         <nav aria-label="Public navigation">
-          <Link href="/#features">How it works</Link>
+          {documentHeader ? (
+            <Link href="/">← Back to Vela</Link>
+          ) : (
+            <Link href="/#features">How it works</Link>
+          )}
           <ThemeToggle />
-          <Link href="/auth/sign-in">Sign in</Link>
-          <Link className="primary-button" href="/auth/sign-up">
-            Get started
-          </Link>
+          {!documentHeader && (
+            <>
+              <Link href="/auth/sign-in">Sign in</Link>
+              <Link className="primary-button" href="/auth/sign-up">
+                Get started
+              </Link>
+            </>
+          )}
         </nav>
       </header>
       {children}

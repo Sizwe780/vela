@@ -55,7 +55,39 @@ export function ActivityOverview({ compact = false }: { compact?: boolean }) {
         <strong>{minutes(data.weekSeconds)}</strong>
         <span> of your {data.goalMinutes} minute goal</span>
       </p>
-      <progress aria-label="Weekly study goal" max={100} value={data.goalPercent} />
+      <div className="weekly-goal-display">
+        <svg
+          className="weekly-goal-ring"
+          viewBox="0 0 100 100"
+          role="img"
+          aria-label={`${data.goalPercent}% of weekly study goal`}
+        >
+          <circle
+            cx="50"
+            cy="50"
+            r="42"
+            fill="none"
+            stroke="var(--border-default)"
+            strokeWidth="7"
+          />
+          <circle
+            cx="50"
+            cy="50"
+            r="42"
+            fill="none"
+            stroke="var(--brand-strong)"
+            strokeWidth="7"
+            pathLength="100"
+            strokeDasharray={`${data.goalPercent} 100`}
+            transform="rotate(-90 50 50)"
+            strokeLinecap="round"
+          />
+          <text x="50" y="55" textAnchor="middle" fill="currentColor" fontSize="18">
+            {data.goalPercent}%
+          </text>
+        </svg>
+        <progress aria-label="Weekly study goal" max={100} value={data.goalPercent} />
+      </div>
       <p className={styles.note}>
         Monday–Sunday · South African time · {data.goalPercent}% of goal
       </p>

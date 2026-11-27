@@ -59,7 +59,11 @@ export async function institutionCommand(tx: Tx, user: Actor, input: Institution
           nqfExitLevel,
           // New qualifications are prepared privately before administrators open enrolment.
           teachingSettings: {
-            create: { allowSelfEnrollment: false, displayName: title, supportEmail },
+            create: {
+              allowSelfEnrollment: false,
+              displayName: title,
+              supportEmail: supportEmail || null,
+            },
           },
         },
         select: { id: true },

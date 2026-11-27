@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
+import { RowEchelonLab } from "./sandboxes/row-echelon-lab";
 import { Markdown } from "./markdown";
 import {
   transformVector,
-  replaceSecondRow,
   determinantModel,
   combineVectors,
   nonzeroComplexRoots,
@@ -15,6 +15,7 @@ export function LinearSessionVisual({ kind }: { kind: string }) {
     [r, setR] = useState(2),
     [n, setN] = useState(3),
     [inverse, setInverse] = useState(false);
+  if (kind === "row-operation") return <RowEchelonLab />;
   const px = (x: number) => 240 + x * 29,
     py = (y: number) => 190 - y * 29;
   const arrow = (x: number, y: number, color: string, key: string) => (
@@ -64,26 +65,7 @@ export function LinearSessionVisual({ kind }: { kind: string }) {
     picture: React.ReactNode,
     controls: React.ReactNode,
     readout = "";
-  if (kind === "row-operation") {
-    const rows = replaceSecondRow(a);
-    title = "An equivalent augmented matrix";
-    picture = (
-      <Markdown
-        text={
-          "$$\n" +
-          String.raw`\left[\begin{array}{cc|c}` +
-          rows[0].join("&") +
-          String.raw`\\` +
-          rows[1].join("&") +
-          String.raw`\end{array}\right]` +
-          "\n$$"
-        }
-      />
-    );
-    controls = slider("Row multiplier k", a, setA, -3, 3, 1);
-    readout =
-      "Apply R₂ ← R₂ + kR₁ to the original matrix. The equation represented by row2 changes, while the simultaneous solution set stays the same. The2×2coefficient determinant stays−5.";
-  } else if (kind === "matrix-transform") {
+  if (kind === "matrix-transform") {
     const [x, y] = transformVector(a, b, inverse);
     title = inverse ? "Undo a matrix action" : "A matrix acts on a vector";
     picture = (
@@ -210,7 +192,7 @@ export function LinearSessionVisual({ kind }: { kind: string }) {
   }
   return (
     <figure className="session-visual linear-visual">
-      <figcaption>{title} · independent teaching model</figcaption>
+      <figcaption>{title}</figcaption>
       {picture}
       <div>{controls}</div>
       <p>{readout}</p>

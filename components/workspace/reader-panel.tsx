@@ -270,13 +270,6 @@ export function ReaderPanel({
                   </p>
                 </div>
               )}
-              <div className="reading-footer">
-                <span className="little-sparkle">✦</span>
-                <p>Understanding grows one good question at a time.</p>
-                <button type="button" onClick={onAskCompanion}>
-                  Ask your companion <Icon name="arrow" size={15} />
-                </button>
-              </div>
             </>
           )}
         </article>

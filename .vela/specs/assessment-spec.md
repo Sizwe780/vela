@@ -1,5 +1,5 @@
 # Universal exercise escalation specification
-Version: 1.2.0
+Version: 1.3.0
 
 Escalate from recognition to guided procedure, independent procedure, error diagnosis, and transfer. Prerequisite support precedes escalation; difficulty derives from reasoning rather than larger numbers alone. Use original contexts and parameters rather than copied textbook exercises. Include a clear question, a checkable answer and explanatory feedback. Do not infer mastery from an unanswered Pause and Predict question.
 
@@ -36,4 +36,8 @@ Normalize outer math delimiters and presentation before comparison. Use bounded 
 
 Unsupported relations, ambiguous notation and open conceptual responses without a reliable rubric are unverified, not automatically incorrect. Exclude them from quiz score denominators and mastery writes. An entirely unverified quiz has a null score, not zero. Show the reference and a reason for review. Historical attempts are not silently regraded: previous submissions do not retain enough answer evidence for that operation.
 
-Instant source recall is the default free quiz flow. Explicit AI generation is optional and bounded, with honest loading, cancellation and fallback messages. Recall questions are not a claim of exam readiness. Formative lesson checks, answer reveals and ordinary chat must remain separate from assessed quiz and verified Teach-the-Tutor evidence.
+Fixed original unit practice is the default free quiz flow. Explicit AI generation is optional and bounded, with honest loading, cancellation and fallback messages. Short recall questions are not a claim of exam readiness. Formative lesson checks, answer reveals and ordinary chat must remain separate from assessed quiz and verified Teach-the-Tutor evidence.
+
+## Published unit question banks
+
+The live default uses fixed original unit banks, superseding the earlier extractive-cloze default. Validate every prompt, option, answer and explanation before release, including KaTeX/mhchem and distinct, plausible complete distractors. Ship a bank version/content hash and snapshot issued questions into the owned attempt. Never generate distractors by selecting unrelated words from a source passage. Optional AI generation must return the fixed bank on provider failure; a missing bank needs an explicit not-ready response and a route back to lesson practice. Build validation is a syntax/structure gate, not qualified academic sign-off or proof of comprehensive exam coverage.

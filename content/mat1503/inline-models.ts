@@ -63,7 +63,7 @@ export const linearInlineModels: Readonly<Record<string, LessonWidget>> = {
   "Transposing a product reverses its factors": trace("productTranspose"),
   "Inverse products and symmetric inverses": trace("inverseSymmetry"),
   "Expanding along a column without a sign shortcut": trace("columnCofactors"),
-  "Zero determinant, dependence and possible data": trace("dependentReadings"),
+  "Zero determinant, dependence and consistent systems": trace("dependentReadings"),
   "Triangular products after valid reduction": trace("triangular"),
   "Fractions, combined operations and a scale ledger": trace("triangular"),
   "The adjugate identity and its singular boundary": trace("adjugate"),

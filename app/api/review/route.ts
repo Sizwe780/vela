@@ -1,4 +1,5 @@
 import { publishedStudyUnit } from "../../../lib/study/published-units";
+import { nextStudyMidnight } from "../../../lib/activity/time";
 import { prisma } from "../../../lib/db";
 import { requireLearner } from "../../../lib/auth/server";
 import { privateHeaders, studentFailure } from "../../../lib/student/http";
@@ -6,7 +7,7 @@ import { emailDeliveryStatus } from "../../../lib/email/config";
 export async function GET() {
   try {
     const user = await requireLearner();
-    const now = new Date();
+    const cutoff = nextStudyMidnight(new Date());
     const units = await prisma.studyUnit.findMany({
       where: {
         ...publishedStudyUnit,
@@ -43,13 +44,13 @@ export async function GET() {
       title: u.title,
       moduleCode: u.module.code,
       due: u.learningOutcomes.filter(
-        (o) => !!o.mastery[0]?.nextReviewAt && o.mastery[0].nextReviewAt <= now,
+        (o) => !!o.mastery[0]?.nextReviewAt && o.mastery[0].nextReviewAt < cutoff,
       ).length,
       newOutcomes: u.learningOutcomes.filter((o) => !o.mastery[0]?.attempts).length,
       nextReviewAt:
         u.learningOutcomes
           .map((o) => o.mastery[0]?.nextReviewAt)
-          .filter((d): d is Date => !!d && d > now)
+          .filter((d): d is Date => !!d && d >= cutoff)
           .sort((a, b) => a.getTime() - b.getTime())[0] ?? null,
     }));
     return Response.json(

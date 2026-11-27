@@ -1,6 +1,12 @@
 export type QuizProvider =
   "auto" | "heuristic" | "ollama" | "cloudflare" | "openai" | "groq" | "gemini" | "openrouter";
-export type QuizSource = { id: string; learningOutcomeId: string; title: string; body: string };
+export type QuizSource = {
+  id: string;
+  learningOutcomeId: string;
+  title: string;
+  body: string;
+  sourceUrl?: string | null;
+};
 export type DraftQuestion = {
   sourceChunkId: string;
   kind: "MULTIPLE_CHOICE" | "SHORT_ANSWER";
@@ -12,7 +18,7 @@ export type DraftQuestion = {
 export type PublicQuestion = Pick<
   DraftQuestion,
   "kind" | "prompt" | "options" | "sourceChunkId"
-> & { id: string; points: number };
+> & { id: string; points: number; sourceUrl?: string };
 export type Quiz = {
   attemptId: string;
   studyUnitId: string;

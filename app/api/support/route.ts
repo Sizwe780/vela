@@ -4,6 +4,7 @@ import { IngestError } from "../../../lib/ingest/errors";
 import { readJson } from "../../../lib/ingest/http";
 import { assertTutorOrigin } from "../../../lib/tutor/origin";
 import { privateHeaders, studentFailure } from "../../../lib/student/http";
+import { deletionDeadline } from "../../../lib/account/retention-policy";
 import { supportInput } from "../../../lib/account/input";
 import { isSupportOperator, supportCommand } from "../../../lib/account/support";
 
@@ -24,11 +25,23 @@ export async function GET(request: Request) {
         status: true,
         response: true,
         updatedAt: true,
+        createdAt: true,
       },
       orderBy: { updatedAt: "desc" },
       take: 50,
     });
-    return Response.json({ ownerId: user.id, operator, requests }, { headers: privateHeaders });
+    return Response.json(
+      {
+        ownerId: user.id,
+        operator,
+        requests: requests.map((item) => ({
+          ...item,
+          deletionTarget:
+            item.category === "deletion" ? deletionDeadline(item.createdAt).toISOString() : null,
+        })),
+      },
+      { headers: privateHeaders },
+    );
   } catch (error) {
     return studentFailure(error);
   }

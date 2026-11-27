@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { velaLogoSrc } from "./vela-logo";
 import type { ReactNode } from "react";
+import { SearchTrigger } from "./search-trigger";
 import { AccountMenu } from "./account-menu";
 import { LearningNav } from "./learning-nav";
 import { NavigationDrawer } from "./navigation-drawer";
@@ -39,7 +40,7 @@ export function LearningFrame({ label, children }: { label: string; children: Re
             <span aria-hidden="true">{label}</span>
           </div>
           <div className="learning-topbar-actions">
-            <Link href="/search">Search</Link>
+            <SearchTrigger />
             <AccountMenu />
           </div>
         </header>

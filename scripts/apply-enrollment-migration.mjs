@@ -14,6 +14,7 @@ if (
     "20261118130000_practice_notebook",
     "20261118150000_social_learning",
     "20261119010000_concept_learning",
+    "20261127180000_retention_controls",
   ].includes(name)
 )
   throw Error("Only reviewed additive migrations are supported");

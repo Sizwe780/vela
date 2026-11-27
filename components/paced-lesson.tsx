@@ -1,6 +1,7 @@
 "use client";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import { lessonSections } from "../lib/content/lesson-sections";
+import { readerLessonCopy } from "../lib/content/reader-copy";
 import { parseLearningBlocks } from "../lib/content/exercises";
 import { ExerciseMarkdown } from "./exercise-markdown";
 import { PracticeContext, type PracticeStatus } from "./inline-practice";
@@ -13,7 +14,24 @@ export function PacedLesson({
   highlights?: string[];
   onAsk?: (title: string, question: string) => void;
 }) {
-  const sections = useMemo(() => lessonSections(markdown), [markdown]);
+  const controls = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = controls.current;
+    const scroll = element?.closest<HTMLElement>(".reader-scroll");
+    if (!element || !scroll) return;
+    const resize = new ResizeObserver(() =>
+      scroll.style.setProperty(
+        "--lesson-controls-height",
+        `${element.getBoundingClientRect().height + 20}px`,
+      ),
+    );
+    resize.observe(element);
+    return () => {
+      resize.disconnect();
+      scroll.style.removeProperty("--lesson-controls-height");
+    };
+  }, []);
+  const sections = useMemo(() => lessonSections(readerLessonCopy(markdown)), [markdown]);
   const [guided, setGuided] = useState(false),
     [active, setActive] = useState(0),
     [attempts, setAttempts] = useState<Record<string, PracticeStatus>>({});
@@ -64,7 +82,7 @@ export function PacedLesson({
   };
   return (
     <PracticeContext.Provider value={report}>
-      <div className="lesson-pacing">
+      <div className="lesson-pacing" ref={controls}>
         <nav className="lesson-outline" aria-label="Lesson sections">
           {sections
             .map((s, i) => ({ s, i }))

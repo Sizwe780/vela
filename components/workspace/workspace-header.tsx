@@ -1,9 +1,9 @@
 "use client";
+import { SearchTrigger } from "../search-trigger";
 import Link from "next/link";
 import Image from "next/image";
 import { velaLogoSrc } from "../vela-logo";
 import { StudyTimer } from "../study-timer";
-import { InstallVela } from "../offline/install-vela";
 import type { TutorMessage } from "../../lib/tutor/types";
 import { messageText } from "../../lib/tutor/chat-history";
 import { useEffect, useRef } from "react";
@@ -181,36 +181,46 @@ export function WorkspaceHeader({
         {!unit.preview && activeSessionId && (
           <StudyTimer key={activeSessionId} compact sessionId={activeSessionId} />
         )}
+        {!unit.preview && (
+          <button
+            type="button"
+            className="workspace-sources"
+            onClick={() => sourceTrigger.current?.click()}
+          >
+            Sources
+          </button>
+        )}
         <details className="workspace-more-menu">
           <summary aria-label="More study tools">⋯</summary>
           <div className="workspace-popover">
             {!unit.preview && (
-              <label className="provider-control">
-                <span className="scope-dot" />
-                <select
-                  aria-label="Tutor source"
-                  title="AI provider"
-                  value={aiChoice}
-                  disabled={busy}
-                  onChange={(e) => onProviderChange(e.target.value)}
-                >
-                  <option value="default">Configured AI</option>
-                  <option value="ollama">Ollama · local</option>
-                  <option value="cloudflare">Cloudflare</option>
-                  <option value="groq">Groq · free tier</option>
-                  <option value="gemini">Gemini · free tier</option>
-                  <option value="openrouter">OpenRouter · free routes</option>
-                </select>
-              </label>
+              <details className="advanced-tutor-settings">
+                <summary>Advanced tutor settings</summary>
+                <label className="provider-control">
+                  <span className="scope-dot" />
+                  <select
+                    aria-label="Tutor source"
+                    title="AI provider"
+                    value={aiChoice}
+                    disabled={busy}
+                    onChange={(e) => onProviderChange(e.target.value)}
+                  >
+                    <option value="default">Configured AI</option>
+                    <option value="ollama">Ollama · local</option>
+                    <option value="cloudflare">Cloudflare</option>
+                    <option value="groq">Groq · free tier</option>
+                    <option value="gemini">Gemini · free tier</option>
+                    <option value="openrouter">OpenRouter · free routes</option>
+                  </select>
+                </label>
+              </details>
             )}
             {!unit.preview && (
               <button type="button" onClick={() => sourceTrigger.current?.click()}>
                 Source library
               </button>
             )}
-            <AccountMenu />
-            <InstallVela />
-            <Link href="/offline.html">Offline library</Link>
+            <SearchTrigger />
           </div>
         </details>
         <NotesDrawer
@@ -253,7 +263,8 @@ export function WorkspaceHeader({
         </svg>
         <span>{focused ? "Exit focus" : "Focus"}</span>
       </button>
-      <MobileTools label="Study tools" maxWidth={960}>
+      <AccountMenu />
+      <MobileTools label="Study tools" maxWidth={960} glyph="☰">
         {(close) => (
           <>
             <LearningNav />
@@ -280,25 +291,27 @@ export function WorkspaceHeader({
               </button>
             </div>
             {!unit.preview && (
-              <label>
-                AI provider
-                <select
-                  aria-label="Tutor source"
-                  disabled={busy}
-                  value={aiChoice}
-                  onChange={(e) => onProviderChange(e.target.value)}
-                >
-                  <option value="default">Configured AI</option>
-                  <option value="ollama">Ollama · local</option>
-                  <option value="cloudflare">Cloudflare</option>
-                  <option value="groq">Groq · free tier</option>
-                  <option value="gemini">Gemini · free tier</option>
-                  <option value="openrouter">OpenRouter · free routes</option>
-                </select>
-              </label>
+              <details className="advanced-tutor-settings">
+                <summary>Advanced tutor settings</summary>
+                <label>
+                  AI provider
+                  <select
+                    aria-label="Tutor source"
+                    disabled={busy}
+                    value={aiChoice}
+                    onChange={(e) => onProviderChange(e.target.value)}
+                  >
+                    <option value="default">Configured AI</option>
+                    <option value="ollama">Ollama · local</option>
+                    <option value="cloudflare">Cloudflare</option>
+                    <option value="groq">Groq · free tier</option>
+                    <option value="gemini">Gemini · free tier</option>
+                    <option value="openrouter">OpenRouter · free routes</option>
+                  </select>
+                </label>
+              </details>
             )}
             <ProgressTracker unitId={unit.id} />
-            <AccountMenu />
           </>
         )}
       </MobileTools>

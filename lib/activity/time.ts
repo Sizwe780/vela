@@ -61,3 +61,8 @@ export function activitySummary(
     streakWindowDays: 90,
   };
 }
+
+/** Reviews are due on their South African calendar date, not only after the timestamp. */
+export function nextStudyMidnight(now: Date) {
+  return new Date(shiftDay(studyDay(now), 1) + "T00:00:00+02:00");
+}

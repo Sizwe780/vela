@@ -5,6 +5,7 @@ import { widgetCapability, type LessonWidget } from "../lib/content/widget-regis
 import { chemistryExplorations } from "../lib/content/chemistry-explorations";
 import { linearExplorations } from "../lib/content/linear-explorations";
 
+const Cofactors = dynamic(() => import("./sandboxes/cofactor-lab").then((m) => m.CofactorLab));
 const Explorer = dynamic(() => import("./sandboxes/lesson-explorer").then((m) => m.LessonExplorer));
 const Overlap = dynamic(() => import("./sandboxes/orbital-overlap").then((m) => m.OrbitalOverlap));
 const Linear = dynamic(() => import("./linear-session-visual").then((m) => m.LinearSessionVisual));
@@ -43,6 +44,7 @@ export function GenericSandboxFrame({ widget }: { widget: LessonWidget }) {
     case "spatial_plane":
       return <Plane key={widget.config.mode} mode={widget.config.mode} />;
     case "linear_exploration":
+      if (widget.config.model === "cofactors") return <Cofactors />;
       return <Explorer key={widget.config.model} model={linearExplorations[widget.config.model]} />;
     case "chemistry_exploration":
       return (

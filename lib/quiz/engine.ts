@@ -6,6 +6,7 @@ import { IngestError } from "../ingest/errors";
 import type { Database } from "../ingest/repository";
 import { generateQuiz, proseSentences } from "./generator";
 import type { DraftQuestion, Quiz, QuizResult, QuizSource } from "./types";
+import { quizReference } from "./reference";
 import { checkShortAnswers } from "./answers";
 
 const id = z.string().regex(/^[a-zA-Z0-9_-]{1,100}$/);
@@ -26,7 +27,12 @@ const submitInput = z
       .max(6),
   })
   .strict();
-type StoredQuestion = DraftQuestion & { id: string; learningOutcomeId: string; points: number };
+type StoredQuestion = DraftQuestion & {
+  id: string;
+  learningOutcomeId: string;
+  points: number;
+  sourceUrl?: string | null;
+};
 
 function input<S extends z.ZodTypeAny>(schema: S, value: unknown): z.output<S> {
   const result = schema.safeParse(value);
@@ -105,7 +111,7 @@ export async function gradeQuiz(
           ? question.options!.find((option) => option.id === question.answer.optionId)!.text
           : (question.answer.accepted?.[0] ?? "No reviewed reference is available."),
       explanation: question.explanation,
-      sourceUrl: `/study/${encodeURIComponent(studyUnitId)}#chunk-${encodeURIComponent(question.sourceChunkId)}`,
+      sourceUrl: quizReference(question.sourceUrl, studyUnitId, question.sourceChunkId),
     };
   });
   const earned = feedback.reduce((sum, item) => sum + item.earned, 0);
@@ -138,8 +144,8 @@ export function createQuizEngine(db: Database, generator: typeof generateQuiz = 
       )
         throw new IngestError(404, "UNIT_NOT_FOUND", "The study unit was not found.");
       const candidates = await db.query<QuizSource>(Prisma.sql`
-        SELECT "id", "learningOutcomeId", "title", "body" FROM (
-          SELECT c."id", c."learningOutcomeId", c."title", c."body", c."position" AS "chunkPosition", lo."position" AS "outcomePosition",
+        SELECT "id", "learningOutcomeId", "title", "body", "sourceUrl" FROM (
+          SELECT c."id", c."learningOutcomeId", c."title", c."body", c."resourceUrl" AS "sourceUrl", c."position" AS "chunkPosition", lo."position" AS "outcomePosition",
             row_number() OVER (PARTITION BY c."learningOutcomeId", c."body" ORDER BY c."createdAt", c."id") AS "copy"
           FROM "ContentChunk" c JOIN "LearningOutcome" lo ON lo."id" = c."learningOutcomeId" JOIN "Ingestion" i ON i.id=c."ingestionId"
           WHERE lo."studyUnitId" = ${studyUnitId} AND ${currentLessonEvidenceSql} AND NOT EXISTS (SELECT 1 FROM "Ingestion" blank WHERE blank.id=c."ingestionId" AND blank."structuredContent"->'parser'->>'profile'='verified-blank-page') AND c."body" IS NOT NULL AND length(trim(c."body")) > 0
@@ -174,19 +180,20 @@ export function createQuizEngine(db: Database, generator: typeof generateQuiz = 
         await tx.query(
           Prisma.sql`INSERT INTO "QuizAttempt" ("id", "studentId", "studyUnitId", "provider", "expiresAt") VALUES (${attemptId}, ${studentId}, ${studyUnitId}, ${generated.provider}, ${expiresAt}) RETURNING "id"`,
         );
+        const maxima = await tx.query<{ learningOutcomeId: string; position: number }>(
+          Prisma.sql`SELECT "learningOutcomeId", COALESCE(MAX("position"),0)::int AS "position" FROM "QuizQuestion" WHERE "learningOutcomeId" IN (${Prisma.join([...new Set(sources.map((source) => source.learningOutcomeId))])}) GROUP BY "learningOutcomeId"`,
+        );
+        const positions = new Map(maxima.map((row) => [row.learningOutcomeId, row.position]));
+        const inserts: Prisma.Sql[] = [];
         const issued = [];
         for (const draft of generated.questions) {
           const source = sources.find((source) => source.id === draft.sourceChunkId);
           if (!source) throw new Error("Unrecognized quiz source");
-          await tx.query(
-            Prisma.sql`SELECT "id" FROM "LearningOutcome" WHERE "id" = ${source.learningOutcomeId} FOR UPDATE`,
-          );
-          const [{ position }] = await tx.query<{ position: number }>(
-            Prisma.sql`SELECT COALESCE(MAX("position"), 0)::int + 1 AS "position" FROM "QuizQuestion" WHERE "learningOutcomeId" = ${source.learningOutcomeId}`,
-          );
+          const position = (positions.get(source.learningOutcomeId) ?? 0) + 1;
+          positions.set(source.learningOutcomeId, position);
           const questionId = randomUUID();
-          await tx.query(
-            Prisma.sql`INSERT INTO "QuizQuestion" ("id", "learningOutcomeId", "kind", "prompt", "options", "answer", "explanation", "points", "position", "updatedAt", "quizAttemptId", "sourceChunkId") VALUES (${questionId}, ${source.learningOutcomeId}, ${draft.kind}::"QuestionKind", ${draft.prompt}, ${JSON.stringify(draft.options)}::jsonb, ${JSON.stringify(draft.answer)}::jsonb, ${draft.explanation}, 1, ${position}, CURRENT_TIMESTAMP, ${attemptId}, ${draft.sourceChunkId}) RETURNING "id"`,
+          inserts.push(
+            Prisma.sql`(${questionId}, ${source.learningOutcomeId}, ${draft.kind}::"QuestionKind", ${draft.prompt}, ${JSON.stringify(draft.options)}::jsonb, ${JSON.stringify(draft.answer)}::jsonb, ${draft.explanation}, 1, ${position}, CURRENT_TIMESTAMP, ${attemptId}, ${draft.sourceChunkId})`,
           );
           issued.push({
             id: questionId,
@@ -195,8 +202,12 @@ export function createQuizEngine(db: Database, generator: typeof generateQuiz = 
             options: draft.options,
             sourceChunkId: draft.sourceChunkId,
             points: 1,
+            sourceUrl: quizReference(source.sourceUrl, studyUnitId, source.id),
           });
         }
+        await tx.query(
+          Prisma.sql`INSERT INTO "QuizQuestion" ("id", "learningOutcomeId", "kind", "prompt", "options", "answer", "explanation", "points", "position", "updatedAt", "quizAttemptId", "sourceChunkId") VALUES ${Prisma.join(inserts)} RETURNING "id"`,
+        );
         return issued;
       });
       return {
@@ -232,7 +243,7 @@ export function createQuizEngine(db: Database, generator: typeof generateQuiz = 
             "This quiz expired. Start a fresh practice attempt.",
           );
         const questions = await tx.query<StoredQuestion>(
-          Prisma.sql`SELECT "id", "learningOutcomeId", "kind", "prompt", "options", "answer", "explanation", "points", "sourceChunkId" FROM "QuizQuestion" WHERE "quizAttemptId" = ${attemptId} ORDER BY "position", "id"`,
+          Prisma.sql`SELECT q."id", q."learningOutcomeId", q."kind", q."prompt", q."options", q."answer", q."explanation", q."points", q."sourceChunkId", (SELECT c."resourceUrl" FROM "ContentChunk" c WHERE c.id=q."sourceChunkId") AS "sourceUrl" FROM "QuizQuestion" q WHERE q."quizAttemptId" = ${attemptId} ORDER BY q."position", q."id"`,
         );
         if (!questions.length)
           throw new IngestError(

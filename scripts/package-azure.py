@@ -18,7 +18,11 @@ entries = {}
 
 def add_tree(base, prefix=""):
     for directory, folders, files in os.walk(base):
-        folders[:] = [name for name in folders if name not in {"deploy-stage", ".git", ".vs", "cache", "standalone"} and "win32" not in name]
+        folders[:] = [
+            name for name in folders
+            if name not in {"deploy-stage", ".git", ".vs", "cache", "route-cache", "standalone"}
+            and "win32" not in name
+        ]
         for filename in files:
             if filename == ".env" or filename.startswith(".env.") or "win32" in filename:
                 continue
@@ -71,6 +75,8 @@ with zipfile.ZipFile(output) as archive:
     ]:
         if required not in names:
             raise RuntimeError("Missing package asset: " + required)
+    if any("/route-cache/" in "/" + name for name in names):
+        raise RuntimeError("Runtime route cache found in deployment; only fresh build seeds may ship")
     if any(Path(name).name.startswith(".env") for name in names):
         raise RuntimeError("Environment file found in deployment")
 print(f"Packaged {len(names)} files, {output.stat().st_size} bytes, no environment files")

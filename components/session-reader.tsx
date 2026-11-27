@@ -180,6 +180,7 @@ export function SessionReader({
       >
         <LessonBody
           practiceSession={{
+            title: session.title,
             ownerId: saved.userId ?? "",
             studyUnitId: unit.id,
             sessionId: session.id,

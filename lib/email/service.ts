@@ -1,3 +1,4 @@
+import { nextStudyMidnight } from "../activity/time";
 import { retiredOrientation } from "../study/published-units";
 import { randomUUID } from "node:crypto";
 import type { Prisma, PrismaClient } from "../../generated/app-client";
@@ -29,7 +30,7 @@ export async function dueCount(
 ) {
   const rows = await db.$queryRaw<
     { due: number }[]
-  >`SELECT count(DISTINCT sm.id)::int AS due FROM "StudentMastery" sm JOIN "LearningOutcome" lo ON lo.id=sm."learningOutcomeId" JOIN "StudyUnit" u ON u.id=lo."studyUnitId" WHERE NOT (u.code = ${retiredOrientation.unitCode} AND EXISTS (SELECT 1 FROM "Module" m WHERE m.id=u."moduleId" AND m.institution=${retiredOrientation.institution} AND m.code=${retiredOrientation.moduleCode})) AND sm."studentId"=${studentId} AND sm."nextReviewAt"<=${now} AND EXISTS(SELECT 1 FROM "Enrollment" e WHERE e."studentId"=sm."studentId" AND e."moduleId"=u."moduleId" AND e.status IN ('active','completed'))`;
+  >`SELECT count(DISTINCT sm.id)::int AS due FROM "StudentMastery" sm JOIN "LearningOutcome" lo ON lo.id=sm."learningOutcomeId" JOIN "StudyUnit" u ON u.id=lo."studyUnitId" WHERE NOT (u.code = ${retiredOrientation.unitCode} AND EXISTS (SELECT 1 FROM "Module" m WHERE m.id=u."moduleId" AND m.institution=${retiredOrientation.institution} AND m.code=${retiredOrientation.moduleCode})) AND sm."studentId"=${studentId} AND sm."nextReviewAt"<${nextStudyMidnight(now)} AND EXISTS(SELECT 1 FROM "Enrollment" e WHERE e."studentId"=sm."studentId" AND e."moduleId"=u."moduleId" AND e.status IN ('active','completed'))`;
   return rows[0]?.due ?? 0;
 }
 export async function enqueueDueReminders(db: PrismaClient, now = new Date()) {
@@ -38,7 +39,7 @@ export async function enqueueDueReminders(db: PrismaClient, now = new Date()) {
   if (!config) return 0;
   const learners = await db.$queryRaw<
     DueLearner[]
-  >`SELECT p."studentId",p."emailConsentAt" AS "consentAt",count(DISTINCT sm.id)::int AS due FROM "StudentProfile" p JOIN neon_auth."user" a ON a.id::text=p."studentId" JOIN "StudentMastery" sm ON sm."studentId"=p."studentId" JOIN "LearningOutcome" lo ON lo.id=sm."learningOutcomeId" JOIN "StudyUnit" u ON u.id=lo."studyUnitId" WHERE NOT (u.code = ${retiredOrientation.unitCode} AND EXISTS (SELECT 1 FROM "Module" m WHERE m.id=u."moduleId" AND m.institution=${retiredOrientation.institution} AND m.code=${retiredOrientation.moduleCode})) AND p."emailReminders"=true AND p."emailConsentAt" IS NOT NULL AND p."emailConsentVersion"=${EMAIL_CONSENT_VERSION} AND a."emailVerified"=true AND sm."nextReviewAt"<=${now} AND (${config.mode === "live"} OR lower(a.email)=${config.testRecipient}) AND EXISTS(SELECT 1 FROM "Enrollment" e WHERE e."studentId"=p."studentId" AND e."moduleId"=u."moduleId" AND e.status IN ('active','completed')) GROUP BY p."studentId",p."emailConsentAt" ORDER BY p."studentId" LIMIT 1000`;
+  >`SELECT p."studentId",p."emailConsentAt" AS "consentAt",count(DISTINCT sm.id)::int AS due FROM "StudentProfile" p JOIN neon_auth."user" a ON a.id::text=p."studentId" JOIN "StudentMastery" sm ON sm."studentId"=p."studentId" JOIN "LearningOutcome" lo ON lo.id=sm."learningOutcomeId" JOIN "StudyUnit" u ON u.id=lo."studyUnitId" WHERE NOT (u.code = ${retiredOrientation.unitCode} AND EXISTS (SELECT 1 FROM "Module" m WHERE m.id=u."moduleId" AND m.institution=${retiredOrientation.institution} AND m.code=${retiredOrientation.moduleCode})) AND p."emailReminders"=true AND p."emailConsentAt" IS NOT NULL AND p."emailConsentVersion"=${EMAIL_CONSENT_VERSION} AND a."emailVerified"=true AND sm."nextReviewAt"<${nextStudyMidnight(now)} AND (${config.mode === "live"} OR lower(a.email)=${config.testRecipient}) AND EXISTS(SELECT 1 FROM "Enrollment" e WHERE e."studentId"=p."studentId" AND e."moduleId"=u."moduleId" AND e.status IN ('active','completed')) GROUP BY p."studentId",p."emailConsentAt" ORDER BY p."studentId" LIMIT 1000`;
   if (!learners.length) return 0;
   const result = await db.emailDelivery.createMany({
     data: learners.map((l) => ({

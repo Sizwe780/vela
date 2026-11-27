@@ -66,7 +66,7 @@ export function EmailVerification({
   return (
     <section aria-label="Email verification">
       <p>
-        Email is not verified. Neon sends a one-time code; enter it here. If you already received a
+        Email is not verified. Vela sends a one-time code; enter it here. If you already received a
         code, you can use it without requesting another.
       </p>
       <button
@@ -94,7 +94,7 @@ export function EmailVerification({
         <button
           className="primary-button"
           type="submit"
-          disabled={pending || otp.trim().length < 4}
+          disabled={pending || !/^\d{4,10}$/.test(otp.trim())}
         >
           {pending ? "Checking…" : "Verify email"}
         </button>
