@@ -99,6 +99,7 @@ async function execute() {
       const where = { studentId };
       await tx.teachingSubmission.deleteMany({ where });
       await tx.teachingCohortMember.deleteMany({ where });
+      await tx.$executeRaw`DELETE FROM "LessonAttempt" WHERE "studentId"=${studentId}`;
       await tx.practiceNotebook.deleteMany({ where });
       await tx.discussionReport.deleteMany({ where });
       await tx.discussionPost.updateMany({

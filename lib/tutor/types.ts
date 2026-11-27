@@ -52,6 +52,7 @@ export type StudyUnitView = {
   position: number;
   moduleId?: string;
   moduleCode: string;
+  moduleInstitution?: string;
   moduleTitle: string;
   preview: boolean;
   sessions?: {

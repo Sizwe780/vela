@@ -16,6 +16,35 @@ export function StudyTimer({
   const [recorded, setRecorded] = useState<{ owner?: string; seconds: number }>({ seconds: 0 });
   const [status, setStatus] = useState("paused");
   const [retry, setRetry] = useState(0);
+  const [returned, setReturned] = useState(false);
+  const previousStatus = useRef("paused");
+  useEffect(() => {
+    if (previousStatus.current === "idle" && status === "tracking") {
+      setReturned(true);
+      const t = setTimeout(() => setReturned(false), 6000);
+      previousStatus.current = status;
+      return () => clearTimeout(t);
+    }
+    previousStatus.current = status;
+    if (status !== "tracking") setReturned(false);
+  }, [status]);
+  useEffect(() => {
+    if (!owner) return;
+    const c = new AbortController();
+    const load = async () => {
+      try {
+        const r = await fetch("/api/profile", { cache: "no-store", signal: c.signal });
+        const p = await r.json();
+        if (r.ok && p.ownerId === owner && p.autoStartTimer) setChoice({ owner, enabled: true });
+      } catch {}
+    };
+    void load();
+    window.addEventListener("vela-timer-preference", load);
+    return () => {
+      c.abort();
+      window.removeEventListener("vela-timer-preference", load);
+    };
+  }, [owner, sessionId]);
   const tabId = useRef("");
   const takeover = useRef(false);
   useEffect(() => {
@@ -147,6 +176,11 @@ export function StudyTimer({
             ? `Pause timer · ${counter}`
             : "Start study timer"}
       </button>
+      {returned && (
+        <p className="timer-return-notice" role="status">
+          Welcome back — your focused timer has resumed.
+        </p>
+      )}
       <span role="status">
         {enabled
           ? status === "tracking"

@@ -306,6 +306,7 @@ model QuizAttempt {
 }
 
 model StudySession {
+  lessonAttempts LessonAttempt[]
   conceptualAttempts ConceptAttempt[]
   id String @id
   studyUnitId String
@@ -421,6 +422,7 @@ model StudentProfile {
   weeklyGoalMinutes Int @default(120)
   emailReminders Boolean @default(false)
   classroomAlerts Boolean @default(true)
+  autoStartTimer Boolean @default(false)
   emailConsentAt DateTime?
   emailConsentVersion String?
   createdAt DateTime @default(now())
@@ -777,4 +779,43 @@ model InstitutionAudit {
   targetId String
   createdAt DateTime @default(now())
   @@index([institution, createdAt])
+}
+
+// Formative evidence is private practice, never an institutional grade.
+model LessonAttempt {
+  submissions LessonAttemptSubmission[]
+  session StudySession @relation(fields:[sessionId],references:[id],onDelete:Cascade)
+  id String @id @default(uuid())
+  studentId String
+  sessionId String
+  version Int
+  questionKey String
+  title String
+  question String
+  userAnswer Json
+  status String @default("tried")
+  isLocallyChecked Boolean @default(false)
+  aiFeedback Json?
+  submitted Boolean @default(false)
+  revision Int @default(1)
+  inReview Boolean @default(false)
+  nextReviewAt DateTime?
+  lastReviewAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([studentId, sessionId, version, questionKey])
+  @@index([studentId, inReview, nextReviewAt])
+}
+
+model LessonAttemptSubmission {
+ id String @id @default(uuid())
+ attemptId String
+ mutationId String
+ answer Json
+ isLocallyChecked Boolean @default(false)
+ aiFeedback Json?
+ createdAt DateTime @default(now())
+ attempt LessonAttempt @relation(fields:[attemptId],references:[id],onDelete:Cascade)
+ @@unique([attemptId,mutationId])
+ @@index([attemptId,createdAt])
 }

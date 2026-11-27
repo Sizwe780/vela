@@ -544,3 +544,25 @@
 .concept-evidence-legend .consistent {
   background: var(--green);
 }
+
+.markdown .katex > .katex-mathml {
+  position: absolute !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  clip-path: inset(50%) !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}
+@media (min-width: 881px) {
+  .learning-frame {
+    display: grid;
+    grid-template-columns: 236px minmax(0, 1fr);
+  }
+  .learning-frame > .learning-rail {
+    display: block;
+  }
+  .learning-frame .learning-mobile-navigation {
+    display: none;
+  }
+}

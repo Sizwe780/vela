@@ -1,3 +1,4 @@
+import { syntheticQualification } from "../../lib/enrollment/catalog-visibility";
 import { publishedStudyUnit } from "../../lib/study/published-units";
 import { LearningFrame } from "../../components/learning-frame";
 import { redirect } from "next/navigation";
@@ -21,6 +22,11 @@ export default async function Onboarding({
   const session = await auth.getSession();
   if (!session.data?.user)
     redirect("/auth/sign-in?redirectTo=" + encodeURIComponent("/onboarding"));
+  const staff = await prisma.staffMembership.findMany({
+    where: { studentId: session.data.user.id },
+    select: { qualificationId: true },
+  });
+  const staffIds = new Set(staff.map((s) => s.qualificationId));
   const moduleSelect = {
     id: true,
     code: true,
@@ -54,13 +60,15 @@ export default async function Onboarding({
     },
   });
 
-  const available = qualifications.map(({ modules, ...qualification }) => ({
-    ...qualification,
-    isPsm: isPsmQualification(qualification),
-    modules: modules
-      .filter((link) => link.acceptingEnrollments && !link.archivedAt)
-      .map(({ studyYear, module }) => ({ studyYear, module })),
-  }));
+  const available = qualifications
+    .filter((q) => !syntheticQualification(q) || staffIds.has(q.id))
+    .map(({ modules, ...qualification }) => ({
+      ...qualification,
+      isPsm: isPsmQualification(qualification),
+      modules: modules
+        .filter((link) => link.acceptingEnrollments && !link.archivedAt)
+        .map(({ studyYear, module }) => ({ studyYear, module })),
+    }));
   const existing = await prisma.enrollment.findMany({
     where: { studentId: session.data.user.id, status: { in: ["active", "completed"] } },
     select: {

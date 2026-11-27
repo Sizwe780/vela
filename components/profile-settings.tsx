@@ -1,4 +1,5 @@
 "use client";
+import { clearLessonDrafts } from "./lesson-attempt-store";
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { authClient } from "../lib/auth/client";
@@ -18,6 +19,7 @@ type Profile = {
   weeklyGoalMinutes: number;
   emailReminders: boolean;
   classroomAlerts: boolean;
+  autoStartTimer?: boolean;
   staffScopes: { qualificationId: string; role: string }[];
   emailDelivery: string;
   emailRemindersAvailable: boolean;
@@ -42,6 +44,7 @@ function ProfileEditor({ data, reload }: { data: Profile; reload: () => void }) 
   const [notice, setNotice] = useState("");
   const [pending, setPending] = useState(false);
   const [reminders, setReminders] = useState(data.emailReminders);
+  const [autoStartTimer, setAutoStartTimer] = useState(data.autoStartTimer ?? false);
   const [classroomAlerts, setClassroomAlerts] = useState(data.classroomAlerts);
   async function save(e: FormEvent) {
     e.preventDefault();
@@ -55,8 +58,10 @@ function ProfileEditor({ data, reload }: { data: Profile; reload: () => void }) 
         weeklyGoalMinutes: goal,
         emailReminders: reminders,
         classroomAlerts,
+        autoStartTimer,
       });
       window.dispatchEvent(new Event(studentNavUpdate));
+      window.dispatchEvent(new Event("vela-timer-preference"));
       setNotice("Profile saved.");
       reload();
     } catch (e) {
@@ -103,6 +108,18 @@ function ProfileEditor({ data, reload }: { data: Profile; reload: () => void }) 
           <label className={styles.checkChoice}>
             <input
               type="checkbox"
+              checked={autoStartTimer}
+              onChange={(e) => setAutoStartTimer(e.target.checked)}
+            />
+            Auto-start focused-time tracking when I enter a study session
+          </label>
+          <p className={styles.note}>
+            Optional. Pauses while hidden or idle, records one tab at a time, and never counts as
+            attendance or mastery.
+          </p>
+          <label className={styles.checkChoice}>
+            <input
+              type="checkbox"
               checked={reminders}
               disabled={!data.emailRemindersAvailable && !reminders}
               onChange={(e) => setReminders(e.target.checked)}
@@ -137,6 +154,24 @@ function ProfileEditor({ data, reload }: { data: Profile; reload: () => void }) 
           </button>
           <p role="status">{notice}</p>
         </form>
+      </section>
+      <section className={styles.card}>
+        <h2>Practice on this device</h2>
+        <p>
+          Lesson drafts are cached locally for refresh and offline recovery. They are separate from
+          encrypted lesson downloads and are cleared on sign-out.
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            clearLessonDrafts();
+            setNotice(
+              "Device practice cache cleared. Saved online attempts remain in your account.",
+            );
+          }}
+        >
+          Clear saved practice on this device
+        </button>
       </section>
       <ProfileLearningPreferences />
       <ReminderPreview />

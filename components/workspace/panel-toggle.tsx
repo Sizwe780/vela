@@ -8,11 +8,21 @@ export function PanelToggle({
 }) {
   return (
     <nav className="mobile-panel-switch" aria-label="Workspace panel">
-      <button type="button" aria-label="Study material" aria-pressed={panel === "reader"} onClick={() => onChange("reader")}>
+      <button
+        type="button"
+        aria-label="Study material"
+        aria-pressed={panel === "reader"}
+        onClick={() => onChange("reader")}
+      >
         <Icon name="book" size={16} />
         <span>Read</span>
       </button>
-      <button type="button" aria-label="Learning companion" aria-pressed={panel === "tutor"} onClick={() => onChange("tutor")}>
+      <button
+        type="button"
+        aria-label="Learning companion"
+        aria-pressed={panel === "tutor"}
+        onClick={() => onChange("tutor")}
+      >
         <Icon name="sparkle" size={16} />
         <span>Companion</span>
       </button>

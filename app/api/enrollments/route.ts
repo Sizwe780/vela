@@ -1,3 +1,4 @@
+import { syntheticQualification } from "../../../lib/enrollment/catalog-visibility";
 import { publishedStudyUnit } from "../../../lib/study/published-units";
 import { prisma } from "../../../lib/db";
 import { requireLearner } from "../../../lib/auth/server";
@@ -115,9 +116,25 @@ export async function POST(request: Request) {
               moduleId: true,
               acceptingEnrollments: true,
               archivedAt: true,
-              module: { select: { code: true } },
+              module: {
+                select: {
+                  code: true,
+                  studyUnits: {
+                    where: { ...publishedStudyUnit, sessions: { some: {} } },
+                    select: { id: true },
+                    take: 1,
+                  },
+                },
+              },
               qualification: {
-                select: { archivedAt: true, institution: true, code: true, stream: true },
+                select: {
+                  archivedAt: true,
+                  institution: true,
+                  code: true,
+                  stream: true,
+                  title: true,
+                  streamTitle: true,
+                },
               },
             },
           });
@@ -127,6 +144,38 @@ export async function POST(request: Request) {
               "MODULE_NOT_IN_QUALIFICATION",
               "Every selected module must belong to this qualification.",
             );
+          const staff = await tx.staffMembership.findUnique({
+            where: {
+              studentId_qualificationId: {
+                studentId: learner.id,
+                qualificationId: input.qualificationId,
+              },
+            },
+            select: { role: true },
+          });
+          if (syntheticQualification(links[0].qualification) && !staff)
+            throw new IngestError(
+              403,
+              "CATALOG_HIDDEN",
+              "This qualification is not available for student enrollment.",
+            );
+          const empty = links.filter((l) => !l.module.studyUnits.length);
+          if (empty.length && !staff) {
+            const existing = await tx.enrollment.count({
+              where: {
+                studentId: learner.id,
+                qualificationId: input.qualificationId,
+                moduleId: { in: empty.map((l) => l.moduleId) },
+                status: { in: ["active", "completed"] },
+              },
+            });
+            if (existing !== empty.length)
+              throw new IngestError(
+                409,
+                "CONTENT_PREPARATION",
+                "One or more selected modules are Coming soon. Choose a module with published lessons.",
+              );
+          }
           const settings = await tx.teachingSettings.findUnique({
             where: { qualificationId: input.qualificationId },
           });

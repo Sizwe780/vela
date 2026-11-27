@@ -47,6 +47,15 @@ export function MathLab({
     [busy, setBusy] = useState(false);
   const controller = useRef<AbortController | null>(null);
   useEffect(() => () => controller.current?.abort(), []);
+  useEffect(() => {
+    const insert = (event: Event) => {
+      const text = (event as CustomEvent<unknown>).detail;
+      if (!busy && typeof text === "string" && text.length <= 2000)
+        setNext((n) => n + (n ? " " : "") + text.replace(/^\$|\$$/g, ""));
+    };
+    window.addEventListener("vela-reference-insert", insert);
+    return () => window.removeEventListener("vela-reference-insert", insert);
+  }, [busy]);
   function reset() {
     setHistory([]);
     setConditions([]);

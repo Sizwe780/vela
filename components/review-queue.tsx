@@ -1,4 +1,5 @@
 "use client";
+import { LessonReviewQueue } from "./lesson-review-queue";
 import { DailyReview } from "./daily-review";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -23,6 +24,7 @@ export function ReviewQueue({ preferredUnit }: { preferredUnit?: string }) {
   const { data, error, loading, reload } = useStudentResource<ReviewSummary>("/api/review");
   const [activeUnit, setActiveUnit] = useState<string>();
   const [module, setModule] = useState("");
+  const [lessonDue, setLessonDue] = useState(0);
   useEffect(() => watchProgress(reload), [reload]);
   if (!data)
     return (
@@ -46,6 +48,7 @@ export function ReviewQueue({ preferredUnit }: { preferredUnit?: string }) {
   const scheduled = units.filter((unit) => !unit.due && !unit.newOutcomes && unit.id !== first?.id);
   return (
     <>
+      <LessonReviewQueue moduleCode={module} unitId={preferredUnit} onDueChange={setLessonDue} />
       <div className="filter-pills" role="group" aria-label="Review module">
         <button type="button" aria-pressed={!module} onClick={() => setModule("")}>
           All modules
@@ -78,12 +81,22 @@ export function ReviewQueue({ preferredUnit }: { preferredUnit?: string }) {
       {!!units.length && (
         <div className="review-workspace">
           <section className="review-start">
-            <span className="eyebrow">{first ? first.code : "REVIEW COMPLETE"}</span>
-            <h2>{first ? first.title : "You’re caught up for now."}</h2>
+            <span className="eyebrow">
+              {first ? first.code : lessonDue ? "LESSON CHECKS" : "REVIEW COMPLETE"}
+            </span>
+            <h2>
+              {first
+                ? first.title
+                : lessonDue
+                  ? "Your saved lesson checks are ready."
+                  : "You’re caught up for now."}
+            </h2>
             <p>
               {first
                 ? "Try to recall the idea from memory. Reveal the answer when you’re ready, then rate how it went."
-                : "Check the schedule below, or open a lesson for more practice."}
+                : lessonDue
+                  ? "Work through your saved attempts above, then rate each recall to plan your next review."
+                  : "Check the schedule below, or open a lesson for more practice."}
             </p>
             {first && <DailyReview units={units} />}
             {first && (
@@ -107,7 +120,7 @@ export function ReviewQueue({ preferredUnit }: { preferredUnit?: string }) {
             <dl>
               <div>
                 <dt>Due for review</dt>
-                <dd>{units.reduce((n, u) => n + u.due, 0)}</dd>
+                <dd>{units.reduce((n, u) => n + u.due, 0) + lessonDue}</dd>
               </div>
               <div>
                 <dt>New to practise</dt>
@@ -115,6 +128,11 @@ export function ReviewQueue({ preferredUnit }: { preferredUnit?: string }) {
               </div>
             </dl>
             <p>
+              {lessonDue > 0 && (
+                <>
+                  Includes {lessonDue} saved lesson {lessonDue === 1 ? "check" : "checks"}.{" "}
+                </>
+              )}
               Recall ratings help schedule your reviews. Assessed mastery appears in Progress &amp;
               outcomes.
             </p>

@@ -163,8 +163,8 @@ export function ReactionClasses({
       </div>
       {practice === "equation-balancing" ? (
         <>
-          <table className="bench-atom-table">
-            <caption>Atom count by side</caption>
+          <table className="bench-atom-table" aria-label="Reactant and product atom totals">
+            <caption>Atom counts</caption>
             <thead>
               <tr>
                 <th scope="col">Element</th>

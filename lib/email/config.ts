@@ -38,7 +38,8 @@ export function emailConfig(
     env.EMAIL_MODE === "live" &&
     from.data.toLowerCase().endsWith("@resend.dev")
   )
-    return null;  try {
+    return null;
+  try {
     const url = new URL(env.EMAIL_APP_URL!);
     if (url.username || url.password || url.pathname !== "/" || url.search || url.hash) return null;
     if (

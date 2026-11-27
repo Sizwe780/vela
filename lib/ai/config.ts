@@ -119,8 +119,10 @@ export function configuredAI(override?: AIProvider) {
 
 export function embeddingProviderForChat(provider?: AIProvider): AIProvider | undefined {
   const primaryProvider = process.env.AI_PROVIDER ?? "cloudflare";
-  if ((!provider || ["groq", "gemini", "openrouter"].includes(provider)) &&
-      ["groq", "gemini", "openrouter"].includes(primaryProvider)) {
+  if (
+    (!provider || ["groq", "gemini", "openrouter"].includes(provider)) &&
+    ["groq", "gemini", "openrouter"].includes(primaryProvider)
+  ) {
     return "cloudflare";
   }
   return provider && ["groq", "gemini", "openrouter"].includes(provider) ? undefined : provider;

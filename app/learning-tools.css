@@ -1,0 +1,296 @@
+/* Shared formative practice and on-demand references. */
+.practice-save-notice {
+  color: var(--text-secondary);
+  font: 12px var(--font-interface);
+}
+.practice-conflict,
+.lesson-review-queue {
+  padding: 18px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-card);
+  background: var(--surface-soft);
+}
+.exercise-reference-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block: 12px;
+}
+.exercise-reference-chips button {
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  padding: 7px 12px;
+  background: var(--surface-card);
+  font: 12px var(--font-interface);
+  color: var(--brand-strong);
+  min-height: 36px;
+  cursor: pointer;
+}
+.source-dialog.reference-drawer {
+  width: min(1080px, 95vw);
+  max-width: 96vw;
+  min-width: min(360px, 94vw);
+  max-height: 92dvh;
+  min-height: 280px;
+  resize: both;
+  overflow: auto;
+}
+.reference-workbench {
+  padding: 20px;
+  font: 14px/1.6 var(--font-interface);
+  color: var(--text-primary);
+}
+.reference-workbench header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+.reference-workbench header h2 {
+  margin: 4px 0 16px;
+  font: clamp(24px, 3vw, 36px)/1.15 var(--font-editorial);
+}
+.reference-workbench label {
+  display: grid;
+  gap: 5px;
+  font-size: 12px;
+}
+.reference-workbench input,
+.reference-workbench select {
+  min-height: 42px;
+  max-width: 100%;
+  padding: 8px 10px;
+  background: var(--surface-input);
+  border: 1px solid var(--border-default);
+  border-radius: 9px;
+  color: var(--text-primary);
+  font: inherit;
+}
+.reference-workbench button {
+  min-height: 40px;
+  cursor: pointer;
+}
+.reference-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin-block: 18px;
+}
+.periodic-grid-scroll,
+.reference-table-scroll {
+  max-width: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.periodic-grid {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(38px, 1fr));
+  grid-template-rows: repeat(7, 62px) 16px 62px 62px;
+  gap: 4px;
+  min-width: 800px;
+  padding: 10px 2px;
+}
+.periodic-grid button {
+  display: grid;
+  place-items: center;
+  line-height: 1.1;
+  padding: 4px 2px;
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  background: var(--surface-soft);
+  color: var(--text-primary);
+  transition: opacity 0.15s;
+}
+.periodic-grid button small {
+  font-size: 9px;
+  justify-self: start;
+}
+.periodic-grid button strong {
+  font-size: 18px;
+}
+.periodic-grid button span {
+  font-size: 8px;
+  max-width: 100%;
+  overflow: hidden;
+}
+.periodic-grid button[aria-pressed="true"] {
+  outline: 3px solid var(--brand-strong);
+  outline-offset: 1px;
+}
+.periodic-grid [data-category="alkali-metal"],
+.reference-category-key [data-category="alkali-metal"] {
+  background: color-mix(in srgb, var(--surface-card), #efbba8 55%);
+}
+.periodic-grid [data-category="alkaline-earth-metal"],
+.reference-category-key [data-category="alkaline-earth-metal"] {
+  background: color-mix(in srgb, var(--surface-card), #ead2a2 55%);
+}
+.periodic-grid [data-category="transition-metal"],
+.reference-category-key [data-category="transition-metal"] {
+  background: color-mix(in srgb, var(--surface-card), #d5c5e9 55%);
+}
+.periodic-grid [data-category="post-transition-metal"],
+.reference-category-key [data-category="post-transition-metal"] {
+  background: color-mix(in srgb, var(--surface-card), #c4cedd 55%);
+}
+.periodic-grid [data-category="metalloid"],
+.reference-category-key [data-category="metalloid"] {
+  background: color-mix(in srgb, var(--surface-card), #c5d7a8 55%);
+}
+.periodic-grid [data-category="nonmetal"],
+.reference-category-key [data-category="nonmetal"] {
+  background: color-mix(in srgb, var(--surface-card), #b4d8c6 55%);
+}
+.periodic-grid [data-category="halogen"],
+.reference-category-key [data-category="halogen"] {
+  background: color-mix(in srgb, var(--surface-card), #acd5e0 55%);
+}
+.periodic-grid [data-category="noble-gas"],
+.reference-category-key [data-category="noble-gas"] {
+  background: color-mix(in srgb, var(--surface-card), #b9c9e9 55%);
+}
+.periodic-grid [data-category="lanthanide"],
+.reference-category-key [data-category="lanthanide"] {
+  background: color-mix(in srgb, var(--surface-card), #e4c2ce 55%);
+}
+.periodic-grid [data-category="actinide"],
+.reference-category-key [data-category="actinide"] {
+  background: color-mix(in srgb, var(--surface-card), #c7bfde 55%);
+}
+.f-block-label {
+  place-self: center;
+  font-size: 9px;
+}
+.reference-category-key ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  list-style: none;
+  padding: 0;
+}
+.reference-category-key li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+}
+.reference-category-key span {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--border-default);
+  border-radius: 3px;
+}
+.element-inspector,
+.molar-mass-calculator,
+.reference-formula {
+  padding: 18px;
+  margin-block: 18px;
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  background: var(--surface-soft);
+}
+.element-properties {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+}
+.element-properties dt {
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+.element-properties dd {
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
+}
+.reference-workbench table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.reference-workbench th,
+.reference-workbench td {
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid var(--border-default);
+  vertical-align: top;
+}
+.prefix-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+}
+.prefix-grid li {
+  padding: 8px;
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+}
+.timer-return-notice {
+  position: absolute;
+  top: 100%;
+  max-width: 240px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 12px;
+  z-index: 30;
+  box-shadow: var(--shadow-card);
+}
+@media (max-width: 600px) {
+  .source-dialog.reference-drawer {
+    resize: none;
+    width: 96vw;
+    max-height: 94dvh;
+  }
+  .reference-workbench {
+    padding: 12px;
+  }
+  .reference-workbench .filter-pills {
+    flex-wrap: wrap;
+  }
+  .element-properties {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lab-reference-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.lab-reference-actions label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.lab-reference-actions button,
+.lab-reference-actions select {
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-default);
+  background: var(--surface-card);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.reference-workbench .reference-extension-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-block: 12px;
+}
+.reference-workbench input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  min-height: 18px;
+  flex: 0 0 18px;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--brand-primary);
+}

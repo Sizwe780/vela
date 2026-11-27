@@ -21,6 +21,7 @@ export async function cleanupTestLearner(
   await db.learningConceptState.deleteMany({ where: { studentId } });
   await db.learningPreference.deleteMany({ where: { studentId } });
   await db.emailDelivery.deleteMany({ where: { studentId } });
+  await db.$executeRaw`DELETE FROM "LessonAttempt" WHERE "studentId"=${studentId}`;
   await db.practiceNotebook.deleteMany({ where: { studentId } });
   await db.discussionReport.deleteMany({ where: { studentId } });
   await db.discussionPost.deleteMany({ where: { studentId } });

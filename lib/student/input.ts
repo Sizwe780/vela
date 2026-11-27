@@ -6,6 +6,7 @@ export const profileInput = z
     weeklyGoalMinutes: z.number().int().min(15).max(1200),
     emailReminders: z.boolean().default(false),
     classroomAlerts: z.boolean().optional(),
+    autoStartTimer: z.boolean().optional(),
   })
   .strict();
 export const positionInput = z.object({ sessionId: sourceId }).strict();

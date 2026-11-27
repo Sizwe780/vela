@@ -1,3 +1,6 @@
+import { Prisma } from "@prisma/client";
+import { randomUUID } from "node:crypto";
+import { exerciseKey } from "../../../../lib/practice/attempts";
 import { requireLearner } from "../../../../lib/auth/server";
 import { requireUnitAccess } from "../../../../lib/enrollment/access";
 import { prisma } from "../../../../lib/db";
@@ -55,7 +58,21 @@ export async function POST(request: Request) {
         );
       },
     });
-    return Response.json(result, { headers });
+    const input = parsed.data;
+    const key = exerciseKey(input.title, input.question);
+    const rows = await prisma.$queryRaw<{ revision: number; id: string }[]>(
+      Prisma.sql`INSERT INTO "LessonAttempt"(id,"studentId","sessionId",version,"questionKey",title,question,"userAnswer",status,submitted,"aiFeedback") VALUES (${randomUUID()},${learner.id},${input.sessionId},${input.version},${key},${input.title},${input.question},${JSON.stringify({ text: input.attempt })}::jsonb,'reviewed',true,${JSON.stringify(result)}::jsonb) ON CONFLICT ("studentId","sessionId",version,"questionKey") DO UPDATE SET submitted=true,status='reviewed',"aiFeedback"=EXCLUDED."aiFeedback",revision="LessonAttempt".revision+1,"updatedAt"=CURRENT_TIMESTAMP WHERE "LessonAttempt"."userAnswer"->>'text'=${input.attempt} RETURNING revision,id`,
+    );
+    if (!rows[0])
+      throw new IngestError(
+        409,
+        "ATTEMPT_CHANGED",
+        "Your answer changed while feedback was being prepared. Check the current draft again.",
+      );
+    await prisma.$executeRaw(
+      Prisma.sql`UPDATE "LessonAttemptSubmission" SET "aiFeedback"=${JSON.stringify(result)}::jsonb WHERE id=(SELECT id FROM "LessonAttemptSubmission" WHERE "attemptId"=${rows[0].id} AND answer->>'text'=${input.attempt} ORDER BY "createdAt" DESC LIMIT 1)`,
+    );
+    return Response.json({ ...result, attemptRevision: rows[0].revision }, { headers });
   } catch (error) {
     if (!(error instanceof IngestError) && !request.signal.aborted)
       logServerError("practice.check", error);

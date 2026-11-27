@@ -15,6 +15,8 @@ type Report = {
       completedEnrollments: number;
       units: number;
       sessions: number;
+      indexedLessonChunks?: number;
+      sourcePageChunks?: number;
       completionPercent: number;
       meanMastery: number;
       assessedRecords: number;
@@ -64,6 +66,11 @@ export function StaffAnalytics() {
                   Content: {m.units} {m.units === 1 ? "unit" : "units"} · {m.sessions}{" "}
                   {m.sessions === 1 ? "published session" : "published sessions"}
                 </p>
+                <p>
+                  Retrieval index: {m.indexedLessonChunks ?? 0} lesson-linked chunks ·{" "}
+                  {m.sourcePageChunks ?? 0} other source chunks. Page citations depend on each
+                  chunk’s stored provenance.
+                </p>
                 {m.conversion ? (
                   <p>
                     Source conversion: {m.conversion.converted}/{m.conversion.total}{" "}
@@ -74,7 +81,10 @@ export function StaffAnalytics() {
                       : ""}
                   </p>
                 ) : (
-                  <p>Source conversion has not been registered.</p>
+                  <p>
+                    PDF conversion ledger not registered. This does not determine whether published
+                    lessons are indexed.
+                  </p>
                 )}
               </article>
             ))}

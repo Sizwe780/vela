@@ -1,4 +1,5 @@
 "use client";
+import { clearLessonDrafts } from "./lesson-attempt-store";
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";

@@ -77,7 +77,14 @@ export function AuthForm({
   return (
     <main id="main-content" tabIndex={-1} className="auth-shell">
       <Link className="brand" href="/">
-        <Image src={velaLogoSrc} alt="Vela" width={48} height={48} className="auth-brand-logo" priority />
+        <Image
+          src={velaLogoSrc}
+          alt="Vela"
+          width={48}
+          height={48}
+          className="auth-brand-logo"
+          priority
+        />
         vela.
       </Link>
       <section className="auth-card">

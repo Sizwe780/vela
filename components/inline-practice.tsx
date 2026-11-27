@@ -1,5 +1,7 @@
 "use client";
+import { useLessonAttempts } from "./lesson-attempt-store";
 import { createContext, useContext, useId, useState } from "react";
+import { ExerciseReferences } from "./references/exercise-references";
 import { practiceCheck, checkPracticeQuantity } from "../lib/content/practice-checks";
 import { PracticeSessionContext, WrittenPractice } from "./written-practice";
 export type PracticeStatus = "tried" | "checked" | "revealed" | "reviewed";
@@ -21,11 +23,30 @@ export function InlinePractice({
     session = useContext(PracticeSessionContext),
     report = useContext(PracticeContext),
     id = useId();
-  const [values, setValues] = useState<Record<number, string>>({}),
-    [units, setUnits] = useState<Record<number, string>>({}),
-    [choice, setChoice] = useState<number | null>(null),
+  const store = useLessonAttempts(),
+    saved = store?.records[practiceId];
+  const [localValues, localSetValues] = useState<Record<number, string>>({}),
+    [localUnits, localSetUnits] = useState<Record<number, string>>({}),
+    [localChoice, localSetChoice] = useState<number | null>(null),
     [feedback, setFeedback] = useState(""),
     [checked, setChecked] = useState(false);
+  const values = saved?.draft.values ?? localValues,
+    units = saved?.draft.units ?? localUnits,
+    choice = saved?.draft.choice ?? localChoice;
+  const setValues = (fn: (v: Record<number, string>) => Record<number, string>) => {
+    const next = fn(values);
+    localSetValues(next);
+    store?.change(practiceId, title, question, { values: next, units, choice });
+  };
+  const setUnits = (fn: (v: Record<number, string>) => Record<number, string>) => {
+    const next = fn(units);
+    localSetUnits(next);
+    store?.change(practiceId, title, question, { values, units: next, choice });
+  };
+  const setChoice = (next: number) => {
+    localSetChoice(next);
+    store?.change(practiceId, title, question, { values, units, choice: next });
+  };
   if (!spec)
     return (
       <WrittenPractice
@@ -33,6 +54,7 @@ export function InlinePractice({
         session={session}
         title={title}
         question={question}
+        practiceId={practiceId}
         revealed={revealed}
         onStatus={(status) => report?.(practiceId, status)}
       />
@@ -58,13 +80,17 @@ export function InlinePractice({
       message = result.feedback;
     }
     setChecked(ok);
+    store?.change(practiceId, title, question, { values, units, choice }, true, ok);
     setFeedback(message);
     report?.(practiceId, ok ? "checked" : "tried");
   }
   return (
-    <div className="inline-practice" data-checked={checked || undefined}>
+    <div
+      className="inline-practice"
+      data-checked={(saved?.isLocallyChecked ?? checked) || undefined}
+    >
       <span className="practice-status">
-        {checked
+        {(saved?.isLocallyChecked ?? checked)
           ? "Verified practice"
           : feedback ||
               choice !== null ||
@@ -126,10 +152,30 @@ export function InlinePractice({
           ))}
         </fieldset>
       )}
+      <ExerciseReferences
+        onInsert={(text) => {
+          const m = /^([+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?)\s*(.*)$/i.exec(text);
+          if (m) {
+            setValues((v) => ({ ...v, 0: m[1] }));
+            if (m[2]) setUnits((u) => ({ ...u, 0: m[2] }));
+          } else {
+            void navigator.clipboard?.writeText(text);
+            setFeedback("Formula copied. Use it in your working; this field expects a number.");
+          }
+        }}
+      />
       <button type="button" onClick={submit}>
         Check my attempt
       </button>
       <p role="status">{feedback}</p>
+      {feedback && !checked && (
+        <button
+          type="button"
+          onClick={() => void store?.queue(practiceId).catch((e) => setFeedback(e.message))}
+        >
+          Send missed check to Review queue
+        </button>
+      )}
       <small>Local practice feedback · separate from assessed mastery.</small>
     </div>
   );

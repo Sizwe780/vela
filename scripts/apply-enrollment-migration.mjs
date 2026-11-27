@@ -15,6 +15,8 @@ if (
     "20261118150000_social_learning",
     "20261119010000_concept_learning",
     "20261127180000_retention_controls",
+    "20261127200000_lesson_attempts",
+    "20261127210000_attempt_submission_history",
   ].includes(name)
 )
   throw Error("Only reviewed additive migrations are supported");

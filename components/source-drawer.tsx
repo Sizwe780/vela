@@ -5,11 +5,13 @@ export function SourceDrawer({
   onClose,
   label = "Source preview",
   id,
+  className = "",
 }: {
   children: ReactNode;
   onClose: () => void;
   label?: string;
   id?: string;
+  className?: string;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
@@ -22,7 +24,7 @@ export function SourceDrawer({
   return (
     <dialog
       id={id}
-      className="source-dialog"
+      className={`source-dialog ${className}`}
       ref={ref}
       aria-label={label}
       onKeyDown={(e) => {
@@ -34,7 +36,15 @@ export function SourceDrawer({
         onClose();
       }}
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target !== e.currentTarget) return;
+        const bounds = e.currentTarget.getBoundingClientRect();
+        if (
+          e.clientX < bounds.left ||
+          e.clientX > bounds.right ||
+          e.clientY < bounds.top ||
+          e.clientY > bounds.bottom
+        )
+          onClose();
       }}
     >
       {children}

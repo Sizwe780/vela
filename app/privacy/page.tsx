@@ -193,7 +193,7 @@ export default function Privacy() {
               unwanted messages.
             </li>
             <li>
-              Inactive accounts: review after 24 months, with at least 30 days� notice before
+              Inactive accounts: review after 24 months, with at least 30 days notice before
               closure. Inactivity does not trigger automatic deletion.
             </li>
           </ul>
@@ -213,9 +213,11 @@ export default function Privacy() {
         <section id="device" className="policy-section">
           <h2>Cookies and your device</h2>
           <p>
-            Session cookies keep you signed in. Device storage remembers your chosen appearance and
-            workspace preferences. Light mode is the default. Vela does not currently use
-            advertising trackers.
+            Lesson answers may be cached on your device to restore drafts and sync offline work.
+            This practice cache is cleared on sign-out or through Profile. It is separate from
+            encrypted lesson downloads. Session cookies keep you signed in. Device storage remembers
+            your chosen appearance and workspace preferences. Light mode is the default. Vela does
+            not currently use advertising trackers.
           </p>
           <p>
             The offline service worker caches public application assets. Lessons you explicitly

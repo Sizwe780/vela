@@ -61,6 +61,7 @@ async function readStudyUnit(id: string): Promise<StudyUnitView | null> {
       position: sessionUnit.position,
       moduleId: sessionUnit.module.id,
       moduleCode: sessionUnit.module.code,
+      moduleInstitution: sessionUnit.module.institution,
       moduleTitle: sessionUnit.module.title,
       capabilities: moduleCapabilities(
         sessionUnit.module.institution,
@@ -130,6 +131,7 @@ async function readStudyUnit(id: string): Promise<StudyUnitView | null> {
     position: unit.position,
     moduleId: unit.module.id,
     moduleCode: unit.module.code,
+    moduleInstitution: unit.module.institution,
     moduleTitle: unit.module.title,
     capabilities: moduleCapabilities(
       unit.module.institution,

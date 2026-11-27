@@ -769,7 +769,7 @@ body {
   }
 }
 
-/* Official Vela logo image — replaces CSS bar-chart brand mark */
+/* Official Vela logo image ï¿½ replaces CSS bar-chart brand mark */
 .vela-brand-logo,
 .workspace-logo-img,
 .auth-brand-logo {
@@ -790,13 +790,13 @@ body {
   height: 48px;
   margin: 0 auto 4px;
 }
-/* Auth brand — make logo + text stack vertically */
+/* Auth brand ï¿½ make logo + text stack vertically */
 .auth-shell .brand {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-/* Workspace logo — align icon + text horizontally */
+/* Workspace logo ï¿½ align icon + text horizontally */
 .workspace-editorial .workspace-logo {
   display: inline-flex;
   align-items: center;

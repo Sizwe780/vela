@@ -76,6 +76,28 @@ export async function GET() {
                 updatedAt: raw.updatedAt,
               }
             : null;
+        const [indexedLessonChunks, sourcePageChunks] = await Promise.all([
+          prisma.contentChunk.count({
+            where: {
+              learningOutcome: { studyUnit: { moduleId: m.id } },
+              OR: [
+                { ingestion: { sourceName: { startsWith: "Vela original" } } },
+                { resourceUrl: { contains: "/sessions/" } },
+              ],
+            },
+          }),
+          prisma.contentChunk.count({
+            where: {
+              learningOutcome: { studyUnit: { moduleId: m.id } },
+              NOT: {
+                OR: [
+                  { ingestion: { sourceName: { startsWith: "Vela original" } } },
+                  { resourceUrl: { contains: "/sessions/" } },
+                ],
+              },
+            },
+          }),
+        ]);
         modules.push({
           id: m.id,
           code: m.code,
@@ -94,6 +116,8 @@ export async function GET() {
               : 0,
           assessedRecords: mastery?._count ?? 0,
           conversion,
+          indexedLessonChunks,
+          sourcePageChunks,
         });
       }
       report.push({ id: q.id, code: q.code, title: q.title, institution: q.institution, modules });

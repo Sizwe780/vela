@@ -115,8 +115,6 @@ export async function sendAcs(
 
   // ACS returns 202 Accepted with an operation-id header; use that as receipt.
   const operationId =
-    response.headers.get("operation-id") ??
-    response.headers.get("x-ms-request-id") ??
-    message.id;
+    response.headers.get("operation-id") ?? response.headers.get("x-ms-request-id") ?? message.id;
   return operationId;
 }

@@ -96,3 +96,14 @@ Authenticated, same-origin formative feedback for a published lesson exercise. A
 ### Retention operations
 
 `GET /api/support/retention` previews bounded eligibility and deletion review deadlines for the configured, verified support administrator only. `POST` creates or releases a documented legal hold; same-origin protection applies. Neither endpoint runs deletion. `npm run retention:preview` produces aggregate counts; `retention:apply` additionally requires the exact database hostname and approved policy version. Inactive accounts are review candidates only. Provider logs/backups require separate configuration.
+
+
+## Durable formative practice and contextual references
+
+`GET /api/practice/attempts?studyUnitId=...&sessionId=...&version=...` returns only the authenticated learner's current-version saved answers. `PUT /api/practice/attempts` accepts ownerId, studyUnitId, sessionId, version, canonical title/question, draft, submitted, revision and optional UUID mutationId. Enrollment, canonical exercise and optimistic revision checks run on the server. Local checks are recomputed; client verdicts are not accepted. Submitted working has a separate history. These records do not award assessed mastery.
+
+`POST /api/practice/check` saves verified AI review feedback against the unchanged attempt and returns attemptRevision. AI feedback remains an estimate. `GET /api/practice/review` lists private queued current-version exercises; `POST` takes `{action:"queue",id}` or `{action:"rate",id,rating}`. Ratings schedule review only. All routes are private/no-store and writes enforce same-origin requests.
+
+Profile GET/PUT includes optional `autoStartTimer` (default false). Auto-start retains idle, hidden-tab and one-active-tab protections. Account export includes attempts/submissions; verified deletion removes them. Device practice drafts are owner/session/version-scoped plaintext localStorage, distinct from encrypted downloaded lessons, and can be cleared in Profile or on sign-out.
+
+Reference drawers lazy-load local sourced snapshots, preserve the mounted exercise and insert values into working. Module capabilities control visibility; formula entries are institution/module scoped. Source/provenance and scientific limits: `.vela/engineering/reference-data-and-practice.md`.

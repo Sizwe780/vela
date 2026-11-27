@@ -16,7 +16,7 @@ export function readerLessonCopy(markdown:string) {
       const description=line.slice("Independent interactive model: ".length).split(". Explore its parameters as a separate teaching model;")[0];
       return `Explore this pattern: ${description}. Change one value at a time and explain what changes. Then apply the method in the example that follows.`;
     }
-    return line;
+    return line.replace("This is a manual sketch, not an unregistered interactive widget.", "Use the interactive model to compare your sketch, then verify the result by substitution.");
   }).join("\n");
   return dedupeLessonHeadings(cleaned);
 }

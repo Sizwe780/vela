@@ -44,3 +44,12 @@ Centered reader, on-demand companion/bottom sheet, Display menu, guided outline,
 Written-practice feedback: shared session checker added across domains, with exact local bindings retained and AI estimates explicitly separated from mastery. Enrollment, owner, source matching and revision checks are enforced by /api/practice/check. Live cross-module verification is recorded in the task evidence; do not infer psychometric accuracy from transport tests.
 
 Tutor pacing: Normal/Deep transfer segmented pills replace the dropdown; current-pace instructions apply server-side and Deep retains structured one-question validation. The understanding shortcut respects the chosen pace. Synthetic live behavior and isolated transport/UI checks are separate evidence.
+
+
+## 27 November: formative continuity and scientific references
+
+Implemented additive LessonAttempt/Submission history and auto-start timer preference migrations; canonical owner/enrollment/version checks, revision conflict handling, scoped offline drafts, reviewed feedback persistence and private missed-check review scheduling. Participation remains separate from assessed mastery. Added contextual reference drawers with PubChem 118-element data, molar-mass calculation, property trends, sourced constants, SI conversions and module-scoped formulas/tables. Missing properties remain labelled unavailable. QA catalog filtering and empty-module enrollment protection are server enforced.
+
+Delivery checklist and verification boundaries: [learning-tools-task-checklist.md](learning-tools-task-checklist.md). Scientific provenance: [reference-data-and-practice.md](reference-data-and-practice.md). Missing OCR/conversion ledgers are not retroactively certified; teaching analytics now distinguishes lesson retrieval chunks from source conversion records. Azure deployment is a separate action.
+
+Verified for this batch: 220 unit tests, schema validation, TypeScript, global formatting and production build pass. Four browser cases pass against real MAT1503/MAT1512/CHE1501 routes and isolated cache fixtures on desktop/mobile. Review totals and selected-module filters include queued lesson attempts. The 39-group formula registry has an additional 4/4 focused render/data/isolation run. These are not live AI quality or completed OCR-page-review certifications.

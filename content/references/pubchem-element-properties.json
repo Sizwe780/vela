@@ -1,0 +1,1276 @@
+{
+  "1": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/1/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "b59a9999433b1f0da118f2991bb193d3c2eae7d8274fec00f8028a38c0d565bc",
+    "covalentRadius": "31(5) pm (Covalent)",
+    "isotopes": [
+      "1H",
+      "2H"
+    ]
+  },
+  "2": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/2/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "b8f8fcb89af8fb5d0212f048f95b91f21b51931b3e6007f181e7ce28beefd3fb",
+    "covalentRadius": "28 pm (Covalent)",
+    "isotopes": [
+      "3He",
+      "4He"
+    ]
+  },
+  "3": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/3/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "e55d1c0f0e8c0cfd4b5b1704e9a204c7030f6bf7b552f4e7c69bf8bc79ee6aeb",
+    "covalentRadius": "128(7) pm (Covalent)",
+    "isotopes": [
+      "6Li",
+      "7Li"
+    ]
+  },
+  "4": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/4/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "755b51a82f52ab44541c5d561fd482aa49874d06337548687b8159e038541db1",
+    "covalentRadius": "96(3) pm (Covalent)",
+    "isotopes": [
+      "9Be"
+    ]
+  },
+  "5": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/5/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "b5d7a1dfa3e8252e17b3b2181a0ff54dc43e2330b01d6a7149c4dab1ff686a39",
+    "covalentRadius": "84(3) pm (Covalent)",
+    "isotopes": [
+      "10B",
+      "11B"
+    ]
+  },
+  "6": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/6/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "e98e51cecda08fc94f1fc3452805b076166f80501a271558390feec48a61cdba",
+    "covalentRadius": "76(1)[sp3], 73(2)[sp2], 69(1)[sp] pm (Covalent)",
+    "isotopes": [
+      "12C",
+      "13C"
+    ]
+  },
+  "7": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/7/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "fd27108cb6e2b54d28865d2815aa0cc6e650fbe2ee1351f4dae341ec79ffc10c",
+    "covalentRadius": "71(1) pm (Covalent)",
+    "isotopes": [
+      "14N",
+      "15N"
+    ]
+  },
+  "8": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/8/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "eae8428e7e4cd196734199ba4b1eea8f4507a232bf2abc6bcef220603d968ba7",
+    "covalentRadius": "66(2) pm (Covalent)",
+    "isotopes": [
+      "16O",
+      "17O",
+      "18O"
+    ]
+  },
+  "9": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/9/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "2f694a60b599b9f066e178f3a44751251109618320fffef47f4e79fa4e3d5e2a",
+    "covalentRadius": "57(3) pm (Covalent)",
+    "isotopes": [
+      "19F"
+    ]
+  },
+  "10": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/10/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "cf8b406d6b55a3cf9095b16d98280421e08238a9987077da38807adf53147101",
+    "covalentRadius": "58 pm (Covalent)",
+    "isotopes": [
+      "20Ne",
+      "21Ne",
+      "22Ne"
+    ]
+  },
+  "11": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/11/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "c98c01cf0fbb47d30e9d02ad6af00987e7d6a02c1a5c14eaa87aca8565ecbfbb",
+    "covalentRadius": "166(9) pm (Covalent)",
+    "isotopes": [
+      "23Na"
+    ]
+  },
+  "12": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/12/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "ae3df93a11c6ba193670d0b81959e9b1b0fbf5c710f189045155a6c3bbe1c396",
+    "covalentRadius": "141(7) pm (Covalent)",
+    "isotopes": [
+      "24Mg",
+      "25Mg",
+      "26Mg"
+    ]
+  },
+  "13": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/13/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "97f9b1b93554c767173e71c602c349a30a2ae37284cc1b31cc5242dd6b7e5121",
+    "covalentRadius": "121(4) pm (Covalent)",
+    "isotopes": [
+      "27Al"
+    ]
+  },
+  "14": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/14/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "82334cbfa4af692e883f580fee18400e3598fb514e8c9594ad21761c49665c89",
+    "covalentRadius": "111(2) pm (Covalent)",
+    "isotopes": [
+      "28Si",
+      "29Si",
+      "30Si"
+    ]
+  },
+  "15": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/15/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "f6b90358b4e961f2fb1dd769827d6b232b21bcb5b67a47ee0e857ab81406599e",
+    "covalentRadius": "107(3) pm (Covalent)",
+    "isotopes": [
+      "31P"
+    ]
+  },
+  "16": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/16/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "6418aaabd68163ba47c4171290ccc9e2cd2bae8f1ee1dba107c699d7d037c1f1",
+    "covalentRadius": "105(3) pm (Covalent)",
+    "isotopes": [
+      "32S",
+      "33S",
+      "34S",
+      "36S"
+    ]
+  },
+  "17": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/17/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "a82be32472d76dcb74e7537c2cbef5886329da482853dee755941216e27885d6",
+    "covalentRadius": "102(4) pm (Covalent)",
+    "isotopes": [
+      "35Cl",
+      "37Cl"
+    ]
+  },
+  "18": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/18/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "cab24e120b36a3aa7e413430097260720ad37c35bfb0279d3909e8f2cd310ada",
+    "covalentRadius": "106(10) pm (Covalent)",
+    "isotopes": [
+      "36Ar",
+      "38Ar",
+      "40Ar"
+    ]
+  },
+  "19": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/19/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "6a7474b660a75408b4876897eafdf2c1c46bd2efdb012d7716dcb39283f510ed",
+    "covalentRadius": "203(12) pm (Covalent)",
+    "isotopes": [
+      "39K",
+      "40K",
+      "41K"
+    ]
+  },
+  "20": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/20/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "ea81af6e6102bb4a2c13c45872490acd14408f644d01227e533c1f1d2f3db543",
+    "covalentRadius": "176(10) pm (Covalent)",
+    "isotopes": [
+      "40Ca",
+      "42Ca",
+      "43Ca",
+      "44Ca",
+      "46Ca",
+      "48Ca"
+    ]
+  },
+  "21": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/21/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "85bddabbef5f171bd722c1e148aec4d30ba4a2ceee70efaeed809f4f0338321a",
+    "covalentRadius": "170(7) pm (Covalent)",
+    "isotopes": [
+      "45Sc"
+    ]
+  },
+  "22": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/22/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "fe81c785e74a14a7ab643b49e391faea153177dc287814535cf825cf0ac07fc5",
+    "covalentRadius": "160(8) pm (Covalent)",
+    "isotopes": [
+      "46Ti",
+      "47Ti",
+      "48Ti",
+      "49Ti",
+      "50Ti"
+    ]
+  },
+  "23": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/23/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "8c76eb8e16fc370406306dc30e2ee1d67ae90ca167585497575121670128d0df",
+    "covalentRadius": "153(8) pm (Covalent)",
+    "isotopes": [
+      "50V",
+      "51V"
+    ]
+  },
+  "24": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/24/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "c5652da61be333dc9e8d47ac515557c146e1f228d044be7dd026ba9328bfcc09",
+    "covalentRadius": "139(5) pm (Covalent)",
+    "isotopes": [
+      "50Cr",
+      "52Cr",
+      "53Cr",
+      "54Cr"
+    ]
+  },
+  "25": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/25/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "62be855e5a53e0231264451ef934f0329d682f0dfc6d423f05e73e559967d47e",
+    "covalentRadius": "139(5)[l.s.], 161(8)[h.s.] pm (Covalent)",
+    "isotopes": [
+      "55Mn"
+    ]
+  },
+  "26": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/26/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "f855d1c56f712dd816bb092c1f5d1bdb5963d2decd3b6c9cfc8d3245fb60f098",
+    "covalentRadius": "132(3)[l.s.], 152(6)[h.s.] pm (Covalent)",
+    "isotopes": [
+      "54Fe",
+      "56Fe",
+      "57Fe",
+      "58Fe"
+    ]
+  },
+  "27": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/27/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "87abd6c38a24b398aa730f0f8b1b9e732374c3070c19ec7c5320a91ad4a3024a",
+    "covalentRadius": "126(3)[l.s.], 150(7)[h.s.] pm (Covalent)",
+    "isotopes": [
+      "59Co"
+    ]
+  },
+  "28": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/28/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "eca84aa7d7090dca61f6f200b989d57a0a37468ff840d66a5fbb4f9a215cf5db",
+    "covalentRadius": "124(4) pm (Covalent)",
+    "isotopes": [
+      "58Ni",
+      "60Ni",
+      "61Ni",
+      "62Ni",
+      "64Ni"
+    ]
+  },
+  "29": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/29/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "e409ed73db3ce75b2a8910055ada78e0f555cb34cfe9a44929e97b982d524132",
+    "covalentRadius": "132(4) pm (Covalent)",
+    "isotopes": [
+      "63Cu",
+      "65Cu"
+    ]
+  },
+  "30": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/30/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "fcde8b2083b8f85fae835be2116ae1675b44bb46f7ea61b351c049c21ce9945d",
+    "covalentRadius": "122(4) pm (Covalent)",
+    "isotopes": [
+      "64Zn",
+      "66Zn",
+      "67Zn",
+      "68Zn",
+      "70Zn"
+    ]
+  },
+  "31": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/31/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "c8269582a98ffff8757c73d898c756d1422a92b970f9c30bf709f0c79036eedb",
+    "covalentRadius": "122(3) pm (Covalent)",
+    "isotopes": [
+      "69Ga",
+      "71Ga"
+    ]
+  },
+  "32": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/32/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "9fbbf610197e57a49c76009853ffef39f6fd0fa6f4d6d34197108463e3d990d3",
+    "covalentRadius": "120(4) pm (Covalent)",
+    "isotopes": [
+      "70Ge",
+      "72Ge",
+      "73Ge",
+      "74Ge",
+      "76Ge"
+    ]
+  },
+  "33": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/33/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "6b70441ebcac0553300aeadbb1fb60fad5181d7cbfe7bce3db13439158795b2b",
+    "covalentRadius": "119(4) pm (Covalent)",
+    "isotopes": [
+      "75As"
+    ]
+  },
+  "34": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/34/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "5decfe95079ff7d47be65bc293193ad95db65d528124fb4c422c274eb55427b6",
+    "covalentRadius": "120(4) pm (Covalent)",
+    "isotopes": [
+      "74Se",
+      "76Se",
+      "77Se",
+      "78Se",
+      "80Se",
+      "82Se"
+    ]
+  },
+  "35": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/35/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "82d0817225ba67309a354674d8f5faec2134c16e3aa004f42ce7169c93655f26",
+    "covalentRadius": "120(3) pm (Covalent)",
+    "isotopes": [
+      "79Br",
+      "81Br"
+    ]
+  },
+  "36": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/36/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "706024886d519dc19aaeeed1ee61135eb8f981f8ac2be9f38be9b47771f57183",
+    "covalentRadius": "116(4) pm (Covalent)",
+    "isotopes": [
+      "78Kr",
+      "80Kr",
+      "82Kr",
+      "83Kr",
+      "84Kr",
+      "86Kr"
+    ]
+  },
+  "37": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/37/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "71833d9b31e3860633bd755819eb20159033be291e07c44c52b89efb301298ac",
+    "covalentRadius": "220(9) pm (Covalent)",
+    "isotopes": [
+      "85Rb",
+      "87Rb"
+    ]
+  },
+  "38": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/38/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "d7ac0951922e437aae81346714efd6b85d1ef64437ff6f78671b537fd3a91ca7",
+    "covalentRadius": "195(10) pm (Covalent)",
+    "isotopes": [
+      "84Sr",
+      "86Sr",
+      "87Sr",
+      "88Sr"
+    ]
+  },
+  "39": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/39/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "ee283fbd6f65e1aadc74e4ef5a5e8bd2a7da54fac12919aef840d3e63c3abe73",
+    "covalentRadius": "190(7) pm (Covalent)",
+    "isotopes": [
+      "89Y"
+    ]
+  },
+  "40": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/40/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "090976ee0b8ae03667ec519528628fcc988478ea89567784914b551eae12c5ab",
+    "covalentRadius": "175(7) pm (Covalent)",
+    "isotopes": [
+      "90Zr",
+      "91Zr",
+      "92Zr",
+      "94Zr",
+      "96Zr"
+    ]
+  },
+  "41": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/41/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "23153e412784956b55d8d8bc6c1a0ec41aa4a29bdb87fff6ada05dbabe63303b",
+    "covalentRadius": "164(6) pm (Covalent)",
+    "isotopes": [
+      "93Nb"
+    ]
+  },
+  "42": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/42/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "3ee5a678442c2334b869c7e952c4da2372c593b6c6a48d923f335229434852e8",
+    "covalentRadius": "154(5) pm (Covalent)",
+    "isotopes": [
+      "92Mo",
+      "94Mo",
+      "95Mo",
+      "96Mo",
+      "97Mo",
+      "98Mo",
+      "100Mo"
+    ]
+  },
+  "43": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/43/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "e9450e22e15cdb76b8b976d931c18d8219afa757aa954bb7934a8a221b439b92",
+    "covalentRadius": "147(7) pm (Covalent)",
+    "isotopes": [
+      "97Tc",
+      "98Tc",
+      "99Tc"
+    ]
+  },
+  "44": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/44/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "dce136e6a3f1ceb456aa53e7bfa373e049232c5d66fd73e384975e712de7ab1f",
+    "covalentRadius": "146(7) pm (Covalent)",
+    "isotopes": [
+      "96Ru",
+      "98Ru",
+      "99Ru",
+      "100Ru",
+      "101Ru",
+      "102Ru",
+      "104Ru"
+    ]
+  },
+  "45": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/45/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "8d1554264d524db6031d3f68b681179461c2085f7448a46445e6a17349d26e15",
+    "covalentRadius": "142(7) pm (Covalent)",
+    "isotopes": [
+      "103Rh"
+    ]
+  },
+  "46": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/46/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "8f05dddccb6c13f2cbd61595c5274acdd35b4fdd390326562b30bc4b8ecc3a00",
+    "covalentRadius": "139(6) pm (Covalent)",
+    "isotopes": [
+      "102Pd",
+      "104Pd",
+      "105Pd",
+      "106Pd",
+      "108Pd",
+      "110Pd"
+    ]
+  },
+  "47": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/47/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "f6dd62b153d8218a303b17a25d205fb8fc1d091a786566e4e51b5e47ea5a4f93",
+    "covalentRadius": "145(5) pm (Covalent)",
+    "isotopes": [
+      "107Ag",
+      "109Ag"
+    ]
+  },
+  "48": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/48/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "135222b0389bcea54207ac17db8e76ddfc22c4cd70bb1fb993418e72176db632",
+    "covalentRadius": "144(9) pm (Covalent)",
+    "isotopes": [
+      "106Cd",
+      "108Cd",
+      "110Cd",
+      "111Cd",
+      "112Cd",
+      "113Cd",
+      "114Cd",
+      "116Cd"
+    ]
+  },
+  "49": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/49/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "e2e63ea1bf68b732dd66f595d44131fbc871816dc3e3fc95b8360d5204275d70",
+    "covalentRadius": "142(5) pm (Covalent)",
+    "isotopes": [
+      "113In",
+      "115In"
+    ]
+  },
+  "50": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/50/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "e4a027c99a09795facb55a3e4e14c58179973699ae893da393de4c97feb0f4a3",
+    "covalentRadius": "139(4) pm (Covalent)",
+    "isotopes": [
+      "112Sn",
+      "114Sn",
+      "115Sn",
+      "116Sn",
+      "117Sn",
+      "118Sn",
+      "119Sn",
+      "120Sn",
+      "122Sn",
+      "124Sn"
+    ]
+  },
+  "51": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/51/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "8d4974dc9cf799f4e522178804b1368b4f23196e088dac61f13ba2f487d86791",
+    "covalentRadius": "139(5) pm (Covalent)",
+    "isotopes": [
+      "121Sb",
+      "123Sb"
+    ]
+  },
+  "52": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/52/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "9c2e53087353eb2bd389261c4f44f6fe54aff7337b0219e5100d427e2bed85ab",
+    "covalentRadius": "138(4) pm (Covalent)",
+    "isotopes": [
+      "120Te",
+      "122Te",
+      "123Te",
+      "124Te",
+      "125Te",
+      "126Te",
+      "128Te",
+      "130Te"
+    ]
+  },
+  "53": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/53/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "15dbfa0207a7321f5241b55f0b9566d0a2defe6e8f5476b697d86be552b3128e",
+    "covalentRadius": "139(3) pm (Covalent)",
+    "isotopes": [
+      "127I"
+    ]
+  },
+  "54": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/54/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "973b7218196885b84d6eccf1075280d056015d4a57fdb2c2d6f5bb330f07d9db",
+    "covalentRadius": "140(9) pm (Covalent)",
+    "isotopes": [
+      "124Xe",
+      "126Xe",
+      "128Xe",
+      "129Xe",
+      "130Xe",
+      "131Xe",
+      "132Xe",
+      "134Xe",
+      "136Xe"
+    ]
+  },
+  "55": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/55/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "8e7f8aaef043d777b5cdd05df1cdba39c2852a85426b91fd8f2465e9445f2a07",
+    "covalentRadius": "244(11) pm (Covalent)",
+    "isotopes": [
+      "133Cs"
+    ]
+  },
+  "56": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/56/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "db5c1a45509fb7c886367496092545bf2b1731528761a26cbefe4ad45ddfd519",
+    "covalentRadius": "215(11) pm (Covalent)",
+    "isotopes": [
+      "130Ba",
+      "132Ba",
+      "134Ba",
+      "135Ba",
+      "136Ba",
+      "137Ba",
+      "138Ba"
+    ]
+  },
+  "57": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/57/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "92d595ee9752f5af4e0716e5c72a560659c0417dcfb758069cffd0b70ea5633c",
+    "covalentRadius": "207(8) pm (Covalent)",
+    "isotopes": [
+      "138La",
+      "139La"
+    ]
+  },
+  "58": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/58/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "e13ea30b876f438802323f650153a5ea28a0ca27551a29f64676c0bba69cfa5e",
+    "covalentRadius": "204(9) pm (Covalent)",
+    "isotopes": [
+      "136Ce",
+      "138Ce",
+      "140Ce",
+      "142Ce"
+    ]
+  },
+  "59": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/59/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "19f65252ab619ae639172a024609f200bb0007eeac0c10e1eb94f2b8906e9785",
+    "covalentRadius": "203(7) pm (Covalent)",
+    "isotopes": [
+      "141Pr"
+    ]
+  },
+  "60": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/60/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "cbc75cf1b766ab6a6c54d2bac27df4aaa674bdb03ff86e57c0f4eecb92df6628",
+    "covalentRadius": "201(6) pm (Covalent)",
+    "isotopes": [
+      "142Nd",
+      "143Nd",
+      "144Nd",
+      "145Nd",
+      "146Nd",
+      "148Nd",
+      "150Nd"
+    ]
+  },
+  "61": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/61/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "f8dbd0c77e694cadb07a305e75f10554997e9385229d7a5a3e99f2fa16dd9b8b",
+    "covalentRadius": "199 pm (Covalent)",
+    "isotopes": [
+      "145Pm",
+      "147Pm"
+    ]
+  },
+  "62": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/62/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "6f55308c8ea937c682caa8896011da111f7466e6f487aac8144fa3c6bd85fe18",
+    "covalentRadius": "198(8) pm (Covalent)",
+    "isotopes": [
+      "144Sm",
+      "147Sm",
+      "148Sm",
+      "149Sm",
+      "150Sm",
+      "152Sm",
+      "154Sm"
+    ]
+  },
+  "63": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/63/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "1ccf36c1396ec088eb23028fd4f171f5f19a608268a2926f275f489e5443bd30",
+    "covalentRadius": "198(6) pm (Covalent)",
+    "isotopes": [
+      "151Eu",
+      "153Eu"
+    ]
+  },
+  "64": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/64/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "175cb541c2e97fead99a7d0c53a048b2d0e7e6dedcc2f2a39dc3de329bfe27af",
+    "covalentRadius": "196(6) pm (Covalent)",
+    "isotopes": [
+      "152Gd",
+      "154Gd",
+      "155Gd",
+      "156Gd",
+      "157Gd",
+      "158Gd",
+      "160Gd"
+    ]
+  },
+  "65": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/65/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "5a1c1d212c50c330ad2a2b6c47e4f56aa1d9f5ea35e4f61b7368b5ce75ae5e14",
+    "covalentRadius": "194(5) pm (Covalent)",
+    "isotopes": [
+      "159Tb"
+    ]
+  },
+  "66": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/66/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "6eec5f8b2aa9dbc48212004d27432f436e7c466c7fcf0e51cc26c97f49f548ac",
+    "covalentRadius": "192(7) pm (Covalent)",
+    "isotopes": [
+      "156Dy",
+      "158Dy",
+      "160Dy",
+      "161Dy",
+      "162Dy",
+      "163Dy",
+      "164Dy"
+    ]
+  },
+  "67": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/67/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "7d1886afe687e83d9d39ebf7c0b5979adf9a29b92c290376007288459f502cdd",
+    "covalentRadius": "192(7) pm (Covalent)",
+    "isotopes": [
+      "165Ho"
+    ]
+  },
+  "68": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/68/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "0a885fb2a9623fdd04ede3673c5b856b89acb09b0930fe28f06583e80788007a",
+    "covalentRadius": "189(6) pm (Covalent)",
+    "isotopes": [
+      "162Er",
+      "164Er",
+      "166Er",
+      "167Er",
+      "168Er",
+      "170Er"
+    ]
+  },
+  "69": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/69/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "13054edfbd3ad6a0a1935af762c563843c74357f4318e2edd7dca9cded490a18",
+    "covalentRadius": "190(10) pm (Covalent)",
+    "isotopes": [
+      "169Tm"
+    ]
+  },
+  "70": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/70/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "b15ab019f9aafea9197dcaac6493463006b933b9b7c63cd53123e6de47fdc81f",
+    "covalentRadius": "187(8) pm (Covalent)",
+    "isotopes": [
+      "168Yb",
+      "170Yb",
+      "171Yb",
+      "172Yb",
+      "173Yb",
+      "174Yb",
+      "176Yb"
+    ]
+  },
+  "71": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/71/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "6696da6ece556bfa98d48345d00861c56ab6afc0bc3563d2d2d328f8cdbdaa17",
+    "covalentRadius": "187(8) pm (Covalent)",
+    "isotopes": [
+      "175Lu",
+      "176Lu"
+    ]
+  },
+  "72": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/72/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "4ffd19c0bb7fbf0ce2b5a8779ba179904ff3f7211370fdac59afa86c45423900",
+    "covalentRadius": "175(10) pm (Covalent)",
+    "isotopes": [
+      "174Hf",
+      "176Hf",
+      "177Hf",
+      "178Hf",
+      "179Hf",
+      "180Hf"
+    ]
+  },
+  "73": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/73/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "a7da903f6ca00df6d7c9b91557e00dcf299d079c6172b7f6d77bc1c1179c9474",
+    "covalentRadius": "170(8) pm (Covalent)",
+    "isotopes": [
+      "180Ta",
+      "181Ta"
+    ]
+  },
+  "74": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/74/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "2ef3024f94a05ccefacd53080183924668d7cc57a49b557e150d1be38930db00",
+    "covalentRadius": "162(7) pm (Covalent)",
+    "isotopes": [
+      "180W",
+      "182W",
+      "183W",
+      "184W",
+      "186W"
+    ]
+  },
+  "75": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/75/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "00d0c88e81012f5987dbc89359ca0490ad530c38f53bbc9893dbc1d3f32dfafa",
+    "covalentRadius": "151(7) pm (Covalent)",
+    "isotopes": [
+      "185Re",
+      "187Re"
+    ]
+  },
+  "76": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/76/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "b46959aedf6a758254bc6a2c54ae5759fdd8077a50d5c3b436a0f3c130052efe",
+    "covalentRadius": "144(4) pm (Covalent)",
+    "isotopes": [
+      "184Os",
+      "186Os",
+      "187Os",
+      "188Os",
+      "189Os",
+      "190Os",
+      "192Os"
+    ]
+  },
+  "77": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/77/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "706a83ec478a44554896f18253e5c6643700099a40a7cbd33257badfa9146114",
+    "covalentRadius": "141(6) pm (Covalent)",
+    "isotopes": [
+      "191Ir",
+      "193Ir"
+    ]
+  },
+  "78": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/78/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "20ca7144fed50c9ef1411302b84a509af4d67ec984627971c93f79ac26c41884",
+    "covalentRadius": "136(5) pm (Covalent)",
+    "isotopes": [
+      "190Pt",
+      "192Pt",
+      "194Pt",
+      "195Pt",
+      "196Pt",
+      "198Pt"
+    ]
+  },
+  "79": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/79/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "cd0f89c84c0f0020bbd17da33396c1aafc853c2f62b25e390fd4f53d3db7110c",
+    "covalentRadius": "136(6) pm (Covalent)",
+    "isotopes": [
+      "197Au"
+    ]
+  },
+  "80": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/80/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "6e9036d1cd243df537ad1d32c0176e76d328fb94844f48b0f6e34aa57688027f",
+    "covalentRadius": "132(5) pm (Covalent)",
+    "isotopes": [
+      "196Hg",
+      "198Hg",
+      "199Hg",
+      "200Hg",
+      "201Hg",
+      "202Hg",
+      "204Hg"
+    ]
+  },
+  "81": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/81/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "90d52a8a5fd26d44254fd19c8e7f659a79514a063a6b3aa41ffaa96f5d784b04",
+    "covalentRadius": "145(7) pm (Covalent)",
+    "isotopes": [
+      "203Tl",
+      "205Tl"
+    ]
+  },
+  "82": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/82/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "6828e6056726bc0ef49ad349f6350b097e2086fd091bdc8fa07bb2d88a3f2d1b",
+    "covalentRadius": "146(5) pm (Covalent)",
+    "isotopes": [
+      "204Pb",
+      "206Pb",
+      "207Pb",
+      "208Pb"
+    ]
+  },
+  "83": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/83/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "88ad0e706fe1eceec01e3cc0a6bdcdb275acf8629de7c14bb2d4d28d143cdd4d",
+    "covalentRadius": "148(4) pm (Covalent)",
+    "isotopes": [
+      "209Bi"
+    ]
+  },
+  "84": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/84/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "8830529d003e82022965104452375fbf663e97d6df8d65d1871074578b24f11c",
+    "covalentRadius": "140(4) pm (Covalent)",
+    "isotopes": [
+      "209Po",
+      "210Po"
+    ]
+  },
+  "85": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/85/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "2a154574c907b509d6e661f3038db4905d66aece31577d8b84addc8b22a88575",
+    "covalentRadius": "150 pm (Covalent)",
+    "isotopes": [
+      "210At",
+      "211At"
+    ]
+  },
+  "86": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/86/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "0efd6550a69e1fcbbe770f2ecb0bdc27b6aa4e669d161ef9b197ab865cfa2069",
+    "covalentRadius": "150 pm (Covalent)",
+    "isotopes": [
+      "211Rn",
+      "220Rn",
+      "222Rn"
+    ]
+  },
+  "87": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/87/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "51cae417cc734820b44c00eef71114fcb906efe392471688c9d52cf8bafa3603",
+    "covalentRadius": "260 pm (Covalent)",
+    "isotopes": [
+      "223Fr"
+    ]
+  },
+  "88": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/88/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "8d68f343f255e54d938cb1c9bc64938c09ec035078fa3d061644051c8d6d8e36",
+    "covalentRadius": "221(2) pm (Covalent)",
+    "isotopes": [
+      "223Ra",
+      "224Ra",
+      "226Ra",
+      "228Ra"
+    ]
+  },
+  "89": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/89/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "ca14c11daaeea11fe269920d56adab1e1fc390d49473ce2baca421f7f192757b",
+    "covalentRadius": "215 pm (Covalent)",
+    "isotopes": [
+      "227Ac"
+    ]
+  },
+  "90": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/90/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "33dcaff362d0d2f78a14fde8545ed15ab76ebd0631ae5581ddfbcd03684dc42c",
+    "covalentRadius": "206(6) pm (Covalent)",
+    "isotopes": [
+      "230Th",
+      "232Th"
+    ]
+  },
+  "91": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/91/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "4643526b0097d9e654888a31e76787ea448e96613da98f8e7abee41167eec46e",
+    "covalentRadius": "200 pm (Covalent)",
+    "isotopes": [
+      "231Pa"
+    ]
+  },
+  "92": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/92/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "7bcf98152bdb9691f6d1a13c54a3a9e38ad0b9fced5002a8d638f98ffc36061c",
+    "covalentRadius": "196(7) pm (Covalent)",
+    "isotopes": [
+      "234U",
+      "235U",
+      "238U"
+    ]
+  },
+  "93": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/93/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "e5aa8cd3a6529decf5c9d6f8b6a99426af0741550272c1d2eea5fc7c73677d29",
+    "covalentRadius": "190(1) pm (Covalent)",
+    "isotopes": [
+      "236Np",
+      "237Np"
+    ]
+  },
+  "94": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/94/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "e147ec0d7da7e75d18ca3c14e6f344721ff0aef0f26ea71b971680a6ba298905",
+    "covalentRadius": "187(1) pm (Covalent)",
+    "isotopes": [
+      "238Pu",
+      "239Pu",
+      "240Pu",
+      "241Pu",
+      "242Pu",
+      "244Pu"
+    ]
+  },
+  "95": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/95/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "93ea873a2d78bc8e5dcdaa891f50f155037503b389ce39590884866e5d0dd802",
+    "covalentRadius": "180(6) pm (Covalent)",
+    "isotopes": [
+      "241Am",
+      "243Am"
+    ]
+  },
+  "96": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/96/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "a2f905c299e4d9a825699994a3e5ce95a50e23d8ba5ae277c8d8dcadeba4da7c",
+    "covalentRadius": "169(3) pm (Covalent)",
+    "isotopes": [
+      "243Cm",
+      "244Cm",
+      "245Cm",
+      "246Cm",
+      "247Cm",
+      "248Cm"
+    ]
+  },
+  "97": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/97/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "50f0ee3cbda9f3fcb0e0f859acb628187943fb7d5c0919e4725b6e0f94e8b9fc",
+    "covalentRadius": null,
+    "isotopes": [
+      "247Bk",
+      "249Bk"
+    ]
+  },
+  "98": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/98/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "d82c8a5057d8ac8fc3ff877a96f47b136cdce2e44bc12ccba6693ff7465f2022",
+    "covalentRadius": null,
+    "isotopes": [
+      "249Cf",
+      "250Cf",
+      "251Cf",
+      "252Cf"
+    ]
+  },
+  "99": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/99/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "a16d7c243e959b9765345807728c7674820d7a063bdfdb48be22e19643b175c9",
+    "covalentRadius": null,
+    "isotopes": [
+      "252Es"
+    ]
+  },
+  "100": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/100/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "fda1671ec1f678667f932e296307e5c3989bc00cccad9d545802b86e2bd402b0",
+    "covalentRadius": null,
+    "isotopes": [
+      "257Fm"
+    ]
+  },
+  "101": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/101/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "5eed81239c55474928f57e10694277cae2937cc1afab234069de6a27af45baeb",
+    "covalentRadius": null,
+    "isotopes": [
+      "258Md",
+      "260Md"
+    ]
+  },
+  "102": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/102/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "45be1abf1be246b0a735a4869f0357e978387da08213af95fa8bf934226ae07c",
+    "covalentRadius": null,
+    "isotopes": [
+      "259No"
+    ]
+  },
+  "103": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/103/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "53408317f92b917b11b795b6c8b1a51360c8c7847954aa416338ea7818ec6e47",
+    "covalentRadius": null,
+    "isotopes": [
+      "262Lr"
+    ]
+  },
+  "104": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/104/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "60a5f78e929604697b51179131d46877bd2fbc822788652f7e3fd44e838f7237",
+    "covalentRadius": null,
+    "isotopes": [
+      "267Rf"
+    ]
+  },
+  "105": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/105/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "83dee8fe05dd40bf32c39fd5c92dde8b757008e9cd3bb0a56fa3ab7dabbea417",
+    "covalentRadius": null,
+    "isotopes": [
+      "268Db"
+    ]
+  },
+  "106": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/106/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "ef74a0006a43ba2b1397b630cb4335fe555687aaf0118fba56f61c97241cfe64",
+    "covalentRadius": null,
+    "isotopes": [
+      "271Sg"
+    ]
+  },
+  "107": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/107/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "23f3267bf0145dc68df5fadd8c1ba85e9dffc755174a903f4683d44ae151356e",
+    "covalentRadius": null,
+    "isotopes": [
+      "272Bh"
+    ]
+  },
+  "108": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/108/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "355725b36dd3d2bc338d2f4efb97ee96689e67b51a4e1b50bc665b7f713f8d4e",
+    "covalentRadius": null,
+    "isotopes": [
+      "270Hs"
+    ]
+  },
+  "109": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/109/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "853378d329b0dd1cf91b6193672d6de1dd91f92e13a81164adc4954a5eb7c4fd",
+    "covalentRadius": null,
+    "isotopes": []
+  },
+  "110": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/110/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "4746defdb44ac8323daecf230b74c6b4d66e52540bc7b2fb398ef0e99d8da56b",
+    "covalentRadius": null,
+    "isotopes": []
+  },
+  "111": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/111/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "9c6c2d2ee8df989c4f9618a76bee122bbfe45063d652ada396bf5b5882db8125",
+    "covalentRadius": null,
+    "isotopes": []
+  },
+  "112": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/112/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "94c1bb982f68e54a4d3b909820c61881224a5ab60e110a7ae203f53543fc8b83",
+    "covalentRadius": null,
+    "isotopes": []
+  },
+  "113": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/113/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "684c4cf34704ea63649cc8369d595f0b126a6d70353be341194fe763c4404f32",
+    "covalentRadius": null,
+    "isotopes": []
+  },
+  "114": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/114/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "b6e130ac00fc2bd84bc980fe47693126f4725d0f8ed63a53b660485e357941f1",
+    "covalentRadius": null,
+    "isotopes": []
+  },
+  "115": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/115/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "19ae7c59b20915157be0137d143ee657428497b47823320ae9952a51f1a2f652",
+    "covalentRadius": null,
+    "isotopes": []
+  },
+  "116": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/116/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "2097f87ad7d3f2a4de1dc68201791d2303a4f8bb2d746d08768865e04854e53d",
+    "covalentRadius": null,
+    "isotopes": []
+  },
+  "117": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/117/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "eb97260afba1e53ef52add541ad82526f1a136e6a6037caf1f3b9247b0d5d714",
+    "covalentRadius": null,
+    "isotopes": []
+  },
+  "118": {
+    "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/element/118/JSON",
+    "retrieved": "2026-11-27",
+    "sha256": "2ad6bc068589bd65d9976d4cd0202443bf15bc72f2f4677a26ef45d6d05afb9a",
+    "covalentRadius": null,
+    "isotopes": []
+  }
+}

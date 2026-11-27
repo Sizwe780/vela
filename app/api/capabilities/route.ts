@@ -46,6 +46,11 @@ export async function GET() {
     return Response.json(
       {
         ownerId: learner.id,
+        modules: modules.map((m) => ({
+          code: m.code,
+          institution: m.institution,
+          capabilities: moduleCapabilities(m.institution, m.code, m.metadata),
+        })),
         canModerate,
         classroomDue,
         institutions: scope.map((item) => item.institution),

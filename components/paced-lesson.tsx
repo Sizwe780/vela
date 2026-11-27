@@ -1,11 +1,29 @@
 "use client";
-import { useCallback, useEffect, useMemo, useState, useRef } from "react";
+import { LessonAttemptProvider, useLessonAttempts } from "./lesson-attempt-store";
+import { PracticeSessionContext } from "./written-practice";
+import { useCallback, useContext, useEffect, useMemo, useState, useRef } from "react";
 import { lessonSections } from "../lib/content/lesson-sections";
 import { readerLessonCopy } from "../lib/content/reader-copy";
 import { parseLearningBlocks } from "../lib/content/exercises";
 import { ExerciseMarkdown } from "./exercise-markdown";
 import { PracticeContext, type PracticeStatus } from "./inline-practice";
-export function PacedLesson({
+type Props = {
+  markdown: string;
+  highlights?: string[];
+  onAsk?: (title: string, question: string) => void;
+};
+export function PacedLesson(props: Props) {
+  const session = useContext(PracticeSessionContext);
+  return (
+    <LessonAttemptProvider
+      key={`${session?.ownerId}:${session?.sessionId}:${session?.version}`}
+      session={session}
+    >
+      <PacedContent {...props} />
+    </LessonAttemptProvider>
+  );
+}
+function PacedContent({
   markdown,
   highlights,
   onAsk,
@@ -14,6 +32,7 @@ export function PacedLesson({
   highlights?: string[];
   onAsk?: (title: string, question: string) => void;
 }) {
+  const saved = useLessonAttempts();
   const controls = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const element = controls.current;
@@ -48,28 +67,45 @@ export function PacedLesson({
     (id: string, status: PracticeStatus) => setAttempts((s) => ({ ...s, [id]: status })),
     [],
   );
-  const tried = Object.keys(attempts).filter((k) => keys.has(k)).length,
-    checked = Object.entries(attempts).filter(([k, s]) => keys.has(k) && s === "checked").length,
-    reviewed = Object.entries(attempts).filter(([k, s]) => keys.has(k) && s === "reviewed").length;
+  const combined = {
+    ...attempts,
+    ...Object.fromEntries(
+      Object.entries(saved?.records ?? {}).map(([key, row]) => [key, row.status]),
+    ),
+  };
+  const tried = Object.keys(combined).filter((k) => keys.has(k)).length,
+    checked = Object.entries(combined).filter(([k, s]) => keys.has(k) && s === "checked").length,
+    reviewed = Object.entries(combined).filter(([k, s]) => keys.has(k) && s === "reviewed").length;
   useEffect(() => {
     if (guided) return;
     const nodes = sections
       .map((s) => document.getElementById(s.id))
       .filter((n): n is HTMLElement => !!n);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const hit = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (hit) {
-          const i = sections.findIndex((s) => s.id === hit.target.id);
-          if (i >= 0) setActive(i);
+    const root = nodes[0]?.closest<HTMLElement>(".reader-scroll") ?? null;
+    let frame = 0;
+    const update = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const line =
+          (root?.getBoundingClientRect().top ?? 0) +
+          (controls.current?.getBoundingClientRect().height ?? 0) +
+          28;
+        let next = 0;
+        for (let i = 0; i < nodes.length; i++) {
+          if (nodes[i].getBoundingClientRect().top <= line) next = i;
         }
-      },
-      { root: nodes[0]?.closest(".reader-scroll") ?? null, rootMargin: "-10% 0px -60% 0px" },
-    );
+        setActive(next);
+      });
+    };
+    const observer = new IntersectionObserver(update, { root, threshold: [0, 0.1, 1] });
     nodes.forEach((n) => observer.observe(n));
-    return () => observer.disconnect();
+    root?.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => {
+      observer.disconnect();
+      root?.removeEventListener("scroll", update);
+      cancelAnimationFrame(frame);
+    };
   }, [sections, guided]);
   const select = (i: number) => {
     setActive(i);
@@ -88,20 +124,36 @@ export function PacedLesson({
             .map((s, i) => ({ s, i }))
             .filter(
               ({ s, i }) =>
-                i === 0 || /intuition|visual|explor|worked example|assessment/i.test(s.title),
+                i === 0 ||
+                /intuition|visual|explor|worked example|^procedure$|assessment/i.test(s.title),
             )
             .map(({ s, i }) => (
               <button
                 key={s.id}
                 type="button"
-                aria-current={active === i ? "step" : undefined}
+                aria-current={
+                  i ===
+                  sections
+                    .map((v, j) => ({ v, j }))
+                    .filter(
+                      ({ v, j }) =>
+                        j <= active &&
+                        (j === 0 ||
+                          /intuition|visual|explor|worked example|^procedure$|assessment/i.test(
+                            v.title,
+                          )),
+                    )
+                    .at(-1)?.j
+                    ? "step"
+                    : undefined
+                }
                 onClick={() => select(i)}
               >
                 {s.title
                   .replace(/^Visual exploration$/i, "Lab")
                   .replace(/^Intuition first$/i, "Intuition")
                   .replace(/^Assessment$/i, "Checks")
-                  .replace(/^Original worked example$/i, "Example")}
+                  .replace(/^(?:Original worked example|Procedure)$/i, "Example")}
               </button>
             ))}
         </nav>

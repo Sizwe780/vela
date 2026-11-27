@@ -181,6 +181,8 @@ export function SessionReader({
         <LessonBody
           practiceSession={{
             title: session.title,
+            moduleCode: unit.moduleCode,
+            moduleInstitution: unit.moduleInstitution ?? (unit.preview ? "UNISA" : ""),
             ownerId: saved.userId ?? "",
             studyUnitId: unit.id,
             sessionId: session.id,

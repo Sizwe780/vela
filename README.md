@@ -10,6 +10,7 @@ Create an account, select a qualification and enroll in modules, then study thei
 
 - [Contributing and verification](CONTRIBUTING.md)
 - [Site-wide audit and page-by-page changes](.vela/engineering/site-wide-audit.md)
+- [Learning tools, saved attempts and reference delivery checklist](.vela/engineering/learning-tools-task-checklist.md)
 
 - [Teaching workspace and qualification administration](docs/TEACHING_WORKSPACE.md)
 

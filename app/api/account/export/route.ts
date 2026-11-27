@@ -24,6 +24,8 @@ export async function GET() {
       classSubmissions,
       peerPosts,
       support,
+      lessonAttempts,
+      lessonAttemptSubmissions,
     ] = await prisma.$transaction(
       [
         prisma.studentProfile.findUnique({
@@ -34,6 +36,7 @@ export async function GET() {
             emailReminders: true,
             emailConsentAt: true,
             classroomAlerts: true,
+            autoStartTimer: true,
             staffMemberships: { select: { qualificationId: true, role: true } },
           },
         }),
@@ -96,6 +99,8 @@ export async function GET() {
             updatedAt: true,
           },
         }),
+        prisma.$queryRaw`SELECT * FROM "LessonAttempt" WHERE "studentId"=${user.id} ORDER BY "updatedAt"`,
+        prisma.$queryRaw`SELECT s.* FROM "LessonAttemptSubmission" s JOIN "LessonAttempt" a ON a.id=s."attemptId" WHERE a."studentId"=${user.id} ORDER BY s."createdAt"`,
       ],
       { isolationLevel: "RepeatableRead" },
     );
@@ -109,6 +114,8 @@ export async function GET() {
           email: user.email,
           emailVerified: user.emailVerified,
         },
+        lessonAttempts,
+        lessonAttemptSubmissions,
         profile,
         enrollments,
         mastery,

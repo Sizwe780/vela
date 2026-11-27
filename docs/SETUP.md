@@ -48,3 +48,19 @@ Publication and source conversion are separate. Follow [MAT1503_ONBOARDING.md](M
 Set `NEXT_PUBLIC_SITE_URL` to the deployed HTTPS origin before public indexing. Local development robots disallow crawling. The public policies distinguish approved retention targets from deployed enforcement. Complete `.vela/legal/launch-readiness.md` before treating the notice as a final compliance deliverable; an operator flag is not a legal certification.
 
 See [COMPETITIVE_GAPS.md](COMPETITIVE_GAPS.md) for verified admin setup and feature limitations. Neon authentication email verification uses a one-time code entered on `/profile`. It is separate from the product welcome/recall queue. Resend development-inbox sending is connected; see [EMAIL_SETUP.md](EMAIL_SETUP.md) for consent, free limits, local scheduling and requirements for wider delivery.
+
+
+## Saved lesson practice and scientific references
+
+Apply the additive `20261127200000_lesson_attempts` and `20261127210000_attempt_submission_history` migrations before deploying the corresponding application build. Use the normal migration deployment on supported hosts. The reviewed Windows fallback is:
+
+```powershell
+node scripts/apply-enrollment-migration.mjs --migration=20261127200000_lesson_attempts
+node scripts/apply-enrollment-migration.mjs --migration=20261127210000_attempt_submission_history
+```
+
+`npm run build` generates only the application's `appClient`; do not regenerate the native client used by an active conversion worker. Timer auto-start is opt-in in Profile. Formative answers have private Neon persistence plus owner/session/version-scoped local device drafts; clearing device practice cache does not delete server answers or assessed evidence.
+
+Contextual reference drawers use checked-in public factual snapshots and require no paid API key. PubChem refresh (`python scripts/update-element-reference.py`) is an explicit maintenance action, not part of a build. Sources, limitations, testing and rollout tasks are in `.vela/engineering/reference-data-and-practice.md` and `.vela/engineering/learning-tools-task-checklist.md`.
+
+When running separate Playwright commands concurrently, give each its own `--output` folder; otherwise one run can remove another's trace files. A single normal `npm run test:e2e` invocation coordinates its own shared output.

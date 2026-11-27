@@ -1,5 +1,7 @@
 "use client";
+import { useLessonAttempts } from "./lesson-attempt-store";
 import { createContext, useEffect, useId, useRef, useState } from "react";
+import { ExerciseReferences } from "./references/exercise-references";
 import { AnswerSymbols } from "./math/answer-symbols";
 import { Markdown } from "./markdown";
 
@@ -9,6 +11,8 @@ export type PracticeSession = {
   studyUnitId: string;
   sessionId: string;
   version: number;
+  moduleCode?: string;
+  moduleInstitution?: string;
 };
 export const PracticeSessionContext = createContext<PracticeSession | null>(null);
 type Result = {
@@ -30,17 +34,26 @@ export function WrittenPractice({
   session,
   title,
   question,
+  practiceId,
   revealed,
   onStatus,
 }: {
   session: PracticeSession | null;
   title: string;
   question: string;
+  practiceId: string;
   revealed: boolean;
   onStatus: (status: "tried" | "reviewed") => void;
 }) {
   const id = useId();
-  const [attempt, setAttempt] = useState("");
+  const store = useLessonAttempts();
+  const [fallback, setFallback] = useState("");
+  const record = store?.records[practiceId];
+  const attempt = record?.draft.text ?? fallback;
+  const setAttempt = (text: string) => {
+    setFallback(text);
+    store?.change(practiceId, title, question, { text });
+  };
   const [result, setResult] = useState<Result | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -59,11 +72,21 @@ export function WrittenPractice({
     setResult(null);
     onStatus("tried");
     try {
+      store?.change(practiceId, title, question, { text: attempt }, true, false);
+      await store?.flush(practiceId);
       const response = await fetch("/api/practice/check", {
         method: "POST",
         cache: "no-store",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...session, title, question, attempt }),
+        body: JSON.stringify({
+          ownerId: session.ownerId,
+          studyUnitId: session.studyUnitId,
+          sessionId: session.sessionId,
+          version: session.version,
+          title,
+          question,
+          attempt,
+        }),
         signal: controller.signal,
       });
       const payload = await response.json();
@@ -74,6 +97,7 @@ export function WrittenPractice({
       const review = payload as Result;
       if (!controller.signal.aborted && review.ownerId === session.ownerId) {
         setResult(review);
+        store?.review(practiceId, review);
         onStatus("reviewed");
       }
     } catch (e) {
@@ -88,13 +112,14 @@ export function WrittenPractice({
       }
     }
   }
+  const feedback = result ?? (record?.aiFeedback as Result | null);
   return (
     <div className="inline-practice written-practice" aria-busy={busy}>
       <label htmlFor={id}>
         Your answer or working{" "}
         <span className="practice-status">
-          {result
-            ? `${labels[result.verdict]} · AI review`
+          {feedback
+            ? `${labels[feedback!.verdict]} · AI review`
             : revealed
               ? "Answer explored"
               : attempt.trim()
@@ -123,6 +148,15 @@ export function WrittenPractice({
           onStatus("tried");
         }}
       />
+      <ExerciseReferences
+        onInsert={(text) => {
+          if (!busy) {
+            setAttempt(attempt + (attempt ? "\n" : "") + text);
+            setResult(null);
+            onStatus("tried");
+          }
+        }}
+      />
       <AnswerSymbols
         question={question}
         value={attempt}
@@ -137,15 +171,33 @@ export function WrittenPractice({
       <button type="button" disabled={busy || !session?.ownerId} onClick={() => void check()}>
         {busy ? "Checking your attempt…" : "Check my attempt"}
       </button>
+      {feedback && ["incorrect", "partial"].includes(feedback.verdict) && (
+        <button
+          type="button"
+          onClick={() => void store?.queue(practiceId).catch((e) => setError(e.message))}
+        >
+          Send missed check to Review queue
+        </button>
+      )}
       <div role="status" aria-live="polite">
-        {error && <p>{error}</p>}
-        {result && (
+        {error && (
+          <>
+            <p>{error}</p>
+            <button
+              type="button"
+              onClick={() => void store?.queue(practiceId).catch((e) => setError(e.message))}
+            >
+              Save this attempt for review
+            </button>
+          </>
+        )}
+        {feedback && (
           <div className="practice-review-feedback">
-            <Markdown text={result.feedback} />
+            <Markdown text={feedback.feedback} />
             <p>
               <strong>Next step</strong>
             </p>
-            <Markdown text={result.nextStep} />
+            <Markdown text={feedback.nextStep} />
           </div>
         )}
       </div>

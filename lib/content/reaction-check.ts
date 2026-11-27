@@ -1,4 +1,4 @@
-function countFormula(formula: string) {
+export function countFormula(formula: string) {
   const groups = [new Map<string, number>()];
   const tokens = formula.match(/[A-Z][a-z]?|[()]|\d+/g) ?? [];
   if (tokens.join("") !== formula || !tokens.length) throw Error("Unsupported formula: " + formula);

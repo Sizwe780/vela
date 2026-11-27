@@ -55,6 +55,9 @@ export function EnrollmentPicker({
   const [selected, setSelected] = useState<string[]>(
     requested &&
       requestedModule &&
+      requested.modules.some(
+        (m) => m.module.id === requestedModule && m.module._count.studyUnits > 0,
+      ) &&
       !existing.some(
         (row) => row.qualificationId === requested.id && row.moduleId === requestedModule,
       )
@@ -123,7 +126,11 @@ export function EnrollmentPicker({
               ? languageEnrolled?.moduleId === module.id || languageChoice === module.id
               : enrolled.has(module.id) || selected.includes(module.id)
           }
-          disabled={enrolled.has(module.id) || (language && !!languageEnrolled)}
+          disabled={
+            enrolled.has(module.id) ||
+            module._count.studyUnits === 0 ||
+            (language && !!languageEnrolled)
+          }
           onChange={(event) => {
             if (language) setLanguageConfirmed(false);
             setSelected((ids) => {
@@ -145,7 +152,7 @@ export function EnrollmentPicker({
             {enrolled.has(module.id) ? " · On your plan" : ""}
             {module._count.studyUnits
               ? ` · ${module._count.studyUnits} ${module._count.studyUnits === 1 ? "study unit" : "study units"}`
-              : " · Content in preparation"}
+              : " · Coming soon"}
           </small>
           {qualification?.isPsm && !!entry?.coRequisites?.length && (
             <small>Co-requisites {entry.coRequisites.join(", ")}</small>
@@ -214,8 +221,7 @@ export function EnrollmentPicker({
               </label>
             </fieldset>
             <p aria-live="polite">
-              {year}: {load.annual}/{psmLimits.annual}{" "}
-              credits · Semester 1: {load.first}/
+              {year}: {load.annual}/{psmLimits.annual} credits · Semester 1: {load.first}/
               {psmLimits.semester} · Semester 2: {load.second}/{psmLimits.semester}
             </p>
             <p className={styles.note}>
