@@ -70,3 +70,14 @@ CHE1501 exam exclusions remain enforced. Thermochemistry, detailed acid-base equ
 - Four browser cases pass in one isolated run: real MAT1503/MAT1512/CHE1501 lesson persistence, matrix/MathML rendering, reference insertion, timer opt-in, review counts/filtering/rating, withdrawal, plus cache-clear cancellation on desktop/mobile.
 - The formula registry now contains 39 formula/identity groups, with conditions and explicit extension flags. All groups pass the shared KaTeX/GFM rendering checks; the expanded focused suite passes 4/4.
 - The two public element snapshots total about 86 KB of raw factual data and are loaded on demand; no learner data is sent to PubChem at runtime.
+
+
+## Timer policy revision — 28 November 2026
+The earlier opt-in timer item is superseded by the requested automatic policy: every real enrolled lesson starts timing; ten seconds without pointer movement, touch, scrolling, typing or input pauses it until interaction resumes. The profile opt-in UI is removed; the legacy field remains compatibility-only. Server heartbeats are five seconds apart with bounded credit and single-tab ownership. A manual pause remains available for the current lesson.
+
+- [x] Implement automatic lesson start, a ten-second idle deadline and interaction-driven resume.
+- [x] Remove misleading opt-in UI and update timer descriptions.
+- [x] Verify desktop/mobile activity types, idle boundary, owner/session switching and live Neon accounting.
+- [x] Pass unit tests, TypeScript, formatting and production build; restart the local preview.
+
+Timer verification: 220 unit tests pass; four browser cases pass on desktop/mobile, covering real Neon recording, enrollment/withdrawal, one-tab ownership, idle pause/resume, reload, hidden pages and unchanged mastery/milestone counters. Clock-controlled cases cover each input type, exact ten-second cutoff, owner/lesson switching, a departing-tab lease retry and late-response suspension. TypeScript, schema and formatting checks pass. The activity dashboard now describes automatic recording instead of the superseded manual-start instructions.

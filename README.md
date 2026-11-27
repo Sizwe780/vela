@@ -22,7 +22,7 @@ Create an account, select a qualification and enroll in modules, then study thei
 
 - [Welcome emails and opt-in recall reminders](docs/EMAIL_SETUP.md)
 
-- [Focused study time and weekly goals](docs/ACTIVITY.md)
+- [Automatic lesson time, 10-second idle pause and weekly goals](docs/ACTIVITY.md)
 
 - [Matrix, Riemann sum and limit sandboxes](docs/VISUAL_SANDBOXES.md)
 

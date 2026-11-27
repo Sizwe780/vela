@@ -5,7 +5,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { randomUUID } from "node:crypto";
 import { createTestLearner, cleanupTestLearner } from "./helpers/learner";
 import { enrollTestLearner } from "./helpers/enrollment";
-test("voluntary study tracking enforces enrollment, tab ownership and private activity goals", async ({
+test("automatic study tracking enforces enrollment, tab ownership and private activity goals", async ({
   page,
   browser,
 }, info) => {
@@ -22,7 +22,7 @@ test("voluntary study tracking enforces enrollment, tab ownership and private ac
     expect((await anonymous.request.get("/api/activity")).status()).toBe(401);
     id = await createTestLearner(page);
     const session = await db.studySession.findFirstOrThrow({
-      where: { studyUnit: { module: { code: "MAT1503" } } },
+      where: { studyUnit: { module: { code: "MAT1503", institution: "UNISA" } } },
       include: { studyUnit: true },
     });
     const origin = new URL(page.url()).origin,
@@ -32,22 +32,22 @@ test("voluntary study tracking enforces enrollment, tab ownership and private ac
     const base = { sessionId: session.id, trackingId };
     expect((await post({ ...base, action: "start" })).status()).toBe(403);
     await enrollTestLearner(page.request, db, [session.studyUnit.moduleId]);
-    await page.goto(`/study/${session.studyUnit.code}`);
-    await expect(
-      page.getByRole("button", { name: "Start study timer", exact: true }),
-    ).toBeVisible();
-    expect(await db.studyPresence.count({ where: { studentId: id } })).toBe(0);
+    await page.goto(`/study/${session.studyUnit.code}/sessions/${session.id}`);
+    await expect(page.getByRole("button", { name: /^Pause study timer/ })).toBeVisible();
+    await expect.poll(() => db.studyPresence.count({ where: { studentId: id } })).toBe(1);
+    await page.getByRole("button", { name: /^Pause study timer/ }).click();
+    await expect.poll(() => db.studyPresence.count({ where: { studentId: id } })).toBe(0);
     expect((await post({ ...base, action: "pulse", seconds: 9999 })).status()).toBe(400);
     expect((await post({ ...base, action: "start" })).status()).toBe(200);
     await db.studyPresence.update({
       where: { studentId: id },
-      data: { lastPulseAt: new Date(Date.now() - 15000) },
+      data: { lastPulseAt: new Date(Date.now() - 5000) },
     });
     const pulse = await post({ ...base, action: "pulse" });
     expect(pulse.status()).toBe(200);
     const credit = await pulse.json();
-    expect(credit.secondsAdded).toBeGreaterThanOrEqual(15);
-    expect(credit.secondsAdded).toBeLessThanOrEqual(20);
+    expect(credit.secondsAdded).toBeGreaterThanOrEqual(5);
+    expect(credit.secondsAdded).toBeLessThanOrEqual(10);
     const otherTab = randomUUID();
     expect((await post({ ...base, trackingId: otherTab, action: "start" })).status()).toBe(409);
     expect(
@@ -60,7 +60,34 @@ test("voluntary study tracking enforces enrollment, tab ownership and private ac
     ).toBe(otherTab);
     await post({ ...base, trackingId: otherTab, action: "stop" });
     await page.getByRole("button", { name: "Start study timer", exact: true }).click();
-    await expect(page.getByText("Recording focused time", { exact: true })).toBeVisible();
+    await expect(page.locator(".study-timer > span[role=status]")).toHaveText(
+      "Recording focused time",
+    );
+    await expect
+      .poll(() => db.studyPresence.count({ where: { studentId: id } }), { timeout: 16000 })
+      .toBe(0);
+    await expect(page.locator(".study-timer > span[role=status]")).toHaveText(
+      "Paused while away or idle",
+    );
+    await page.mouse.move(80, 350);
+    await expect.poll(() => db.studyPresence.count({ where: { studentId: id } })).toBe(1);
+    let reloadedTrackingId: string | undefined;
+    page.on("request", (request) => {
+      if (request.url().endsWith("/api/activity") && request.method() === "POST") {
+        const action = request.postDataJSON();
+        if (action.action === "start") reloadedTrackingId = action.trackingId;
+      }
+    });
+    await page.reload();
+    await expect
+      .poll(
+        async () => {
+          const row = await db.studyPresence.findUnique({ where: { studentId: id } });
+          return !!reloadedTrackingId && row?.trackingId === reloadedTrackingId;
+        },
+        { timeout: 15000 },
+      )
+      .toBe(true);
     // Playwright forces every Chromium page to appear focused by default.
     // Remove that test-only override to exercise the real blur/visibility lifecycle.
     const focusSession = await page.context().newCDPSession(page);
@@ -76,9 +103,11 @@ test("voluntary study tracking enforces enrollment, tab ownership and private ac
     await expect.poll(() => db.studyPresence.count({ where: { studentId: id } })).toBe(0);
     await page.bringToFront();
     await focusSession.send("Emulation.setFocusEmulationEnabled", { enabled: true });
-    await expect(page.getByText("Recording focused time", { exact: true })).toBeVisible();
+    await expect(page.locator(".study-timer > span[role=status]")).toHaveText(
+      "Recording focused time",
+    );
     await background.close();
-    await page.getByRole("button", { name: /^Pause timer/ }).click();
+    await page.getByRole("button", { name: /^Pause study timer/ }).click();
     await expect(
       page.getByRole("button", { name: "Start study timer", exact: true }),
     ).toBeVisible();
@@ -94,7 +123,7 @@ test("voluntary study tracking enforces enrollment, tab ownership and private ac
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );
-    await page.screenshot({ path: `activity-${info.project.name}.png`, fullPage: true });
+    await page.screenshot({ path: info.outputPath("activity.png"), fullPage: true });
     await db.enrollment.updateMany({ where: { studentId: id }, data: { status: "withdrawn" } });
     expect((await post({ ...base, action: "start" })).status()).toBe(403);
   } finally {

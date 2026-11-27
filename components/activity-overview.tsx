@@ -152,14 +152,15 @@ export function ActivityOverview({ compact = false }: { compact?: boolean }) {
             </tbody>
           </table>
           {!data.modules.length && (
-            <p>Start the study timer in a real learning session to build your activity history.</p>
+            <p>Open a real lesson to start building your activity history automatically.</p>
           )}
         </>
       )}
       {!compact && (
         <p className={styles.note}>
-          Time is recorded only when you start the study timer. It pauses when the page is hidden or
-          idle. Activity estimates are separate from assessed mastery and institutional attendance.
+          Lesson time starts automatically, pauses after 10 seconds without activity or when you
+          leave the page, and resumes when you interact. Activity estimates are separate from
+          assessed mastery and institutional attendance.
         </p>
       )}
     </section>

@@ -2,6 +2,17 @@
 import { useEffect, useRef, useState } from "react";
 import { authClient } from "../lib/auth/client";
 import { IDLE_MS, PULSE_MS } from "../lib/activity/time";
+const browserTrackingIds = new Map<string, string>();
+const activityEvents = [
+  "pointermove",
+  "pointerdown",
+  "touchstart",
+  "touchmove",
+  "keydown",
+  "input",
+  "wheel",
+  "scroll",
+] as const;
 export function StudyTimer({
   sessionId,
   compact = false,
@@ -11,9 +22,14 @@ export function StudyTimer({
 }) {
   const { data } = authClient.useSession();
   const owner = data?.user?.id;
-  const [choice, setChoice] = useState<{ owner?: string; enabled: boolean }>({ enabled: false });
-  const enabled = !!owner && choice.owner === owner && choice.enabled;
-  const [recorded, setRecorded] = useState<{ owner?: string; seconds: number }>({ seconds: 0 });
+  const [choice, setChoice] = useState<{ owner?: string; sessionId?: string; enabled: boolean }>({
+    enabled: true,
+  });
+  const sameLesson = choice.owner === owner && choice.sessionId === sessionId;
+  const enabled = !!owner && (!sameLesson || choice.enabled);
+  const [recorded, setRecorded] = useState<{ owner?: string; sessionId?: string; seconds: number }>(
+    { seconds: 0 },
+  );
   const [status, setStatus] = useState("paused");
   const [retry, setRetry] = useState(0);
   const [returned, setReturned] = useState(false);
@@ -29,39 +45,30 @@ export function StudyTimer({
     if (status !== "tracking") setReturned(false);
   }, [status]);
   useEffect(() => {
-    if (!owner) return;
-    const c = new AbortController();
-    const load = async () => {
-      try {
-        const r = await fetch("/api/profile", { cache: "no-store", signal: c.signal });
-        const p = await r.json();
-        if (r.ok && p.ownerId === owner && p.autoStartTimer) setChoice({ owner, enabled: true });
-      } catch {}
-    };
-    void load();
-    window.addEventListener("vela-timer-preference", load);
-    return () => {
-      c.abort();
-      window.removeEventListener("vela-timer-preference", load);
-    };
+    setChoice({ owner, sessionId, enabled: true });
   }, [owner, sessionId]);
-  const tabId = useRef("");
   const takeover = useRef(false);
   useEffect(() => {
     if (!enabled || !owner) {
       setStatus("paused");
       return;
     }
-    tabId.current ||= crypto.randomUUID();
-    const trackingId = tabId.current;
+    const trackingId = browserTrackingIds.get(owner) ?? crypto.randomUUID();
+    browserTrackingIds.set(owner, trackingId);
     let alive = true,
       running = false,
+      suspended = false,
       inFlight = false,
-      blocked = false,
+      blocked: false | "error" | "elsewhere" = false,
       lastInput = Date.now(),
-      lastSent = 0;
+      lastSent = 0,
+      lastStartAttempt = 0,
+      lastTick = Date.now(),
+      lastFocused = document.visibilityState === "visible" && document.hasFocus();
+    let idleDeadline: ReturnType<typeof setTimeout> | undefined;
     async function send(action: "start" | "pulse" | "stop", force = false) {
       inFlight = true;
+      if (action === "start") lastStartAttempt = Date.now();
       try {
         const r = await fetch("/api/activity", {
           method: "POST",
@@ -82,69 +89,91 @@ export function StudyTimer({
             lastSent = 0;
             return;
           }
-          blocked = true;
-          setStatus(d.error?.code === "TIMER_ACTIVE_ELSEWHERE" ? "elsewhere" : "error");
+          blocked = d.error?.code === "TIMER_ACTIVE_ELSEWHERE" ? "elsewhere" : "error";
+          setStatus(blocked);
           return;
         }
         running = d.state === "tracking";
         lastSent = Date.now();
-        if (d.secondsAdded > 0) {
-          setRecorded((s) => ({
-            owner,
-            seconds: (s.owner === owner ? s.seconds : 0) + d.secondsAdded,
-          }));
-          window.dispatchEvent(new Event("vela-activity"));
-        }
-        setStatus(running ? "tracking" : "idle");
+        if (d.secondsAdded > 0) window.dispatchEvent(new Event("vela-activity"));
+        setStatus(running && !suspended ? "tracking" : "idle");
       } catch {
         if (alive) {
-          blocked = true;
+          blocked = "error";
           running = false;
           setStatus("error");
         }
       } finally {
         inFlight = false;
+        if (alive) sync();
       }
     }
     function sync() {
-      if (!alive || inFlight || blocked) return;
-      const focused = document.visibilityState === "visible" && document.hasFocus();
-      if (!focused || Date.now() - lastInput >= IDLE_MS) {
-        if (running) {
+      if (!alive) return;
+      const now = Date.now();
+      const focused = !suspended && document.visibilityState === "visible" && document.hasFocus();
+      const elapsed =
+        running && lastFocused && !blocked
+          ? Math.max(0, Math.min(now, lastInput + IDLE_MS) - lastTick)
+          : 0;
+      lastTick = now;
+      lastFocused = focused;
+      if (elapsed > 0)
+        setRecorded((previous) => ({
+          owner,
+          sessionId,
+          seconds:
+            (previous.owner === owner && previous.sessionId === sessionId ? previous.seconds : 0) +
+            elapsed / 1000,
+        }));
+      if (!focused || now - lastInput >= IDLE_MS) {
+        if (!blocked) setStatus("idle");
+        if (running && !inFlight) {
           running = false;
           void send("stop");
-        } else setStatus("idle");
+        }
         return;
       }
+      if (inFlight) return;
+      // A departing tab may still be releasing its lease. Retry without stealing a live lease.
+      if (blocked === "elsewhere" && now - lastStartAttempt >= PULSE_MS) blocked = false;
+      if (blocked) return;
       if (!running) {
         const force = takeover.current;
         takeover.current = false;
         void send("start", force);
       } else if (Date.now() - lastSent >= PULSE_MS) void send("pulse");
     }
+    const armIdleDeadline = () => {
+      clearTimeout(idleDeadline);
+      idleDeadline = setTimeout(sync, Math.max(0, lastInput + IDLE_MS - Date.now()));
+    };
     const interact = () => {
       lastInput = Date.now();
-      sync();
+      armIdleDeadline();
+      if (!running) sync();
     };
     const focus = () => {
-      if (document.hasFocus()) lastInput = Date.now();
+      if (document.hasFocus() && document.visibilityState === "visible") {
+        suspended = false;
+        lastInput = Date.now();
+        armIdleDeadline();
+      }
       sync();
     };
-    for (const event of ["pointerdown", "keydown", "wheel", "touchstart"])
-      window.addEventListener(event, interact, { passive: true });
+    const reconnect = () => {
+      if (blocked === "error") {
+        blocked = false;
+        sync();
+      }
+    };
+    for (const event of activityEvents)
+      window.addEventListener(event, interact, { passive: true, capture: true });
     window.addEventListener("focus", focus);
     window.addEventListener("blur", sync);
+    window.addEventListener("online", reconnect);
     document.addEventListener("visibilitychange", focus);
-    const interval = setInterval(sync, 1000);
-    sync();
-    return () => {
-      alive = false;
-      clearInterval(interval);
-      for (const event of ["pointerdown", "keydown", "wheel", "touchstart"])
-        window.removeEventListener(event, interact);
-      window.removeEventListener("focus", focus);
-      window.removeEventListener("blur", sync);
-      document.removeEventListener("visibilitychange", focus);
+    const release = () => {
       void fetch("/api/activity", {
         method: "POST",
         keepalive: true,
@@ -152,8 +181,35 @@ export function StudyTimer({
         body: JSON.stringify({ action: "stop", sessionId, trackingId }),
       }).catch(() => {});
     };
+    const hidePage = () => {
+      suspended = true;
+      running = false;
+      lastTick = Date.now();
+      lastFocused = false;
+      setStatus("idle");
+      release();
+    };
+    window.addEventListener("pagehide", hidePage);
+    window.addEventListener("pageshow", focus);
+    armIdleDeadline();
+    const interval = setInterval(sync, 1000);
+    sync();
+    return () => {
+      alive = false;
+      clearInterval(interval);
+      clearTimeout(idleDeadline);
+      for (const event of activityEvents) window.removeEventListener(event, interact, true);
+      window.removeEventListener("online", reconnect);
+      window.removeEventListener("focus", focus);
+      window.removeEventListener("blur", sync);
+      document.removeEventListener("visibilitychange", focus);
+      window.removeEventListener("pagehide", hidePage);
+      window.removeEventListener("pageshow", focus);
+      release();
+    };
   }, [enabled, owner, sessionId, retry]);
-  const seconds = recorded.owner === owner ? recorded.seconds : 0;
+  const seconds =
+    recorded.owner === owner && recorded.sessionId === sessionId ? Math.floor(recorded.seconds) : 0;
   const counter = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
   return (
     <div
@@ -163,10 +219,10 @@ export function StudyTimer({
       <button
         type="button"
         disabled={!owner}
-        title="Optional focused-time tracking. Pauses while away or idle; activity is separate from mastery."
+        title="Starts automatically in each lesson. Pauses after 10 seconds without activity or while away; separate from mastery."
         aria-label={enabled ? `Pause study timer · ${counter}` : "Start study timer"}
         aria-pressed={enabled}
-        onClick={() => setChoice({ owner, enabled: !enabled })}
+        onClick={() => setChoice({ owner, sessionId, enabled: !enabled })}
       >
         {compact
           ? enabled
@@ -190,7 +246,7 @@ export function StudyTimer({
               : status === "error"
                 ? "Connection paused"
                 : "Paused while away or idle"
-          : "Optional"}
+          : "Manually paused"}
       </span>
       {enabled && ["elsewhere", "error"].includes(status) && (
         <button
@@ -206,10 +262,10 @@ export function StudyTimer({
       <details>
         <summary aria-label="About study time tracking">ⓘ</summary>
         <p>
-          Counts focused, visible study time after you start. Pauses after two minutes without
-          interaction, when hidden, or when you leave. One tab at a time. This is an activity
-          estimate, separate from mastery and attendance.{" "}
-          <a href="/activity">View your weekly goal →</a>
+          Starts automatically when you open a lesson. Pauses after 10 seconds without mouse, touch,
+          scrolling or typing activity, when hidden, or when you leave. Activity resumes it
+          automatically. One tab at a time. This is an activity estimate, separate from mastery and
+          attendance. <a href="/activity">View your weekly goal →</a>
         </p>
       </details>
     </div>

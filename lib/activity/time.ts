@@ -1,6 +1,6 @@
-export const PULSE_MS = 15000;
-export const LEASE_MS = 45000;
-export const IDLE_MS = 120000;
+export const PULSE_MS = 5000;
+export const LEASE_MS = 15000;
+export const IDLE_MS = 10000;
 const OFFSET = 2 * 3600_000;
 export function studyDay(now: Date) {
   return new Date(now.getTime() + OFFSET).toISOString().slice(0, 10);
@@ -16,7 +16,7 @@ export function weekStart(day: string) {
 export function allocateStudyTime(previous: Date, now: Date) {
   const gap = now.getTime() - previous.getTime();
   if (gap <= 0 || gap > LEASE_MS) return [];
-  const seconds = Math.min(20, Math.floor(gap / 1000));
+  const seconds = Math.min(IDLE_MS / 1000, Math.floor(gap / 1000));
   if (!seconds) return [];
   const start = new Date(now.getTime() - seconds * 1000);
   const day = studyDay(start),

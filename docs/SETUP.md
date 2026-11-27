@@ -59,7 +59,7 @@ node scripts/apply-enrollment-migration.mjs --migration=20261127200000_lesson_at
 node scripts/apply-enrollment-migration.mjs --migration=20261127210000_attempt_submission_history
 ```
 
-`npm run build` generates only the application's `appClient`; do not regenerate the native client used by an active conversion worker. Timer auto-start is opt-in in Profile. Formative answers have private Neon persistence plus owner/session/version-scoped local device drafts; clearing device practice cache does not delete server answers or assessed evidence.
+`npm run build` generates only the application's `appClient`; do not regenerate the native client used by an active conversion worker. Lesson timers start automatically and pause after 10 seconds without activity. The earlier autoStartTimer profile preference is retained only for compatibility. Formative answers have private Neon persistence plus owner/session/version-scoped local device drafts; clearing device practice cache does not delete server answers or assessed evidence.
 
 Contextual reference drawers use checked-in public factual snapshots and require no paid API key. PubChem refresh (`python scripts/update-element-reference.py`) is an explicit maintenance action, not part of a build. Sources, limitations, testing and rollout tasks are in `.vela/engineering/reference-data-and-practice.md` and `.vela/engineering/learning-tools-task-checklist.md`.
 

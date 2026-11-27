@@ -44,7 +44,6 @@ function ProfileEditor({ data, reload }: { data: Profile; reload: () => void }) 
   const [notice, setNotice] = useState("");
   const [pending, setPending] = useState(false);
   const [reminders, setReminders] = useState(data.emailReminders);
-  const [autoStartTimer, setAutoStartTimer] = useState(data.autoStartTimer ?? false);
   const [classroomAlerts, setClassroomAlerts] = useState(data.classroomAlerts);
   async function save(e: FormEvent) {
     e.preventDefault();
@@ -58,7 +57,6 @@ function ProfileEditor({ data, reload }: { data: Profile; reload: () => void }) 
         weeklyGoalMinutes: goal,
         emailReminders: reminders,
         classroomAlerts,
-        autoStartTimer,
       });
       window.dispatchEvent(new Event(studentNavUpdate));
       window.dispatchEvent(new Event("vela-timer-preference"));
@@ -102,20 +100,12 @@ function ProfileEditor({ data, reload }: { data: Profile; reload: () => void }) 
             />
           </label>
           <p className={styles.note}>
-            Your weekly target for the optional focused study timer. View recorded minutes on the
+            Your weekly target for automatic focused lesson time. View recorded minutes on the
             activity page; time is separate from mastery and attendance.
           </p>
-          <label className={styles.checkChoice}>
-            <input
-              type="checkbox"
-              checked={autoStartTimer}
-              onChange={(e) => setAutoStartTimer(e.target.checked)}
-            />
-            Auto-start focused-time tracking when I enter a study session
-          </label>
           <p className={styles.note}>
-            Optional. Pauses while hidden or idle, records one tab at a time, and never counts as
-            attendance or mastery.
+            Lesson time starts automatically and pauses after 10 seconds without activity. Moving
+            the pointer, touching, scrolling or typing resumes it. Only one tab records at a time.
           </p>
           <label className={styles.checkChoice}>
             <input

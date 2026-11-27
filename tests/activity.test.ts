@@ -22,20 +22,21 @@ test("timer input cannot supply identity, durations or recording dates", () => {
 });
 test("server time credit is bounded and expired or backward heartbeats earn nothing", () => {
   const previous = new Date("2026-11-18T08:00:00Z");
+  assert.deepEqual(allocateStudyTime(previous, new Date("2026-11-18T08:00:05Z")), [
+    { day: "2026-11-18", seconds: 5 },
+  ]);
   assert.deepEqual(allocateStudyTime(previous, new Date("2026-11-18T08:00:15Z")), [
-    { day: "2026-11-18", seconds: 15 },
+    { day: "2026-11-18", seconds: 10 },
   ]);
-  assert.deepEqual(allocateStudyTime(previous, new Date("2026-11-18T08:00:35Z")), [
-    { day: "2026-11-18", seconds: 20 },
-  ]);
+  assert.deepEqual(allocateStudyTime(previous, new Date("2026-11-18T08:00:16Z")), []);
   assert.deepEqual(allocateStudyTime(previous, new Date("2026-11-18T08:01:00Z")), []);
   assert.deepEqual(allocateStudyTime(previous, new Date("2026-11-18T07:59:59Z")), []);
 });
 test("study credit splits exactly across South African midnight", () => {
   assert.deepEqual(
-    allocateStudyTime(new Date("2026-11-17T21:59:50Z"), new Date("2026-11-17T22:00:05Z")),
+    allocateStudyTime(new Date("2026-11-17T21:59:57Z"), new Date("2026-11-17T22:00:05Z")),
     [
-      { day: "2026-11-17", seconds: 10 },
+      { day: "2026-11-17", seconds: 3 },
       { day: "2026-11-18", seconds: 5 },
     ],
   );
