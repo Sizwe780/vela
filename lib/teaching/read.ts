@@ -2,6 +2,7 @@ import "server-only";
 import { Prisma } from "../../generated/app-client";
 import { prisma } from "../db";
 import { teachingRole, missing } from "./scope";
+import { learnerAssignments, learnerEnrollments } from "./audience";
 
 export async function teachingWorkspace(
   actor: string,
@@ -214,14 +215,11 @@ export async function teachingWorkspace(
 }
 
 export async function learnerClassroom(studentId: string) {
-  const enrolled = {
-    studentId,
-    status: { in: ["active", "completed"] as ("active" | "completed")[] },
-  };
+  const enrolled = learnerEnrollments(studentId);
   const audience = { OR: [{ cohortId: null }, { cohort: { members: { some: { studentId } } } }] };
   const [assignments, announcements] = await Promise.all([
     prisma.teachingAssignment.findMany({
-      where: { ...audience, qualificationModule: { enrollments: { some: enrolled } } },
+      where: learnerAssignments(studentId),
       select: {
         id: true,
         title: true,
@@ -259,4 +257,26 @@ export async function learnerClassroom(studentId: string) {
     }),
   ]);
   return { ownerId: studentId, assignments, announcements };
+}
+
+/** Uses the same assignment audience as the learner classroom; enrollment alone is not a class. */
+export async function learnerHasClassroom(studentId: string) {
+  const [assignment, membership] = await Promise.all([
+    prisma.teachingAssignment.findFirst({
+      where: learnerAssignments(studentId),
+      select: { id: true },
+    }),
+    prisma.teachingCohortMember.findFirst({
+      where: {
+        studentId,
+        cohort: {
+          qualification: {
+            modules: { some: { enrollments: { some: learnerEnrollments(studentId) } } },
+          },
+        },
+      },
+      select: { studentId: true },
+    }),
+  ]);
+  return !!(assignment || membership);
 }

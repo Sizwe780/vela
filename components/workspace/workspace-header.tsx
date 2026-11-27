@@ -181,15 +181,6 @@ export function WorkspaceHeader({
         {!unit.preview && activeSessionId && (
           <StudyTimer key={activeSessionId} compact sessionId={activeSessionId} />
         )}
-        {!unit.preview && (
-          <button
-            type="button"
-            className="workspace-sources"
-            onClick={() => sourceTrigger.current?.click()}
-          >
-            Sources
-          </button>
-        )}
         <details className="workspace-more-menu">
           <summary aria-label="More study tools">⋯</summary>
           <div className="workspace-popover">
@@ -216,7 +207,17 @@ export function WorkspaceHeader({
               </details>
             )}
             {!unit.preview && (
-              <button type="button" onClick={() => sourceTrigger.current?.click()}>
+              <button
+                type="button"
+                onClick={(event) => {
+                  const menu = event.currentTarget.closest("details.workspace-more-menu");
+                  if (menu instanceof HTMLDetailsElement) {
+                    menu.open = false;
+                    menu.querySelector<HTMLElement>("summary")?.focus();
+                  }
+                  requestAnimationFrame(() => sourceTrigger.current?.click());
+                }}
+              >
                 Source library
               </button>
             )}

@@ -123,7 +123,7 @@ function ProfileEditor({ data, reload }: { data: Profile; reload: () => void }) 
             />{" "}
             {data.hasClassroom
               ? "Show a Classroom badge for assignments I still need to submit"
-              : "Assignment badges become available when you join a class"}
+              : "Assignment badges become available when you have a class or assignment"}
           </label>
           {!data.emailRemindersAvailable && (
             <p className={styles.note}>

@@ -142,7 +142,9 @@ test("reading first, live pendulum practice and encrypted offline lessons", asyn
       console.log("Live recall retrieved, revealed and rated", info.project.name);
     }
     await page.getByRole("button", { name: "Close recall", exact: true }).click();
-    await page.locator(".workspace-more-menu>summary").click();
+    if (info.project.name === "mobile")
+      await page.getByRole("button", { name: "More tools", exact: true }).click();
+    else await page.locator(".workspace-more-menu>summary").click();
     await page.getByRole("button", { name: "Source library", exact: true }).click();
     await expect(page.getByRole("dialog", { name: "Source library", exact: true })).toBeVisible();
     await page.keyboard.press("Escape");

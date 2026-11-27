@@ -1,3 +1,4 @@
+import { learnerHasClassroom } from "../../../lib/teaching/read";
 import { prisma } from "../../../lib/db";
 import { requireLearner } from "../../../lib/auth/server";
 import { assertTutorOrigin } from "../../../lib/tutor/origin";
@@ -34,9 +35,7 @@ export async function GET() {
         emailVerified: !!user.emailVerified,
         displayName: profile?.displayName ?? user.name ?? "Learner",
         ownerId: user.id,
-        hasClassroom: !!(await prisma.teachingCohortMember.count({
-          where: { studentId: user.id },
-        })),
+        hasClassroom: await learnerHasClassroom(user.id),
         role: profile?.staffMemberships.some((item) => item.role === "admin")
           ? "admin"
           : profile?.staffMemberships.some((item) => item.role === "staff")

@@ -156,10 +156,23 @@ export function ConceptCanvas({
           ))}
         </svg>
       </div>
+      <ul className="concept-evidence-legend" aria-label="Practice evidence legend">
+        <li>
+          <span aria-hidden="true" />
+          Ready to practise
+        </li>
+        <li>
+          <span className="developing" aria-hidden="true" />
+          Developing evidence
+        </li>
+        <li>
+          <span className="consistent" aria-hidden="true" />
+          Consistent evidence · 3+ checks
+        </li>
+      </ul>
       <p className="learning-caption">
-        Gray: no direct evidence. Warm: developing practice evidence. Green: more consistent
-        practice estimates with at least three observations. These colors do not certify mastery or
-        diagnose a root cause.
+        Colours reflect practice evidence, not certified mastery. All concepts remain available to
+        explore.
       </p>
     </section>
   );
