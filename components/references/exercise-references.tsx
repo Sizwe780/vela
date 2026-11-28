@@ -8,7 +8,7 @@ export function ExerciseReferences({ onInsert }: { onInsert: (text: string) => v
   const c = useModuleCapabilities(),
     session = useContext(PracticeSessionContext),
     [open, setOpen] = useState("");
-  if (!c.math && !c.molecules && !c.physics && !c.units) return null;
+  if (!c.math && !c.molecules && !c.physics && !c.units && !c.reactions) return null;
   return (
     <>
       <div className="exercise-reference-chips" role="group" aria-label="Question reference tools">
@@ -22,6 +22,9 @@ export function ExerciseReferences({ onInsert }: { onInsert: (text: string) => v
             Constants & units
           </button>
         )}
+        <button type="button" onClick={() => setOpen("calculator")}>
+          Calculator
+        </button>
         <button type="button" onClick={() => setOpen("formulas")}>
           Formula sheet
         </button>

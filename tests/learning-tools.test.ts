@@ -6,7 +6,14 @@ import { readFile } from "node:fs/promises";
 import { saveAttempt, attemptInput, checkedDraft, exerciseKey } from "../lib/practice/attempts";
 import type { Database } from "../lib/ingest/repository";
 import { physicsPracticeChecks } from "../content/physics/practice-checks";
-import { elements, molarMass, fullConfiguration } from "../lib/references/elements";
+import {
+  elements,
+  elementsBySymbol,
+  molarMass,
+  fullConfiguration,
+  categoryKey,
+} from "../lib/references/elements";
+import { formatElectronConfiguration, formatIsotopeNotation } from "../lib/references/notation";
 import { formulas } from "../lib/references/formulas";
 import { convertReference, constants } from "../lib/references/constants";
 import { mathSpans } from "../lib/content/math";
@@ -35,6 +42,46 @@ test("118 element positions, electron configurations and formula mass are cohere
   assert.equal(molarMass("H₂O").total, molarMass("H2O").total);
   for (const invalid of ["2H2O", "Xx2", "H0", "Ca(NO3", "H2O<script>", "H2O.0H2O"]) {
     assert.throws(() => molarMass(invalid), invalid);
+  }
+});
+test("CIAAW precision, isotope notation and independent category/block/group classifications", () => {
+  const ar = elementsBySymbol.get("Ar")!,
+    zn = elementsBySymbol.get("Zn")!;
+  assert.equal(ar.weight, "39.95");
+  assert.equal(ar.standardWeight, "[39.792,39.963]");
+  assert.equal(ar.weightUncertainty, "0.16");
+  assert.equal(zn.weight, "65.38");
+  assert.equal(zn.standardWeight, "65.38(2)");
+  assert.ok(Math.abs(molarMass("ZnO").total - 81.379) < 1e-9);
+  assert.equal(elementsBySymbol.get("Li")!.weight, "6.94");
+  assert.equal(elements.filter((e) => e.standardWeight).length, 84);
+  assert.equal(elementsBySymbol.get("Tc")!.weight, "—");
+  assert.throws(() => molarMass("TcCl4"), /isotope-specific/);
+  assert.equal(formatElectronConfiguration("1s1"), "1s¹");
+  assert.equal(formatElectronConfiguration("[Ar]4s2 3d10"), "[Ar]4s² 3d¹⁰");
+  assert.equal(formatIsotopeNotation("1H, 2H, 12C, 238U"), "¹H, ²H, ¹²C, ²³⁸U");
+  for (const [symbol, category, block, group] of [
+    ["H", "Nonmetal", "s", 1],
+    ["He", "Noble gas", "s", 18],
+    ["Cu", "Transition metal", "d", 11],
+    ["Zn", "Group 12 metal", "d", 12],
+    ["Cd", "Group 12 metal", "d", 12],
+    ["Hg", "Group 12 metal", "d", 12],
+    ["Ga", "Post-transition metal", "p", 13],
+    ["Al", "Post-transition metal", "p", 13],
+    ["Ge", "Metalloid", "p", 14],
+  ] as const) {
+    const e = elementsBySymbol.get(symbol)!;
+    assert.equal(e.category, category, symbol);
+    assert.equal(e.block, block, symbol);
+    assert.equal(e.group, group, symbol);
+  }
+  for (const e of elements) {
+    assert.ok(categoryKey(e.category).length > 0);
+    if (e.block === "f") {
+      assert.equal(e.group, null);
+      assert.ok(e.row >= 9);
+    } else if (e.block === "d") assert.ok(e.group! >= 3 && e.group! <= 12);
   }
 });
 test("reference conversions and formula conditions avoid math rendering corruption", () => {

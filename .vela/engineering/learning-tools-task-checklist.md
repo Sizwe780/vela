@@ -81,3 +81,23 @@ The earlier opt-in timer item is superseded by the requested automatic policy: e
 - [x] Pass unit tests, TypeScript, formatting and production build; restart the local preview.
 
 Timer verification: 220 unit tests pass; four browser cases pass on desktop/mobile, covering real Neon recording, enrollment/withdrawal, one-tab ownership, idle pause/resume, reload, hidden pages and unchanged mastery/milestone counters. Clock-controlled cases cover each input type, exact ten-second cutoff, owner/lesson switching, a departing-tab lease retry and late-response suspension. TypeScript, schema and formatting checks pass. The activity dashboard now describes automatic recording instead of the superseded manual-start instructions.
+
+
+## Periodic-reference accuracy and viewport revision — 28 November 2026
+- [x] Use CIAAW abridged weights in the grid, inserted values and calculations; retain full standards and uncertainty.
+- [x] Distinguish unassigned standard weights from isotope masses; preserve raw source snapshots.
+- [x] Render electron occupancies and isotope mass numbers as superscripts.
+- [x] Keep category colours, legend, block and group filters consistent, including H, He and Group 12 boundaries.
+- [x] Wrap filters by container width and keep search text and the last table rows reachable at 320px and resized desktop widths.
+- [x] Complete full tests, production build and local restart for this reference revision.
+
+
+## Converter and scientific calculator — 28 November 2026
+- [x] Remove redundant converter disclosure/quantity selector; show direct fields, actions and preset chips.
+- [x] Support explicit common aliases, case-sensitive SI prefixes, affine temperature conversion and dimension feedback.
+- [x] Add a bounded free/local scientific calculator with visible DEG/RAD, functions, constants, history and result reuse.
+- [x] Scope tools to STEM capabilities and integrate calculator into the lab and non-destructive lesson reference drawer.
+- [x] Verify numeric engine domains, precedence and conversions; desktop/mobile lesson insertion retains working and tried count.
+- [x] Finish production build, formatting and local restart for the combined reference/tool revision.
+
+Combined verification: 225 unit tests pass; TypeScript, formatting and production build pass. Calculator/converter component browser checks pass on desktop and mobile, including preserved lesson working and result/history reuse. Local standalone preview responds on port 3216. These component tests do not certify every live learner account or production deployment.

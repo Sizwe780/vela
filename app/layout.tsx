@@ -22,6 +22,7 @@ import "./vela-pages.css";
 import "./workspace-upgrade.css";
 import "./site-refinement.css";
 import "./learning-tools.css";
+import "./science-tools.css";
 import { themeInitScript } from "../lib/theme";
 
 export const metadata = {

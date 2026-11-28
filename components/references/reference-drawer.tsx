@@ -3,14 +3,10 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import { SourceDrawer } from "../source-drawer";
 import { Markdown } from "../markdown";
-import {
-  constants,
-  prefixes,
-  constantSource,
-  conversions,
-  convertReference,
-} from "../../lib/references/constants";
+import { constants, prefixes, constantSource } from "../../lib/references/constants";
 import { formulas, referenceTables } from "../../lib/references/formulas";
+import { QuantityCheck } from "../practical/quantity-check";
+import { ScientificCalculator } from "../practical/scientific-calculator";
 const Periodic = dynamic(() => import("./periodic-reference"), {
   loading: () => <p role="status">Loading the periodic reference…</p>,
 });
@@ -36,14 +32,11 @@ export default function ReferenceDrawer({
   const [tab, setTab] = useState(initial),
     [search, setSearch] = useState(""),
     [extended, setExtended] = useState(false),
-    [kind, setKind] = useState<keyof typeof conversions>("energy"),
-    [value, setValue] = useState("1"),
-    [from, setFrom] = useState("eV"),
-    [to, setTo] = useState("J"),
-    [notice, setNotice] = useState("");
+    [calculatorVisited, setCalculatorVisited] = useState(initial === "calculator");
   const tabs = [
     ...(chemistry ? [["periodic", "Periodic table"]] : []),
     ...(chemistry || physics ? [["constants", "Constants & units"]] : []),
+    ...(chemistry || physics || math ? [["calculator", "Calculator"]] : []),
     ["formulas", "Formula sheet"],
     ["tables", "Reference tables"],
   ];
@@ -52,11 +45,6 @@ export default function ReferenceDrawer({
     onInsert(text);
     onClose();
   };
-  const units = Object.keys(conversions[kind].units);
-  let conversion: number | null = null;
-  try {
-    conversion = convertReference(Number(value), from, to, kind);
-  } catch {}
   return (
     <SourceDrawer label="Learning references" className="reference-drawer" onClose={onClose}>
       <section className="reference-workbench">
@@ -71,7 +59,15 @@ export default function ReferenceDrawer({
         </header>
         <nav className="filter-pills" aria-label="Reference tools">
           {tabs.map(([id, label]) => (
-            <button type="button" key={id} aria-pressed={tab === id} onClick={() => setTab(id)}>
+            <button
+              type="button"
+              key={id}
+              aria-pressed={tab === id}
+              onClick={() => {
+                setTab(id);
+                if (id === "calculator") setCalculatorVisited(true);
+              }}
+            >
               {label}
             </button>
           ))}
@@ -81,7 +77,12 @@ export default function ReferenceDrawer({
           editable working.
         </p>
         {tab === "periodic" && <Periodic onInsert={insert} />}
-        {tab !== "periodic" && (
+        {calculatorVisited && (
+          <div hidden={tab !== "calculator"}>
+            <ScientificCalculator onInsert={insert} />
+          </div>
+        )}
+        {tab !== "periodic" && tab !== "calculator" && (
           <label>
             Search references
             <input value={search} onChange={(e) => setSearch(e.target.value)} />
@@ -142,71 +143,7 @@ export default function ReferenceDrawer({
                   </li>
                 ))}
             </ul>
-            <h3>Quick conversion</h3>
-            <div className="reference-filters">
-              <label>
-                Quantity
-                <select
-                  value={kind}
-                  onChange={(e) => {
-                    const k = e.target.value as keyof typeof conversions,
-                      u = Object.keys(conversions[k].units);
-                    setKind(k);
-                    setFrom(u[0]);
-                    setTo(u[1]);
-                  }}
-                >
-                  {Object.entries(conversions).map(([k, g]) => (
-                    <option value={k} key={k}>
-                      {g.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Value
-                <input
-                  inputMode="decimal"
-                  value={value}
-                  onChange={(e) => setValue(e.target.value)}
-                />
-              </label>
-              <label>
-                From
-                <select value={from} onChange={(e) => setFrom(e.target.value)}>
-                  {units.map((u) => (
-                    <option key={u}>{u}</option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                To
-                <select value={to} onChange={(e) => setTo(e.target.value)}>
-                  {units.map((u) => (
-                    <option key={u}>{u}</option>
-                  ))}
-                </select>
-              </label>
-            </div>
-            {conversion !== null && value.trim() ? (
-              <>
-                <output>
-                  {Number(conversion.toPrecision(12))} {to}
-                </output>
-                <button
-                  type="button"
-                  onClick={() => insert(Number(conversion!.toPrecision(12)) + " " + to)}
-                >
-                  Insert converted value
-                </button>
-              </>
-            ) : (
-              <p>Enter a finite numeric value.</p>
-            )}
-            <small>
-              mmHg uses a conventional mercury column conversion and is not exactly the torr.
-              Constants and calculated values still require appropriate significant figures.
-            </small>
+            <QuantityCheck onInsert={insert} />
           </>
         )}
         {tab === "formulas" && (
@@ -298,7 +235,6 @@ export default function ReferenceDrawer({
                 </a>
               </section>
             ))}
-        <p role="status">{notice}</p>
       </section>
     </SourceDrawer>
   );

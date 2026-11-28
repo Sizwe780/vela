@@ -1,7 +1,15 @@
+import weightSnapshot from "../../content/references/ciaaw-weights.json";
 import detailed from "../../content/references/pubchem-element-properties.json";
 import snapshot from "../../content/references/pubchem-elements.json";
 import { countFormula } from "../content/reaction-check";
 const columns = snapshot.Table.Columns.Column;
+const weights = weightSnapshot.elements as Record<
+  string,
+  { symbol: string; abridged: string | null; uncertainty: string | null; standard: string | null }
+>;
+export function categoryKey(category: string) {
+  return category.toLowerCase().replace(/\s+/g, "-");
+}
 export type ElementRecord = ReturnType<typeof element>;
 function element(row: { Cell: string[] }) {
   const d = Object.fromEntries(columns.map((k, i) => [k, row.Cell[i] ?? ""]));
@@ -40,11 +48,14 @@ function element(row: { Cell: string[] }) {
       : group !== null && group >= 13
         ? "p"
         : "d";
+  const weight = weights[String(z)];
   return {
     z,
     symbol: d.Symbol,
     name: d.Name,
-    weight: d.AtomicWeight,
+    weight: weight?.abridged ?? "—",
+    weightUncertainty: weight?.uncertainty ?? null,
+    standardWeight: weight?.standard ?? null,
     configuration: d.ElectronConfiguration,
     electronegativity: d.Electronegativity,
     radius: d.AtomicRadius,
@@ -55,7 +66,8 @@ function element(row: { Cell: string[] }) {
     melting: d.MeltingPoint,
     boiling: d.BoilingPoint,
     density: d.Density,
-    category: d.GroupBlock,
+    category: group === 12 ? "Group 12 metal" : d.GroupBlock,
+    sourceCategory: d.GroupBlock,
     period,
     group,
     block,
@@ -104,7 +116,9 @@ export function molarMass(input: string) {
   }
   const masses = [...counts].map(([symbol, count]) => {
     const e = elementsBySymbol.get(symbol)!;
-    const weight = Number(e.weight.replace(/[\[\]()]/g, ""));
+    if (!e.standardWeight)
+      throw Error(symbol + " has no standard atomic weight; an isotope-specific mass is needed.");
+    const weight = Number(e.weight);
     if (!Number.isFinite(weight) || weight <= 0)
       throw Error("A usable atomic weight is unavailable for " + symbol);
     return { symbol, count, weight, mass: weight * count };
@@ -133,3 +147,11 @@ export function elementDetails(z: number) {
     >
   )[String(z)];
 }
+
+export const atomicWeightSource = {
+  edition: weightSnapshot.edition,
+  retrieved: weightSnapshot.retrieved,
+  url: weightSnapshot.sources.abridged.url,
+  fullUrl: weightSnapshot.sources.standard.url,
+  sha256: weightSnapshot.sources.abridged.sha256,
+};

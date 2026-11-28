@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import {
   elements,
   elementsBySymbol,
@@ -8,7 +8,10 @@ import {
   molarMass,
   elementSource,
   elementDetails,
+  atomicWeightSource,
+  categoryKey,
 } from "../../lib/references/elements";
+import { formatElectronConfiguration, formatIsotopeNotation } from "../../lib/references/notation";
 const knownIsotopes: Record<string, string> = {
   H: "¹H, ²H (stable); ³H (radioactive)",
   He: "³He, ⁴He",
@@ -20,6 +23,7 @@ const knownIsotopes: Record<string, string> = {
   U: "²³⁵U, ²³⁸U (radioactive)",
 };
 export default function PeriodicReference({ onInsert }: { onInsert: (text: string) => void }) {
+  const tableHint = useId();
   const [selected, setSelected] = useState("H"),
     [search, setSearch] = useState(""),
     [block, setBlock] = useState(""),
@@ -71,14 +75,16 @@ export default function PeriodicReference({ onInsert }: { onInsert: (text: strin
           <select value={block} onChange={(e) => setBlock(e.target.value)}>
             <option value="">All blocks</option>
             {["s", "p", "d", "f"].map((b) => (
-              <option key={b}>{b}</option>
+              <option key={b} value={b}>
+                {b === "f" ? "f-series" : b}
+              </option>
             ))}
           </select>
         </label>
         <label>
           State
           <select value={state} onChange={(e) => setState(e.target.value)}>
-            <option value="">All reported states</option>
+            <option value="">All states</option>
             {["solid", "liquid", "gas"].map((b) => (
               <option key={b}>{b}</option>
             ))}
@@ -112,22 +118,34 @@ export default function PeriodicReference({ onInsert }: { onInsert: (text: strin
           </select>
         </label>
       </div>
-      <div className="periodic-grid-scroll" tabIndex={0} aria-label="Scrollable periodic table">
+      <p id={tableHint} className="learning-caption">
+        Scroll down for lower rows; pan sideways for more columns.
+      </p>
+      <div
+        className="periodic-grid-scroll"
+        tabIndex={0}
+        aria-label="Scrollable periodic table"
+        aria-describedby={tableHint}
+      >
         <div className="periodic-grid" role="group" aria-label="118-element periodic table">
           {elements.map((x) => {
+            const highlighted = matches(x);
             const v = Number(x[trend as "radius"]),
               alpha = Number.isFinite(v) && v > 0 ? 0.15 + (0.8 * v) / max : null;
             return (
               <button
                 type="button"
                 key={x.z}
-                data-category={x.category.toLowerCase().replaceAll(" ", "-")}
+                data-category={categoryKey(x.category)}
+                data-block={x.block}
+                data-group={x.group ?? undefined}
+                data-highlighted={highlighted ? "true" : "false"}
                 aria-pressed={selected === x.symbol}
                 aria-label={`${x.z} ${x.name}, ${x.symbol}`}
                 style={{
                   gridColumn: x.column,
                   gridRow: x.row,
-                  opacity: matches(x) ? 1 : 0.18,
+                  opacity: highlighted ? 1 : 0.18,
                   ...(trend && alpha
                     ? {
                         background: `rgb(40 88 73 / ${alpha})`,
@@ -152,16 +170,24 @@ export default function PeriodicReference({ onInsert }: { onInsert: (text: strin
         </div>
       </div>
       <p className="learning-caption">
-        Filters highlight matching elements; all 118 remain selectable. Reported states and
-        predicted properties follow PubChem. Blank values are not zero. The separated f-series rows
-        do not imply a unique group assignment.
+        Filters highlight matches; all 118 elements remain selectable. Category, block and group
+        describe different features. A dash means no standard atomic weight is assigned.
       </p>
       <details className="reference-category-key">
         <summary>Category colour key</summary>
+        <p>
+          Hydrogen is a nonmetal in Group 1; helium is a noble gas in Group 18 but belongs to the
+          s-block. Group 12 metals are shown separately: a d-block position alone does not make an
+          element a transition element. The f-series filter covers the detached lanthanide and
+          actinide rows; this display does not assign their Group 3 positions.{" "}
+          <a href="https://goldbook.iupac.org/terms/view/T06456" target="_blank" rel="noreferrer">
+            IUPAC transition-element definition
+          </a>
+        </p>
         <ul>
           {[...new Set(elements.map((x) => x.category))].map((c) => (
             <li key={c}>
-              <span data-category={c.toLowerCase().replaceAll(" ", "-")} />
+              <span data-category={categoryKey(c)} />
               {c}
             </li>
           ))}
@@ -172,14 +198,28 @@ export default function PeriodicReference({ onInsert }: { onInsert: (text: strin
           {e.name} · {e.symbol}
         </h3>
         <p>
-          Atomic number {e.z} · Period {e.period} · {e.group ? "Group " + e.group : e.category} ·{" "}
-          {e.block}-block
+          Atomic number {e.z} · {e.category} · Period {e.period} ·{" "}
+          {e.group ? "Group " + e.group : "Group not assigned in this layout"} ·{" "}
+          {e.block === "f" ? "f-series display" : e.block + "-block"}
         </p>
         <dl className="element-properties">
-          {property("Reported atomic weight", e.weight)}
-          {property("Electron configuration (shorthand)", e.configuration)}
-          {property("Electron configuration (expanded)", fullConfiguration(e))}
-          {property("Outermost-shell electrons", outerShellElectrons(e))}
+          {property(
+            "Standard atomic weight (abridged)",
+            e.standardWeight
+              ? `${e.weight} ± ${e.weightUncertainty}`
+              : "Not assigned; specify an isotope for mass calculations",
+          )}
+          {e.standardWeight &&
+            property("Standard atomic weight (full value or interval)", e.standardWeight)}
+          {property(
+            "Electron configuration (shorthand)",
+            formatElectronConfiguration(e.configuration),
+          )}
+          {property(
+            "Electron configuration (expanded)",
+            formatElectronConfiguration(fullConfiguration(e)),
+          )}
+          {property("Valence-electron guidance", outerShellElectrons(e))}
           {property("Common oxidation states", e.oxidation)}
           {property("Pauling electronegativity", e.electronegativity)}
           {property("Atomic radius (van der Waals)", e.radius, "pm")}
@@ -191,13 +231,16 @@ export default function PeriodicReference({ onInsert }: { onInsert: (text: strin
           {property("Boiling point", e.boiling, "K")}
           {property(
             "Reported isotopes",
-            elementDetails(e.z)?.isotopes.join(", ") || knownIsotopes[e.symbol] || "",
+            formatIsotopeNotation(
+              elementDetails(e.z)?.isotopes.join(", ") || knownIsotopes[e.symbol] || "",
+            ),
           )}
         </dl>
         <p>
-          Transition/f-series valence depends on bonding context. Isotope examples are not an
-          abundance table. Representative masses for radioactive elements must not be mistaken for
-          natural standard atomic weights.
+          Atomic weights are relative values, not isotope mass numbers. Parentheses mark uncertainty
+          in the last digits; intervals describe natural isotopic variation in normal materials.
+          Valence in d/f elements depends on bonding context. The isotope list is not an abundance
+          table.
         </p>
         <div className="exercise-actions">
           <button type="button" onClick={() => setFormula((f) => f + e.symbol)}>
@@ -206,13 +249,21 @@ export default function PeriodicReference({ onInsert }: { onInsert: (text: strin
           <button type="button" onClick={() => onInsert(e.symbol)}>
             Insert symbol into answer
           </button>
-          <button type="button" onClick={() => onInsert(e.weight + " g/mol")}>
+          <button
+            type="button"
+            disabled={!e.standardWeight}
+            onClick={() => onInsert(e.weight + " g/mol")}
+          >
             Insert atomic molar mass
           </button>
         </div>
       </section>
       <section className="molar-mass-calculator">
         <h3>Molar mass and composition</h3>
+        <p>
+          Calculated from the displayed CIAAW abridged weights. Stated weight uncertainties still
+          apply; arithmetic does not add measurement precision.
+        </p>
         <label>
           Chemical formula
           <input
@@ -267,12 +318,24 @@ export default function PeriodicReference({ onInsert }: { onInsert: (text: strin
       <details>
         <summary>Data sources and limits</summary>
         <p>
+          <a href={atomicWeightSource.url} target="_blank" rel="noreferrer">
+            {atomicWeightSource.edition} abridged standard atomic weights
+          </a>{" "}
+          are used in the grid, inserted masses and calculator. The inspector also shows
+          <a href={atomicWeightSource.fullUrl} target="_blank" rel="noreferrer">
+            {" "}
+            full standard values and intervals
+          </a>
+          . No numeric standard weight is supplied for unassigned elements.
+        </p>
+        <p>
           <a href={elementSource.url} target="_blank" rel="noreferrer">
             PubChem periodic-table snapshot
           </a>
-          , retrieved {elementSource.retrieved}. Atomic weights are reported values, not
-          isotope-specific masses. Physical-property conditions and experimental status vary by
-          source; inspect the original element record before high-precision work.
+          , retrieved {elementSource.retrieved}, supplies configurations, other properties and
+          category families (Group 12 is separated in this teaching view). Physical-property
+          conditions and experimental status vary by source; inspect the original element record
+          before high-precision work.
         </p>
         <a
           href={`https://pubchem.ncbi.nlm.nih.gov/element/${e.z}`}
