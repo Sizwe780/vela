@@ -57,7 +57,7 @@ See [AI_TUTOR_TOOLS.md](AI_TUTOR_TOOLS.md) for exact payloads, privacy and valid
 
 ### Private practice notebook
 
-Authenticated `GET`, `POST` and `DELETE /api/practice-notebook` list, save and delete account-owned mathematical practice copies. Saves are strict, bounded and idempotent by UUID; they never accept feedback/grades or update mastery. See [PRACTICE_NOTEBOOK.md](PRACTICE_NOTEBOOK.md) for payloads, capacity, export and replay behavior.
+Authenticated `GET`, `POST` and `DELETE /api/practice-notebook` list, save and delete account-owned mathematical practice copies. Saves are strict, bounded and idempotent by UUID; optional snapshot.notes holds separate ungraded working notes, and exact matrix snapshots accept an explicit overall-equivalence check; they never accept feedback/grades or update mastery. See [PRACTICE_NOTEBOOK.md](PRACTICE_NOTEBOOK.md) for payloads, capacity, export and replay behavior.
 
 
 ### Guided tutor strategies

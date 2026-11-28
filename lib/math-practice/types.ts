@@ -1,6 +1,6 @@
 export type SymbolicMode = "expression" | "antiderivative" | "derivative";
 export type RowOperation = {
-  kind: "swap" | "scale" | "add";
+  kind: "swap" | "scale" | "add" | "equivalence";
   source: number;
   target: number;
   factor: string;
@@ -12,6 +12,8 @@ export type MathCheckRequest =
       next: string;
       mode: SymbolicMode;
       variable: "x" | "y" | "z" | "t";
+      /** Accepted earlier lines supply domain restrictions, never an answer key. */
+      domainSources?: string[];
     }
   | { kind: "matrix"; reference: string; next: string; operation: RowOperation }
   | {
@@ -23,6 +25,11 @@ export type MathFeedback = {
   status: "equivalent" | "conditional" | "not-equivalent" | "unsupported";
   message: string;
   conditions?: string[];
+  matrixEvidence?: {
+    rowEquivalent: boolean;
+    declaredOperationMatches: boolean;
+    inferredOperation?: RowOperation;
+  };
   residualLatex?: string;
   counterexample?: { values: Record<string, number>; previous: number; proposed: number };
 };

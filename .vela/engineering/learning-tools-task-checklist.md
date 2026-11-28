@@ -101,3 +101,20 @@ Timer verification: 220 unit tests pass; four browser cases pass on desktop/mobi
 - [x] Finish production build, formatting and local restart for the combined reference/tool revision.
 
 Combined verification: 225 unit tests pass; TypeScript, formatting and production build pass. Calculator/converter component browser checks pass on desktop and mobile, including preserved lesson working and result/history reuse. Local standalone preview responds on port 3216. These component tests do not certify every live learner account or production deployment.
+
+
+## Expressive scratchpad and exact matrix feedback — 28 November 2026
+- [x] Parameterize higher binomial powers, trinomial powers, mixed products, substitution/parts/logarithmic integrals and mixed-rule derivatives.
+- [x] Add finite radical, trig and exponential limit families, retaining the limit operator until evaluation.
+- [x] Normalize leading equals, inline/display math wrappers, plain function notation and explicit simple domain notes.
+- [x] Preserve earlier accepted domain restrictions and compare algebra with the last accepted line; rejected/unverified steps never become baselines.
+- [x] Verify primitives against the original integrand by differentiation, including log-absolute-value derivatives on each connected interval.
+- [x] Keep substitution notes separate and include them in explicitly saved private notebook snapshots, with old snapshot compatibility.
+- [x] Distinguish row equivalence from declaration mismatch, offer a detected operation for review, and support exact matrices up to 6×7 with an explicit overall-equivalence mode.
+- [x] Regression-test the supplied mixed expansion, mixed primitive, radical limit, derivative and matrix cases. Independent SymPy expansion gives 7x⁴−36x³+4x²+35x−28; the supplied −32x² line is genuinely wrong.
+- [x] Finish full suite, production build and enrolled desktop/mobile browser verification; restart port 3216.
+
+
+Expressive-scratchpad verification: 233 unit tests, Prisma validation, TypeScript, formatting and the production build pass. Two final desktop/mobile browser cases pass against the built app with disposable MAT1503/MAT1512-enrolled accounts and no stylesheet injection. They cover valid-line anchoring after a real polynomial error, the mixed logarithmic/exponential primitive, radical rationalisation and 1/4 limit, preserved working notes across calculator switches, real Neon notebook save/read, exported notes, exact matrix declaration correction and no page overflow for long expressions. Unit cases independently cover the multi-rule derivative, finite trig/exponential limits, impossible domains, empty intervals, all generated families, 6×7 and rank-deficient exact RREFs. SymPy independently confirms the supplied expansion's +4x² final coefficient and the radical limit 1/4.
+
+The first mobile run exposed long-expression grid expansion and moving tap targets; zero-minimum-width tracks/cards fixed it. The final run uses normal clicks with settled scrolling, not force clicks. Notes are included in text exports; constants such as 4≠0 are omitted from the domain display. Temporary accounts and notebook records are cleaned after each browser case. Local app stays on port 3216; Azure deployment is separate. These results certify the stated bounded cases, not all mathematical notation, proofs or symbolic parameter matrices.

@@ -32,8 +32,8 @@ test("cancellation retains excluded inputs and domain-sensitive roots are not gu
   const result = await check(String.raw`\frac{x^2-1}{x-1}`, "x+1");
   assert.equal(result.status, "conditional");
   assert.ok(result.conditions?.length);
-  assert.equal((await check(String.raw`\sqrt{x^2}`, "x")).status, "unsupported");
-  assert.equal((await check(String.raw`\ln(x)`, String.raw`\ln(x)`)).status, "unsupported");
+  assert.equal((await check(String.raw`\sqrt{x^2}`, "x")).status, "not-equivalent");
+  assert.equal((await check(String.raw`\ln(x)`, String.raw`\ln(x)`)).status, "conditional");
   assert.equal((await check("x^x", "x^x")).status, "unsupported");
   assert.equal((await check("1/0", "0")).status, "unsupported");
 });
@@ -42,7 +42,7 @@ test("finite rational limits and derivative operators can be rewritten line by l
     (await check(String.raw`\lim_{x\to 0}\left(1/x^2\right)`, "0")).status,
     "unsupported",
   );
-  assert.equal((await check(String.raw`\lim_{x\to 0}\left(e^x\right)`, "1")).status, "unsupported");
+  assert.equal((await check(String.raw`\lim_{x\to 0}\left(e^x\right)`, "1")).status, "equivalent");
   assert.equal(
     (await check(String.raw`\lim_{x\to 2}\left(\frac{x^2-4}{x-2}\right)`, "4")).status,
     "equivalent",

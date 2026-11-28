@@ -1,9 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { normalizeMathLine } from "../../lib/math-practice/parser";
+import { parseMatrix } from "../../lib/math-practice/matrix";
 import { MathInput } from "./math-input";
 import { PracticeNotebook } from "./practice-notebook";
 import type { PracticeSnapshot } from "../../lib/math-practice/notebook";
 import { Markdown } from "../markdown";
+import { symbolicStep } from "../../lib/math-practice/steps";
 import { checkInWorker } from "../../lib/math-practice/client";
 import { createMathProblem, mathTopics, randomProblemSeed } from "../../lib/math-practice/problems";
 import type {
@@ -12,6 +15,13 @@ import type {
   RowOperation,
   SymbolicMode,
 } from "../../lib/math-practice/types";
+function displayLine(latex: string) {
+  try {
+    return normalizeMathLine(latex).expression;
+  } catch {
+    return latex;
+  }
+}
 type Entry = { id: string; latex: string; feedback: MathFeedback; operation: RowOperation };
 export function MathLab({
   initialReference = "",
@@ -42,6 +52,7 @@ export function MathLab({
   });
   const [history, setHistory] = useState<Entry[]>([]);
   const [conditions, setConditions] = useState<string[]>([]);
+  const [notes, setNotes] = useState("");
   const [context, setContext] = useState(question ?? "");
   const [shown, setShown] = useState(false),
     [busy, setBusy] = useState(false);
@@ -67,6 +78,7 @@ export function MathLab({
     for (let i = 0; i < 8 && p.reference === reference; i++)
       p = createMathProblem(topic, randomProblemSeed());
     reset();
+    setNotes("");
     setProblem(p);
     setReference(p.reference);
     setMode(p.mode);
@@ -84,13 +96,15 @@ export function MathLab({
     const result = await checkInWorker(
       matrix
         ? { kind: "matrix", reference: previous, next, operation }
-        : {
-            kind: "symbolic",
-            reference: mode === "expression" ? previous : reference,
+        : symbolicStep(
+            reference,
             next,
             mode,
             variable,
-          },
+            history
+              .filter((e) => ["equivalent", "conditional"].includes(e.feedback.status))
+              .map((e) => e.latex),
+          ),
       control.signal,
     );
     if (control.signal.aborted) return;
@@ -124,6 +138,7 @@ export function MathLab({
     setOperation(saved.operation);
     setNext(saved.draft);
     setContext(saved.context);
+    setNotes(saved.notes ?? "");
     setHistory([]);
     setConditions([]);
     let previous = saved.reference;
@@ -134,13 +149,15 @@ export function MathLab({
         const feedback = await checkInWorker(
           saved.matrix
             ? { kind: "matrix", reference: previous, next: line.latex, operation: line.operation }
-            : {
-                kind: "symbolic",
-                reference: saved.mode === "expression" ? previous : saved.reference,
-                next: line.latex,
-                mode: saved.mode,
-                variable: saved.variable,
-              },
+            : symbolicStep(
+                saved.reference,
+                line.latex,
+                saved.mode,
+                saved.variable,
+                restored
+                  .filter((e) => ["equivalent", "conditional"].includes(e.feedback.status))
+                  .map((e) => e.latex),
+              ),
           control.signal,
         );
         if (control.signal.aborted) return;
@@ -160,6 +177,12 @@ export function MathLab({
     } finally {
       if (!control.signal.aborted) setBusy(false);
     }
+  }
+  let rowCount = 3;
+  try {
+    if (matrix) rowCount = parseMatrix(accepted).length;
+  } catch {
+    /* The checker will explain incomplete matrix input. */
   }
   return (
     <section className="math-lab" aria-label="Step-by-step math scratchpad">
@@ -216,6 +239,7 @@ export function MathLab({
             {editingStart && (
               <MathInput
                 preview={false}
+                maxLength={matrix ? 2400 : 600}
                 label="Starting expression"
                 value={reference}
                 disabled={busy}
@@ -265,7 +289,7 @@ export function MathLab({
           </details>
           <div className="math-current">
             <strong>{matrix ? "Current matrix" : "Starting expression"}</strong>
-            <Markdown text={`$$\n${matrix ? accepted : reference}\n$$`} />
+            <Markdown text={`$$\n${matrix ? accepted : displayLine(reference)}\n$$`} />
           </div>
           {history.length > 0 && (
             <ol className="math-history" aria-label="Checked steps">
@@ -281,8 +305,20 @@ export function MathLab({
                           ? "Check this step"
                           : "Unverified"}
                   </strong>
-                  <Markdown text={`$$\n${entry.latex}\n$$`} />
+                  <Markdown text={`$$\n${matrix ? entry.latex : displayLine(entry.latex)}\n$$`} />
                   <p>{entry.feedback.message}</p>
+                  {entry.feedback.matrixEvidence?.inferredOperation && (
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={() => {
+                        setOperation(entry.feedback.matrixEvidence!.inferredOperation!);
+                        setNext(entry.latex);
+                      }}
+                    >
+                      Use detected operation and review before checking
+                    </button>
+                  )}
                   {entry.feedback.residualLatex && (
                     <details>
                       <summary>Show difference</summary>
@@ -330,30 +366,33 @@ export function MathLab({
                     })
                   }
                 >
+                  <option value="equivalence">Overall row-equivalence (multiple operations)</option>
                   <option value="add">Add a multiple of one row to another</option>
                   <option value="swap">Swap rows</option>
                   <option value="scale">Scale a row by a nonzero factor</option>
                 </select>
               </label>
-              <label>
-                {operation.kind === "scale" ? "Row to scale" : "Source row"}
-                <select
-                  aria-label="Source row"
-                  value={operation.source}
-                  onChange={(e) =>
-                    setOperation({
-                      ...operation,
-                      source: Number(e.target.value),
-                      ...(operation.kind === "scale" ? { target: Number(e.target.value) } : {}),
-                    })
-                  }
-                >
-                  {[1, 2, 3].map((r) => (
-                    <option key={r}>{r}</option>
-                  ))}
-                </select>
-              </label>
-              {operation.kind !== "scale" && (
+              {operation.kind !== "equivalence" && (
+                <label>
+                  {operation.kind === "scale" ? "Row to scale" : "Source row"}
+                  <select
+                    aria-label="Source row"
+                    value={operation.source}
+                    onChange={(e) =>
+                      setOperation({
+                        ...operation,
+                        source: Number(e.target.value),
+                        ...(operation.kind === "scale" ? { target: Number(e.target.value) } : {}),
+                      })
+                    }
+                  >
+                    {Array.from({ length: rowCount }, (_, i) => i + 1).map((r) => (
+                      <option key={r}>{r}</option>
+                    ))}
+                  </select>
+                </label>
+              )}
+              {operation.kind !== "scale" && operation.kind !== "equivalence" && (
                 <label>
                   Target row
                   <select
@@ -361,13 +400,13 @@ export function MathLab({
                     value={operation.target}
                     onChange={(e) => setOperation({ ...operation, target: Number(e.target.value) })}
                   >
-                    {[1, 2, 3].map((r) => (
+                    {Array.from({ length: rowCount }, (_, i) => i + 1).map((r) => (
                       <option key={r}>{r}</option>
                     ))}
                   </select>
                 </label>
               )}
-              {operation.kind !== "swap" && (
+              {operation.kind !== "swap" && operation.kind !== "equivalence" && (
                 <MathInput
                   label="Row factor"
                   scalar
@@ -379,6 +418,7 @@ export function MathLab({
             </fieldset>
           )}
           <MathInput
+            maxLength={matrix ? 2400 : 600}
             preview={false}
             allowedTemplates={
               matrix
@@ -396,6 +436,13 @@ export function MathLab({
             disabled={busy}
             onChange={setNext}
           />
+          <p className="learning-caption">
+            {matrix
+              ? "Choose one exact operation, or explicitly check overall row-equivalence."
+              : mode === "antiderivative"
+                ? "Primitive checks differentiate your line against the original integrand. Put substitutions in Working notes."
+                : "Each complete line is compared with the last accepted line. Rejected and unverified lines never become the baseline."}
+          </p>
           <div className="math-actions">
             {busy && (
               <button
@@ -446,18 +493,38 @@ export function MathLab({
                 variable,
                 matrix,
                 operation,
+                notes,
                 context: [context, problem?.question].filter(Boolean).join("\n"),
                 lines: history.map((entry) => ({ latex: entry.latex, operation: entry.operation })),
               }}
             />
           </details>
           <details className="math-support">
+            <summary>Working notes & substitutions</summary>
+            <p>
+              Write u = …, du = …, method choices or domain reminders here. Notes are not graded and
+              do not replace the last valid expression. Save a notebook copy to keep them.
+            </p>
+            <label>
+              Private scratch notes
+              <textarea
+                aria-label="Private scratch notes"
+                value={notes}
+                maxLength={4000}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="u = x³ + x² + 1; du = (3x² + 2x) dx"
+              />
+            </label>
+          </details>
+          <details className="math-support">
             <summary>What can this checker verify?</summary>
             <p>
-              Bounded real algebra, trigonometric identities, basic derivatives, antiderivatives,
-              finite rational limits and exact row operations (up to 3 × 4). Retain excluded inputs
-              after cancellation. Roots, variable logarithms, inequalities, definite integrals and
-              general proofs need tutor review. An unverified line is not marked wrong.
+              Real algebra, higher powers, trigonometric identities, multi-rule derivatives,
+              antiderivatives with logarithms, roots, finite
+              rational/radical/trigonometric/exponential limits, and exact row operations or
+              row-equivalence checks up to 6 × 7. Use a domain note such as ; x != 2 or ; x &gt; 0.
+              Piecewise branches require separate interval checks; definite integrals, arbitrary
+              equations and general proofs still need tutor review. Unverified does not mean wrong.
             </p>
             <p>
               This scratchpad is practice, not a graded assessment. Checks run on this device and do

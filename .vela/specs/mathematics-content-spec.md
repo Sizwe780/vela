@@ -16,3 +16,7 @@ Teaching extensions may add PCK without changing the mathematical claims. These 
 
 ## Teaching before calculation
 A masterclass states its learning goal, prerequisites and why the method works under explicit hypotheses. Explain symbolic operations and theorem restrictions as visible teaching before original numerical exercises. Place the worked solution and final numerical result behind Show answer. Keep the graph's plotted rule and valid domain explicit; a live graph readout is a visual exploration aid rather than a mark or proof of mastery.
+
+
+## Scratchpad-compatible worked practice
+Use complete mathematical expressions for checked lines. Provide substitution definitions, method notes and prose as separately labelled working notes, not purported expression-equivalence steps. Show domain restrictions alongside cancellation, roots and logarithms; distinguish functions from limits and real-domain boundaries from removable holes. Different valid methods are welcome. Never advance a proof from an incorrect line merely because a later line is equivalent to that incorrect line. A local “unverified” result does not establish an error, and a conditional verification must not be described as globally valid or as assessed mastery. Match exercises to the supported checker grammar or explicitly require tutor/human review instead of promising automated validation.

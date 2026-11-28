@@ -254,3 +254,27 @@
 .math-lab .math-result .markdown p {
   margin-block: 0.35em;
 }
+/* Long checked expressions must scroll inside their card, never widen the mobile page. */
+.math-lab .math-history {
+  min-width: 0;
+  max-width: 100%;
+  grid-template-columns: minmax(0, 1fr);
+}
+.math-lab .math-result,
+.math-lab .math-result .markdown,
+.math-lab .math-field-host {
+  min-width: 0;
+  max-width: 100%;
+}
+.math-lab .math-support textarea {
+  width: 100%;
+  min-height: 104px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-control);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  font: inherit;
+  resize: vertical;
+}

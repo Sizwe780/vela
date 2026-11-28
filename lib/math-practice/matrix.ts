@@ -28,8 +28,8 @@ function readFraction(raw: string): Fraction {
   return fraction(BigInt(n), BigInt(d));
 }
 export function parseMatrix(latex: string): Fraction[][] {
-  if (typeof latex !== "string" || latex.length > 600)
-    throw new UnsupportedMath("Use a matrix of up to 3 rows and 4 columns.");
+  if (typeof latex !== "string" || latex.length > 2400)
+    throw new UnsupportedMath("Use a matrix of up to 6 rows and 7 columns.");
   const value = latex.replace(/\\(?:left|right)[[\]()]/g, "").trim();
   const match =
     /\\begin\{(bmatrix|pmatrix|matrix|array)\}(?:\{[clr|]+\})?([\s\S]*?)\\end\{\1\}/.exec(value);
@@ -41,12 +41,12 @@ export function parseMatrix(latex: string): Fraction[][] {
     .map((r) => r.split("&").map(readFraction));
   if (
     rows.length < 1 ||
-    rows.length > 3 ||
+    rows.length > 6 ||
     rows[0].length < 1 ||
-    rows[0].length > 4 ||
+    rows[0].length > 7 ||
     rows.some((r) => r.length !== rows[0].length)
   )
-    throw new UnsupportedMath("Use a rectangular matrix of up to 3×4 entries.");
+    throw new UnsupportedMath("Use a rectangular matrix of up to 6×7 entries.");
   return rows;
 }
 export function matrixLatex(rows: (number | string)[][]) {
@@ -79,6 +79,19 @@ export function checkMatrixStep(
     b = parseMatrix(next),
     r = operation.target - 1,
     s = operation.source - 1;
+  if (operation.kind === "equivalence") {
+    const same =
+      a.length === b.length &&
+      a[0].length === b[0].length &&
+      reducedMatrix(reference) === reducedMatrix(next);
+    return {
+      status: same ? "equivalent" : "not-equivalent",
+      message: same
+        ? "The exact reduced row forms agree. These matrices are row-equivalent; this checks the overall transformation, not a single declared operation. Free-variable columns need not have pivots."
+        : "The exact reduced row forms differ. The row spaces are not equivalent, or the dimensions changed.",
+      matrixEvidence: { rowEquivalent: same, declaredOperationMatches: same },
+    };
+  }
   if (![r, s].every((i) => Number.isInteger(i) && i >= 0 && i < a.length))
     throw new UnsupportedMath("Choose existing row numbers.");
   if (!["swap", "scale", "add"].includes(operation.kind))
@@ -113,11 +126,59 @@ export function checkMatrixStep(
       if (expected[i][j].n !== b[i][j].n || expected[i][j].d !== b[i][j].d)
         return {
           status: "not-equivalent",
-          message: `Check row ${i + 1}, column ${j + 1}: this operation gives ${text(expected[i][j])}, while your entry is ${text(b[i][j])}. Check the multiplier and signs.`,
+          message:
+            `Check row ${i + 1}, column ${j + 1}: this operation gives ${text(expected[i][j])}, while your entry is ${text(b[i][j])}. ` +
+            (reducedMatrix(reference) === reducedMatrix(next)
+              ? "Your matrices are row-equivalent, but the declared operation does not produce this matrix. Correct the declaration or choose an overall row-equivalence check."
+              : "The matrix also fails an exact overall row-equivalence check. Check the arithmetic and declaration."),
+          matrixEvidence: {
+            rowEquivalent: reducedMatrix(reference) === reducedMatrix(next),
+            declaredOperationMatches: false,
+            inferredOperation: inferOperation(a, b),
+          },
         };
   return {
     status: "equivalent",
     message:
       "Every entry matches the declared row operation exactly. The solution set is preserved.",
   };
+}
+
+function inferOperation(a: Fraction[][], b: Fraction[][]): RowOperation | undefined {
+  const equal = (x: Fraction[], y: Fraction[]) =>
+    x.every((v, j) => v.n === y[j].n && v.d === y[j].d);
+  const changed = a.flatMap((row, i) => (equal(row, b[i]) ? [] : [i]));
+  if (changed.length === 2) {
+    const [r, s] = changed;
+    if (equal(a[r], b[s]) && equal(a[s], b[r]))
+      return { kind: "swap", source: s + 1, target: r + 1, factor: "1" };
+  }
+  if (changed.length !== 1) return;
+  const r = changed[0];
+  const j = a[r].findIndex((v) => v.n !== 0n);
+  if (j >= 0) {
+    const k = mul(b[r][j], fraction(a[r][j].d, a[r][j].n));
+    if (
+      k.n &&
+      equal(
+        a[r].map((v) => mul(v, k)),
+        b[r],
+      )
+    )
+      return { kind: "scale", source: r + 1, target: r + 1, factor: text(k) };
+  }
+  for (let source = 0; source < a.length; source++)
+    if (source !== r) {
+      const column = a[source].findIndex((v) => v.n !== 0n);
+      if (column < 0) continue;
+      const delta = add(b[r][column], fraction(-a[r][column].n, a[r][column].d)),
+        k = mul(delta, fraction(a[source][column].d, a[source][column].n));
+      if (
+        equal(
+          a[r].map((v, c) => add(v, mul(k, a[source][c]))),
+          b[r],
+        )
+      )
+        return { kind: "add", source: source + 1, target: r + 1, factor: text(k) };
+    }
 }

@@ -139,6 +139,7 @@ export function PracticeNotebook({
           `Step ${i + 1}: ${line.latex}${s.matrix ? `\nDeclared operation: ${JSON.stringify(line.operation)}` : ""}`,
       ),
       `Draft: ${s.draft}`,
+      `Working notes: ${s.notes ?? ""}`,
       `Reflection: ${entry.reflection}`,
       "Personal practice inputs only. Previous checks are not grades or proof of correctness.",
     ].join("\n\n");

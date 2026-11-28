@@ -64,3 +64,7 @@ node scripts/apply-enrollment-migration.mjs --migration=20261127210000_attempt_s
 Contextual reference drawers use checked-in public factual snapshots and require no paid API key. PubChem refresh (`python scripts/update-element-reference.py`) is an explicit maintenance action, not part of a build. Sources, limitations, testing and rollout tasks are in `.vela/engineering/reference-data-and-practice.md` and `.vela/engineering/learning-tools-task-checklist.md`.
 
 When running separate Playwright commands concurrently, give each its own `--output` folder; otherwise one run can remove another's trace files. A single normal `npm run test:e2e` invocation coordinates its own shared output.
+
+
+### Local mathematical practice
+The capability-scoped Practical Lab uses the existing MathLive and Nerdamer dependencies, with no AI key or added server process required for symbolic checks. Browser checks run in a cancellable eight-second worker; unsupported notation remains unverified. Working notes are separate and save/export only on explicit notebook actions. See [practice notebook](PRACTICE_NOTEBOOK.md) and `.vela/engineering/reference-data-and-practice.md` for grammar, domain and matrix bounds. Preserve the bundled MathLive fonts and worker chunks when packaging the app.

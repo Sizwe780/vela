@@ -1,4 +1,5 @@
 export class UnsupportedMath extends Error {}
+export type DomainCondition = { expression: string; relation: "ne" | "gt" | "ge" };
 type Limit = {
   code: string;
   body: string;
@@ -6,22 +7,25 @@ type Limit = {
   point: number;
   rational: boolean;
   variables: string[];
+  domain: DomainCondition[];
 };
 export type ParsedMath = {
   code: string;
   variables: string[];
   denominators: string[];
+  domain: DomainCondition[];
   integralCount: number;
   rational: boolean;
   limits: Limit[];
   integral?: { body: string; variable: string };
 };
 const variables = new Set(["x", "y", "z", "t", "a", "b", "c", "C"]);
-const functions = new Set(["sin", "cos", "tan", "exp", "ln", "log"]);
+const functions = new Set(["sin", "cos", "tan", "exp", "ln", "log", "sqrt", "abs"]);
 const merge = (a: ParsedMath, b: ParsedMath, code: string): ParsedMath => ({
   code,
   variables: [...new Set([...a.variables, ...b.variables])],
   denominators: [...a.denominators, ...b.denominators],
+  domain: [...a.domain, ...b.domain],
   integralCount: a.integralCount + b.integralCount,
   rational: a.rational && b.rational,
   limits: [...a.limits, ...b.limits],
@@ -30,6 +34,7 @@ const leaf = (code: string, vars: string[] = []): ParsedMath => ({
   code,
   variables: vars,
   denominators: [],
+  domain: [],
   integralCount: 0,
   rational: true,
   limits: [],
@@ -159,13 +164,6 @@ class Parser {
         if (this.peek() !== "(")
           throw new UnsupportedMath("Put the function's input in parentheses, for example sin(x).");
         const body = this.group();
-        if (
-          ["ln", "log"].includes(token) &&
-          !(body.variables.length === 0 && Number(body.code.replace(/[()]/g, "")) > 0)
-        )
-          throw new UnsupportedMath(
-            "Variable logarithms need explicit domain assumptions; this checker will not guess them.",
-          );
         const result = {
           ...body,
           code:
@@ -175,6 +173,10 @@ class Parser {
           integral: undefined,
           rational: false,
         };
+        if (token === "ln" || token === "log")
+          result.domain = [...body.domain, { expression: body.code, relation: "gt" as const }];
+        if (token === "sqrt")
+          result.domain = [...body.domain, { expression: body.code, relation: "ge" as const }];
         if (token === "tan") result.denominators.push(`cos(${body.code})`);
         return power ? this.power(result, power) : result;
       }
@@ -249,6 +251,10 @@ class Parser {
           point,
           rational: body.rational && body.integralCount === 0 && body.limits.length === 0,
           variables: body.variables,
+          domain: [
+            ...body.domain,
+            ...body.denominators.map((expression) => ({ expression, relation: "ne" as const })),
+          ],
         },
       ],
     };
@@ -257,6 +263,8 @@ class Parser {
 export async function parseMath(latex: string): Promise<ParsedMath> {
   if (typeof latex !== "string" || !latex.trim() || latex.length > 600)
     throw new UnsupportedMath("Enter a complete expression of up to 600 characters.");
+  const normalized = normalizeMathLine(latex);
+  latex = normalized.expression;
   if (/\^\s*-?\d{2,}/.test(latex))
     throw new UnsupportedMath(
       "Use braces around a multi-digit exponent, and keep its magnitude at most 12.",
@@ -273,6 +281,11 @@ export async function parseMath(latex: string): Promise<ParsedMath> {
     "exp",
     "ln",
     "log",
+    "sqrt",
+    "abs",
+    "vert",
+    "lvert",
+    "rvert",
     "int",
     "lim",
     "to",
@@ -288,11 +301,87 @@ export async function parseMath(latex: string): Promise<ParsedMath> {
       "This command is outside the supported local checker. Ask your tutor to review it.",
     );
   const { convertLatexToAsciiMath } = await import("mathlive/ssr");
-  const ascii = convertLatexToAsciiMath(latex).replace(/\s+/g, " ").trim();
+  latex = functionNotation(
+    latex.replace(/\\operatorname\{(sqrt|abs|sin|cos|tan|exp|ln|log)\}/g, "$1"),
+  ).replace(/(?<![A-Za-z\\])(sin|cos|tan|exp|ln|log)(?=\s*\()/g, "\\$1");
+  let ascii = convertLatexToAsciiMath(latex).replace(/\s+/g, " ").trim();
+  // MathLive's ordinary absolute-value serialization, including ln |x|.
+  ascii = ascii.replace(/\b(ln|log)\s+\|([^|]+)\|/g, "$1(abs($2))");
+  while (/\|[^|]+\|/.test(ascii)) ascii = ascii.replace(/\|([^|]+)\|/, "abs($1)");
   const tokens = ascii.match(/->|\d+(?:\.\d+)?|[A-Za-z]+|[()+\-*/^,_]/g) ?? [];
   if (tokens.length > 160 || tokens.join("") !== ascii.replace(/\s/g, ""))
     throw new UnsupportedMath(
-      "This checker supports bounded real expressions, not equations, text, roots or arbitrary commands.",
+      "This checker supports bounded real expressions, not arbitrary equations, prose or commands.",
     );
-  return new Parser(tokens).parse();
+  const parsed = new Parser(tokens).parse();
+  parsed.domain.push(...normalized.domain);
+  return parsed;
+}
+
+function functionNotation(text: string): string {
+  const match = /(?<![A-Za-z])\\?(sqrt|abs)\s*\(/.exec(text);
+  if (!match) return text;
+  const opening = match.index + match[0].length - 1;
+  let depth = 1,
+    end = opening + 1;
+  for (; end < text.length && depth; end++) {
+    if (text[end] === "(") depth++;
+    if (text[end] === ")") depth--;
+  }
+  if (depth) throw new UnsupportedMath("Close the function parentheses.");
+  const body = functionNotation(text.slice(opening + 1, end - 1));
+  return (
+    text.slice(0, match.index) +
+    (match[1] === "sqrt" ? `\\sqrt{${body}}` : `\\left|${body}\\right|`) +
+    functionNotation(text.slice(end))
+  );
+}
+
+/** Presentation and a deliberately small, explicit domain-note grammar. */
+export function normalizeMathLine(input: string): {
+  expression: string;
+  domain: DomainCondition[];
+} {
+  let expression = input
+    .trim()
+    .replace(/^\$\$([\s\S]*)\$\$$/, "$1")
+    .replace(/^\$([\s\S]*)\$$/, "$1")
+    .replace(/^\\\(([\s\S]*)\\\)$/, "$1")
+    .replace(/^\\\[([\s\S]*)\\\]$/, "$1")
+    .trim()
+    .replace(/^=\s*/, "");
+  const domain: DomainCondition[] = [];
+  const note =
+    /(?:;|(?<!\\),|\\quad(?:\\text\{(?:where|for)\})?|\s+(?:where|for)\s+)\s*(?:where\s+|for\s+)?([\s\S]+)$/.exec(
+      expression,
+    );
+  if (note) {
+    const notes = note[1]
+      .replace(/\\(?:ne|neq)\b/g, "!=")
+      .replace(/\\geq?\b/g, ">=")
+      .replace(/\\leq?\b/g, "<=")
+      .replaceAll("≠", "!=")
+      .replaceAll("≥", ">=")
+      .replaceAll("≤", "<=");
+    for (const item of notes.split(/\s*(?:,|;|\band\b)\s*/)) {
+      const match = /^([xyzt])\s*(!=|>=|<=|>|<)\s*(-?\d+(?:\.\d+)?)$/.exec(item.trim());
+      if (!match)
+        throw new UnsupportedMath(
+          "Use a separate domain note such as ; x != 2 or ; x > 0. Check piecewise branches separately on their stated intervals.",
+        );
+      const [, variable, operator, value] = match;
+      domain.push({
+        expression: operator.startsWith("<")
+          ? `(${value}-${variable})`
+          : `(${variable}-(${value}))`,
+        relation: operator === "!=" ? "ne" : operator.includes("=") ? "ge" : "gt",
+      });
+    }
+    expression = expression.slice(0, note.index).trim();
+  }
+  expression = expression.replace(
+    /^lim\s*_?\s*\(\s*([xyzt])\s*(?:->|→)\s*(-?\d+(?:\.\d+)?)\s*\)\s*([\s\S]+)$/,
+    (_, v, point, body) => `\\lim_{${v}\\to ${point}}\\left(${body}\\right)`,
+  );
+  return { expression, domain };
 }

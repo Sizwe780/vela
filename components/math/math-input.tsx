@@ -21,6 +21,7 @@ export function MathInput({
   scalar = false,
   preview = true,
   allowedTemplates,
+  maxLength = 600,
 }: {
   label: string;
   value: string;
@@ -29,6 +30,7 @@ export function MathInput({
   scalar?: boolean;
   preview?: boolean;
   allowedTemplates?: readonly string[];
+  maxLength?: number;
 }) {
   const host = useRef<HTMLDivElement>(null),
     field = useRef<MathfieldElement | null>(null);
@@ -65,12 +67,14 @@ export function MathInput({
             if (unsafeMathFormatting(text)) {
               event.preventDefault();
               event.stopImmediatePropagation();
-              change.current(text.slice(0, 600));
+              change.current(text.slice(0, maxLength));
             }
           },
           { capture: true },
         );
-        mf.addEventListener("input", () => change.current(mf.getValue("latex").slice(0, 600)));
+        mf.addEventListener("input", () =>
+          change.current(mf.getValue("latex").slice(0, maxLength)),
+        );
         host.current.append(mf);
         field.current = mf;
         setState("ready");
@@ -84,7 +88,7 @@ export function MathInput({
       field.current = null;
       window.mathVirtualKeyboard?.hide();
     };
-  }, [label]);
+  }, [label, maxLength]);
   useEffect(() => {
     const mf = field.current;
     if (mf) {
@@ -121,7 +125,7 @@ export function MathInput({
           Math notation (LaTeX)
           <textarea
             aria-label={label}
-            maxLength={600}
+            maxLength={maxLength}
             value={value}
             onChange={(e) => onChange(e.target.value)}
             disabled={disabled}

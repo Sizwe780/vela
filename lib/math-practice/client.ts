@@ -32,7 +32,7 @@ export function checkInWorker(
           message:
             "This check exceeded the local time limit. Break the line into a smaller step or ask your tutor.",
         }),
-      4000,
+      8000,
     );
     worker.onmessage = (event: MessageEvent<MathFeedback>) => finish(event.data);
     worker.onerror = () =>

@@ -2,16 +2,16 @@ import { z } from "zod";
 import { unsafeMathFormatting } from "./display";
 const latex = z
   .string()
-  .max(1200)
+  .max(2400)
   .refine(
     (v) => !unsafeMathFormatting(v),
     "Use mathematical notation without links or formatting commands.",
   );
 export const savedOperation = z
   .object({
-    kind: z.enum(["swap", "scale", "add"]),
-    source: z.number().int().min(1).max(3),
-    target: z.number().int().min(1).max(3),
+    kind: z.enum(["swap", "scale", "add", "equivalence"]),
+    source: z.number().int().min(1).max(6),
+    target: z.number().int().min(1).max(6),
     factor: latex.pipe(z.string().max(80)),
   })
   .strict();
@@ -25,6 +25,7 @@ export const practiceSnapshot = z
     matrix: z.boolean(),
     operation: savedOperation,
     context: z.string().max(4000),
+    notes: z.string().max(4000).optional(),
     lines: z
       .array(
         z.object({ latex: latex.refine((v) => !!v.trim()), operation: savedOperation }).strict(),
